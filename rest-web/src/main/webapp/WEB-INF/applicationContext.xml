@@ -1,0 +1,23 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/context
+  http://www.springframework.org/schema/context/spring-context.xsd"
+        >
+	
+	<!-- 
+	<context:component-scan base-package="com.codeartex.jersey.web" />
+	<bean id="wsTEst" class="com.codeartex.jersey.web.resources.WSTest"	autowire="byName" />
+	-->
+	
+	<context:component-scan base-package="cl.gob.minsegpres.pisee.rest.services" />
+
+	<bean id="restMineduc" class="cl.gob.minsegpres.pisee.rest.services.RestMineduc" autowire="byName" />
+
+	<bean id="restDipreca" class="cl.gob.minsegpres.pisee.rest.services.RestDipreca" autowire="byName" />
+	
+	<bean id="restIsp" class="cl.gob.minsegpres.pisee.rest.services.RestIsp" autowire="byName" />
+	
+</beans>
