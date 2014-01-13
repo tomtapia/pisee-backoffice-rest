@@ -1,7 +1,9 @@
 package cl.gob.minsegpres.pisee.rest.connector;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.StringWriter;
+import java.security.Key;
 import java.security.KeyStore;
 import java.security.Provider;
 import java.security.cert.X509Certificate;
@@ -25,88 +27,50 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPEnvelope;
-import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.xml.security.encryption.EncryptedData;
+import org.apache.xml.security.encryption.EncryptedKey;
+import org.apache.xml.security.encryption.XMLCipher;
+import org.apache.xml.security.utils.EncryptionConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class SrceiConnector {
 
-	public void prepareInput() throws Exception {
+	private static String keystoreType = "PKCS12";
+	private static String keystoreFile = "E://USR//certificadoDigital.p12";
+	private static String keystorePass = "genchi2013";
+	private static String privateKeyAlias = "id e-sign s.a. de ricardo david nesvara herrera";
+	private static String privateKeyPass = "genchi2013";
 
-		String keystoreType = "PKCS12";
-		String keystoreFile = "E://USR//certificadoDigital.p12";
-		String keystorePass = "genchi2013";
-		String privateKeyAlias = "id e-sign s.a. de ricardo david nesvara herrera";
-		String privateKeyPass = "genchi2013";
-		String entradaInformacion = "E://USR//entradaInformacion.xml";
-
-		// System.out.println("Creating the SOAP message...");
+	public String firmarEntrada(InputStream xmlInput) throws Exception {
 		SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
 		SOAPPart soapPart = soapMessage.getSOAPPart();
 		SOAPEnvelope soapEnvelope = soapPart.getEnvelope();
-		SOAPHeader soapHeader = soapEnvelope.getHeader();
 		SOAPBody soapBody = soapEnvelope.getBody();
 		soapBody.addAttribute(soapEnvelope.createName("id", "soapenv", "http://schemas.xmlsoap.org/soap/security/2000-12"), "Body");
 		DocumentBuilderFactory dbfc = DocumentBuilderFactory.newInstance();
 		dbfc.setNamespaceAware(true);
-		Document docm = dbfc.newDocumentBuilder().parse(new FileInputStream(entradaInformacion));
+		Document docm = dbfc.newDocumentBuilder().parse(xmlInput);
 		soapBody.addDocument(docm);
 
-		System.out.println("soapBody.getTagName() == " + soapBody.getTagName());
-		System.out.println("soapBody.getTextContent() == " + soapBody.getTextContent());
-
-		
-		
-		
-		
 		Source source = soapPart.getContent();
 		org.w3c.dom.Node root = null;
 		root = ((DOMSource) source).getNode();
 
-		/*
-		 * Source source = soapPart.getContent(); org.w3c.dom.Node root = null;
-		 * if (source instanceof DOMSource) { root = ((DOMSource)
-		 * source).getNode(); } else if (source instanceof SAXSource) {
-		 * InputSource inSource = ((SAXSource) source).getInputSource();
-		 * DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		 * dbf.setNamespaceAware(true); DocumentBuilder db = null; synchronized
-		 * (dbf) { db = dbf.newDocumentBuilder(); } Document doc =
-		 * db.parse(inSource); root = (org.w3c.dom.Node)
-		 * doc.getDocumentElement(); } else {
-		 * System.err.println("error: cannot convert SOAP message (" +
-		 * source.getClass().getName() + ") into a W3C DOM tree");
-		 * System.exit(-1); }
-		 */
-
 		StringWriter writer = new StringWriter();
 		Transformer transformer = TransformerFactory.newInstance().newTransformer();
 		transformer.transform(new DOMSource(root), new StreamResult(writer));
-
 		String providerName = System.getProperty("jsr105Provider", "org.jcp.xml.dsig.internal.dom.XMLDSigRI");
-		
-		System.out.println("providerName = " + providerName);
-		
-		/*
-		09:31:34,009 INFO  [STDOUT] providerName = org.jcp.xml.dsig.internal.dom.XMLDSigRI
-		09:31:34,035 INFO  [STDOUT] 09:31:34,035 ERROR [RestConnector] 
-		Exception == java.lang.ClassCastException: 
-		org.jcp.xml.dsig.internal.dom.DOMXMLSignatureFactory 
-		cannot be cast to 
-		javax.xml.crypto.dsig.XMLSignatureFactory
-		*/
-		
-		
+
 		XMLSignatureFactory sigFactory = XMLSignatureFactory.getInstance("DOM", (Provider) Class.forName(providerName).newInstance());
 		Reference ref = sigFactory.newReference("#Body", sigFactory.newDigestMethod(DigestMethod.SHA1, null));
 		SignedInfo signedInfo = sigFactory.newSignedInfo(sigFactory.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, (C14NMethodParameterSpec) null),
@@ -125,48 +89,65 @@ public class SrceiConnector {
 		KeyInfo keyInfo = keyInfoFactory.newKeyInfo(items);
 		XMLSignature sig = sigFactory.newXMLSignature(signedInfo, keyInfo);
 
-		// Insert XML signature into DOM tree and sign
-
-		// System.out.println("Signing the SOAP message...");
 		Element envelope = getFirstChildElement(root);
-
-		System.out.println("envelope.getTagName() == " + envelope.getTagName());
-		System.out.println("envelope.getTextContent() == " + envelope.getTextContent());
-
 		Element header = getFirstChildElement(envelope);
 
-		System.out.println("header.getTagName() == " + header.getTagName());
-		System.out.println("header.getTextContent() == " + header.getTextContent());
-
 		DOMSignContext sigContext = new DOMSignContext(entry.getPrivateKey(), header);
-
 		sigContext.putNamespacePrefix(XMLSignature.XMLNS, "ds");
 		sigContext.setIdAttributeNS(getNextSiblingElement(header), "http://schemas.xmlsoap.org/soap/security/2000-12", "id");
 		sig.sign(sigContext);
 
-		// ---
 		StringWriter writer2 = new StringWriter();
 		Transformer transformer2 = TransformerFactory.newInstance().newTransformer();
 		transformer2.transform(new DOMSource(root), new StreamResult(writer2));
-		String xml2 = writer2.toString();
-		System.out.println(xml2);
-
-		// Element sigElement = getFirstChildElement(header);
-		// DOMValidateContext valContext = new
-		// DOMValidateContext(cert.getPublicKey(), sigElement);
-		// valContext.setIdAttributeNS(getNextSiblingElement(header),
-		// "http://schemas.xmlsoap.org/soap/security/2000-12", "id");
-		// boolean isValid = sig.validate(valContext);
-		// System.out.println("Validating the signature... " + (isValid ?
-		// "valid" : "invalid"));
+		return writer2.toString();
 	}
 
-	private static void dumpDOMDocument(org.w3c.dom.Node root) throws TransformerException, TransformerConfigurationException {
-		System.out.println("\n");
-		Transformer transformer = TransformerFactory.newInstance().newTransformer();
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		transformer.transform(new DOMSource(root), new StreamResult(System.out));
-		System.out.println("\n");
+	public String descrifarRespuesta(Document respuesta) throws Exception {
+		Element encryptedDataElement = (Element) respuesta.getElementsByTagNameNS(EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_ENCRYPTEDDATA).item(0);
+		Key secretKey = loadDecryptionKey(respuesta);
+		XMLCipher xmlCipher = XMLCipher.getInstance();
+		xmlCipher.init(XMLCipher.DECRYPT_MODE, secretKey);
+		xmlCipher.doFinal(respuesta, encryptedDataElement);
+		return getStringFromDocument(respuesta);
+	}
+
+	private static Key loadDecryptionKey(Document document) throws Exception {
+		Element e = (Element) document.getElementsByTagNameNS(EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_ENCRYPTEDDATA).item(0);
+		XMLCipher cipher = XMLCipher.getInstance();
+		cipher.init(XMLCipher.DECRYPT_MODE, null);
+		EncryptedData encryptedData = cipher.loadEncryptedData(document, e);
+		if (encryptedData == null) {
+			throw new Exception("EncryptedData es null");
+		} else if (encryptedData.getKeyInfo() == null) {
+			throw new Exception("KeyInfo de EncryptedData es null");
+		}
+		KeyStore keyStore = KeyStore.getInstance(keystoreType);
+		keyStore.load(new FileInputStream(keystoreFile), keystorePass.toCharArray());
+		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(privateKeyAlias, new KeyStore.PasswordProtection(privateKeyPass.toCharArray()));
+		EncryptedKey ek = encryptedData.getKeyInfo().itemEncryptedKey(0);
+		Key key = null;
+		if (ek != null) {
+			XMLCipher keyCipher = XMLCipher.getInstance();
+			keyCipher.init(XMLCipher.UNWRAP_MODE, entry.getPrivateKey());
+			key = keyCipher.decryptKey(ek, encryptedData.getEncryptionMethod().getAlgorithm());
+		}
+		return key;
+	}
+
+	public String getStringFromDocument(org.w3c.dom.Document doc) {
+		try {
+			DOMSource domSource = new DOMSource(doc);
+			StringWriter writer = new StringWriter();
+			StreamResult result = new StreamResult(writer);
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			transformer.transform(domSource, result);
+			return writer.toString();
+		} catch (TransformerException ex) {
+			ex.printStackTrace();
+			return null;
+		}
 	}
 
 	private static Element getFirstChildElement(org.w3c.dom.Node node) {

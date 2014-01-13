@@ -18,6 +18,7 @@ import org.apache.axis.message.SOAPEnvelope;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.xml.sax.SAXException;
 
@@ -46,22 +47,6 @@ public class RestConnector {
 
 		try {
 			
-			
-			//---
-			System.out.println("*************************************");
-			System.out.println("*************************************");
-			System.out.println("*************************************");
-			
-			SrceiConnector s = new SrceiConnector();
-			s.prepareInput();
-			
-			System.out.println("*************************************");
-			System.out.println("*************************************");
-			System.out.println("*************************************");
-			//---
-			
-			
-			
 			Call call;
 			ExpressionLanguageProcessor processor;
 			InputStream is;
@@ -86,28 +71,50 @@ public class RestConnector {
 					if (null != fileInputStr) {
 						long tp = System.nanoTime();
 						fileInputProcessed = processor.processInput(fileInputStr, inputParameter);
-						LOGGER.debug("[nanoTime.] - " + proveedorServiceName + " - time process xml input == " + (System.nanoTime() - tp));
+						LOGGER.info("[nanoTime.] - " + proveedorServiceName + " - time process xml input == " + (System.nanoTime() - tp));
 
 						LOGGER.info(transactionLog(inputParameter, configuracionServicio));
 						is = new ByteArrayInputStream(fileInputProcessed.getBytes("UTF-8"));
-
+						
+						//-----
+						SrceiConnector s = new SrceiConnector();
+						Document document;
+						
+						//FIXME: Dejar en la BD si el servicio necesita ser firmado para su consumo
+						
+						if (configuracionServicio.getHttpUserName().equalsIgnoreCase("GENCHI")){
+							String result = s.firmarEntrada(is);
+							is = new ByteArrayInputStream(result.getBytes("UTF-8"));	
+						}
+						//------
+						
+						
+						
 						soapEnvelopeInput = new SOAPEnvelope(is);
 						LOGGER.info(proveedorServiceName + " - INPUT SERVICE : " + PiseeStringUtils.prettyFormat(soapEnvelopeInput.getAsString()));
-
+						
 						soapEnvelopeOutput = call.invoke(soapEnvelopeInput);
-						LOGGER.info(proveedorServiceName + " - OUTPUT SERVICE : " + PiseeStringUtils.prettyFormat(soapEnvelopeOutput.getAsString()));
-						LOGGER.debug(proveedorServiceName + " - TOTAL TIME STUB == " + (System.currentTimeMillis() - t1) + " [TimeMillis]");
+						
+						//-----
+						if (configuracionServicio.getHttpUserName().equalsIgnoreCase("GENCHI")){					
+							String result = s.descrifarRespuesta(soapEnvelopeOutput.getAsDocument());
+							document = DocumentHelper.parseText(result);	
+						}else{
+							document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument());	
+						}
+						//------						
+						
+						LOGGER.info(proveedorServiceName + " - OUTPUT SERVICE : " + PiseeStringUtils.prettyFormat(document.asXML()));
+						LOGGER.info(proveedorServiceName + " - TOTAL TIME STUB == " + (System.currentTimeMillis() - t1) + " [TimeMillis]");
 
-						Document document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument());
 						Element eRoot = document.getRootElement();
 
 						respuesta.setEncabezado(fillEncabezado(eRoot));
+						
+						
 						if (AppConstants._CODE_OK.equals(respuesta.getEncabezado().getEstadoSobre())) {
 							respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
 						}
-						
-						
-
 						
 						
 					}
