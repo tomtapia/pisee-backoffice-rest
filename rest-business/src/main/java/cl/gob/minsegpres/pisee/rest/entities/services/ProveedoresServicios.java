@@ -11,5 +11,7 @@ public final class ProveedoresServicios {
 	//Servicios DE ISP
 	public static final String ISP__LISTADO_ESPERA_CORAZON = "ISP_ListadoEsperaCorazon";
 
+	//Servicios DE SRCEI
+	public static final String SRCEI__CERTIFICADO_NACIMIENTO_GENCHI = "SRCEI_CertificadoNacimientoGENCHI";
 	
 }

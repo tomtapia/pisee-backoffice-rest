@@ -1,0 +1,28 @@
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+		
+   	<persistence-unit name="PiseeRest" transaction-type="RESOURCE_LOCAL">
+      	<provider>org.hibernate.ejb.HibernatePersistence</provider>
+      	      	
+       	<non-jta-data-source>java:/piseeDS</non-jta-data-source> 
+<!-- 		<non-jta-data-source>MVN_BACKOFFICE</non-jta-data-source> -->
+      	
+      	<class>cl.gob.minsegpres.pisee.rest.model.ConfiguracionServicio</class>
+      	<class>cl.gob.minsegpres.pisee.rest.model.Organismo</class>
+		<class>cl.gob.minsegpres.pisee.rest.model.Servicio</class>
+      	<class>cl.gob.minsegpres.pisee.rest.model.ServicioTramite</class>
+      	<class>cl.gob.minsegpres.pisee.rest.model.Tramite</class>
+      	<class>cl.gob.minsegpres.pisee.rest.model.Usuario</class>      	
+      	
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
+			<property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
+			<property name="hibernate.show_sql" value="false"/>
+			
+			
+			<property name="hibernate.validator.apply_to_ddl" value="false" />
+			<property name="hibernate.validator.autoregister_listeners" value="false" /> 			
+			
+		</properties>
+	</persistence-unit>
+	
+</persistence>

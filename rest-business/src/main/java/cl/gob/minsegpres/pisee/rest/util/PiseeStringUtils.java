@@ -3,7 +3,6 @@ package cl.gob.minsegpres.pisee.rest.util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.dom4j.Element;
 import org.dom4j.io.DOMReader;
 

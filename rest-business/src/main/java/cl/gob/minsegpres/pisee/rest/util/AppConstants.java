@@ -24,12 +24,17 @@ public final class AppConstants {
 	///---- MENSAJES DE RESPUESTA
 	public static final String _MSG_INTERNAL_ERROR = "Error en el proceso de llamado al Proveedor";
 	public static final String _MSG_INVALID_TOKEN = "Token invalido";
+	public static final String _MSG_BLOCKED_SERVICE = "el servicio se encuentra bloqueado para consumo via REST";
 	public static final String _MSG_INVALID_NULL_PARAMETER = "Error en parametro null: ";
 	
 	public static final String _CODE_OK = "00";
+	
+	public static final String _CODE_NOK_SERVICE = "NOK_SERVICE";
 	public static final String _CODE_NOK_TOKEN = "NOK_TOKEN";
 	public static final String _CODE_NOK_PARAMETER = "NOK_PARAMETER";
 	public static final String _CODE_NOK_INTERNAL = "NOK_INTERNAL_ERROR";
+	
+	
 	
 	public static final String _EMISOR_PISEE = "PISEE";
 	

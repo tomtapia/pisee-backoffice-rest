@@ -3,8 +3,8 @@ package cl.gob.minsegpres.pisee.rest.business;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import cl.gob.minsegpres.pisee.backoffice.model.ConfiguracionServicio;
 import cl.gob.minsegpres.pisee.rest.entities.InputParameter;
+import cl.gob.minsegpres.pisee.rest.model.ConfiguracionServicio;
 
 public class SobreBusiness {
 
