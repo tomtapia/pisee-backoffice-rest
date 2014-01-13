@@ -21,18 +21,19 @@ import cl.gob.minsegpres.pisee.rest.entities.services.ProveedoresServicios;
 import cl.gob.minsegpres.pisee.rest.util.AppConstants;
 import cl.gob.minsegpres.pisee.rest.util.JSONUtil;
 
-@Path("/isp")
+@Path("/srcei")
 @Component
 @Scope("singleton")
-public class RestIsp {
+public class RestSrcei {
 
-	private final static Log LOGGER = LogFactory.getLog(RestIsp.class);
-	private static final String _METHOD_GERLISTADOESPERACORAZON = "getListadoEsperaCorazon";
+private final static Log LOGGER = LogFactory.getLog(RestMineduc.class);
 	
+	private static final String _METHOD_CERTIFICADO_NACIMIENTO_GENCHI = "certificadoNacimientoGENCHI";
+
 	@GET
-	@Path("listadoEsperaCorazon")
+	@Path("certificadoNacimientoGENCHI")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public String getListadoEsperaCorazon(@QueryParam("tokenPisee") String tokenPisee) {
+	public String getLicencia(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("tokenPisee") String tokenPisee) {
 		
 		Date d1,d2;
 		d1 = new Date();
@@ -46,25 +47,29 @@ public class RestIsp {
 		inputParameter = new InputParameter();
 		jsonUtil = new JSONUtil();
 		restConnector = new RestConnector();
-
+		
+		inputParameter.addBodyParameter("numero", rut);
+		inputParameter.addBodyParameter("dv", dv);
 		inputParameter.addBodyParameter("tokenPisee", tokenPisee);
 		
-		if (isValidParameters(_METHOD_GERLISTADOESPERACORAZON, inputParameter)){			
-			respuesta = restConnector.callService(ProveedoresServicios.ISP__LISTADO_ESPERA_CORAZON, inputParameter, tokenPisee);
+		if (isValidParameters(_METHOD_CERTIFICADO_NACIMIENTO_GENCHI, inputParameter)){			
+			respuesta = restConnector.callService(ProveedoresServicios.SRCEI__CERTIFICADO_NACIMIENTO_GENCHI, inputParameter, tokenPisee);
 		}else{
-			respuesta = createValidParameterError(_METHOD_GERLISTADOESPERACORAZON, inputParameter);
-		}		
+			respuesta = createValidParameterError(_METHOD_CERTIFICADO_NACIMIENTO_GENCHI, inputParameter);
+		}
 		
 		String value = jsonUtil.toJSON(respuesta);
 		d2 = new Date();
 		long t2 = d2.getTime();		
 		LOGGER.info("getConsultaImponentes - TIME == " + (t2 - t1));
-	    return value;
+	    return value;		
     }
-	
+
 	private boolean isValidParameters(String serviceName, InputParameter inputParameter){
-		if (_METHOD_GERLISTADOESPERACORAZON.equals(serviceName)){
-			if (!StringUtils.isEmpty((String)inputParameter.getBodyParameter("tokenPisee"))){
+		if (_METHOD_CERTIFICADO_NACIMIENTO_GENCHI.equals(serviceName)){
+			if (!StringUtils.isEmpty((String)inputParameter.getBodyParameter("numero")) 
+					&& !StringUtils.isEmpty((String)inputParameter.getBodyParameter("dv")) 
+						&& !StringUtils.isEmpty((String)inputParameter.getBodyParameter("tokenPisee"))){
 				return true;	
 			}			
 		}
@@ -74,7 +79,13 @@ public class RestIsp {
 	private PiseeRespuesta createValidParameterError(String serviceName, InputParameter inputParameter){
 		PiseeRespuesta respuesta = new PiseeRespuesta();
 		String mensaje = "";
-		if (_METHOD_GERLISTADOESPERACORAZON.equals(serviceName)){
+		if (_METHOD_CERTIFICADO_NACIMIENTO_GENCHI.equals(serviceName)){
+			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter("numero"))){
+				mensaje = mensaje + "rut ";
+			}
+			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter("dv"))){
+				mensaje = mensaje + "dv ";
+			}			
 			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter("tokenPisee"))){
 				mensaje = mensaje + "tokenPisee ";
 			}		
@@ -84,5 +95,5 @@ public class RestIsp {
 		}
 		return respuesta;
 	}
-	
+
 }

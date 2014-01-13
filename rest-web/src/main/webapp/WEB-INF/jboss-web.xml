@@ -1,0 +1,16 @@
+<jboss-web>
+	<context-root>rest-web</context-root>
+	<class-loading java2ClassLoadingCompliance="false">
+        <loader-repository>
+            my.package:loader=rest-web.war
+           <loader-repository-config>
+              java2ParentDelegation=false
+           </loader-repository-config>
+        </loader-repository>
+    </class-loading>
+</jboss-web>
+
+
+
+
+

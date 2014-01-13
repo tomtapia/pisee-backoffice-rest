@@ -1,5 +1,7 @@
 package cl.gob.minsegpres.pisee.rest.services;
 
+import java.util.Date;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -7,6 +9,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -21,13 +25,20 @@ import cl.gob.minsegpres.pisee.rest.util.JSONUtil;
 @Component
 @Scope("singleton")
 public class RestMineduc {
-
+	
+	private final static Log LOGGER = LogFactory.getLog(RestMineduc.class);
+	
 	private static final String _METHOD_GETLICENCIA = "getLicencia";
 
 	@GET
 	@Path("licenciaMedia")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public String getLicencia(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("tokenPisee") String tokenPisee) {
+		
+		Date d1,d2;
+		d1 = new Date();
+		long t1 = d1.getTime();
+		
 		InputParameter inputParameter;
 		JSONUtil jsonUtil;
 		PiseeRespuesta respuesta;
@@ -46,7 +57,12 @@ public class RestMineduc {
 		}else{
 			respuesta = createValidParameterError(_METHOD_GETLICENCIA, inputParameter);
 		}
-		return jsonUtil.toJSON(respuesta);
+		
+		String value = jsonUtil.toJSON(respuesta);
+		d2 = new Date();
+		long t2 = d2.getTime();		
+		LOGGER.info("getConsultaImponentes - TIME == " + (t2 - t1));
+	    return value;		
     }
 
 	private boolean isValidParameters(String serviceName, InputParameter inputParameter){
@@ -79,9 +95,5 @@ public class RestMineduc {
 		}
 		return respuesta;
 	}
-	
-	
-	
-	
 	
 }

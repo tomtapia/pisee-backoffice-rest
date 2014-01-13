@@ -7,11 +7,6 @@
   http://www.springframework.org/schema/context/spring-context.xsd"
         >
 	
-	<!-- 
-	<context:component-scan base-package="com.codeartex.jersey.web" />
-	<bean id="wsTEst" class="com.codeartex.jersey.web.resources.WSTest"	autowire="byName" />
-	-->
-	
 	<context:component-scan base-package="cl.gob.minsegpres.pisee.rest.services" />
 
 	<bean id="restMineduc" class="cl.gob.minsegpres.pisee.rest.services.RestMineduc" autowire="byName" />
@@ -19,5 +14,7 @@
 	<bean id="restDipreca" class="cl.gob.minsegpres.pisee.rest.services.RestDipreca" autowire="byName" />
 	
 	<bean id="restIsp" class="cl.gob.minsegpres.pisee.rest.services.RestIsp" autowire="byName" />
+	
+	<bean id="restSrcei" class="cl.gob.minsegpres.pisee.rest.services.RestSrcei" autowire="byName" />
 	
 </beans>
