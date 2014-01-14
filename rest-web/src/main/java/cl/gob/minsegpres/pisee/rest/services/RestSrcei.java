@@ -26,7 +26,7 @@ import cl.gob.minsegpres.pisee.rest.util.JSONUtil;
 @Scope("singleton")
 public class RestSrcei {
 
-private final static Log LOGGER = LogFactory.getLog(RestMineduc.class);
+private final static Log LOGGER = LogFactory.getLog(RestSrcei.class);
 	
 	private static final String _METHOD_CERTIFICADO_NACIMIENTO_GENCHI = "certificadoNacimientoGENCHI";
 
