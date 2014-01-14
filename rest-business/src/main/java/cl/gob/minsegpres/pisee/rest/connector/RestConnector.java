@@ -25,11 +25,13 @@ import org.xml.sax.SAXException;
 import cl.gob.minsegpres.pisee.rest.business.SobreBusiness;
 import cl.gob.minsegpres.pisee.rest.entities.CampoOutputParameter;
 import cl.gob.minsegpres.pisee.rest.entities.InputParameter;
+import cl.gob.minsegpres.pisee.rest.entities.KeyStoreParameter;
 import cl.gob.minsegpres.pisee.rest.entities.OutputParameter;
 import cl.gob.minsegpres.pisee.rest.entities.response.PiseeEncabezado;
 import cl.gob.minsegpres.pisee.rest.entities.response.PiseeRespuesta;
 import cl.gob.minsegpres.pisee.rest.model.ConfiguracionServicio;
 import cl.gob.minsegpres.pisee.rest.readers.ReaderServicesInput;
+import cl.gob.minsegpres.pisee.rest.readers.ReaderServicesKeyStore;
 import cl.gob.minsegpres.pisee.rest.readers.ReaderServicesOutput;
 import cl.gob.minsegpres.pisee.rest.services.ConfiguracionServicioService;
 import cl.gob.minsegpres.pisee.rest.util.AppConstants;
@@ -38,13 +40,16 @@ import cl.gob.minsegpres.pisee.rest.util.el.ExpressionLanguageProcessor;
 
 public class RestConnector {
 
+	private static final String _UTF_8 = "UTF-8";
 	private final static Log LOGGER = LogFactory.getLog(RestConnector.class);
 
 	public PiseeRespuesta callService(String proveedorServiceName, InputParameter inputParameter, String tokenPisee) {
+		long t1 = System.currentTimeMillis();
+		
+		KeyStoreParameter keyStoreParameter = null; 
 		PiseeRespuesta respuesta = new PiseeRespuesta();
 		SobreBusiness sobreBusiness = new SobreBusiness();
 		ConfiguracionServicioService configuracionServicioBusiness = new ConfiguracionServicioService();
-
 		try {
 			
 			Call call;
@@ -53,10 +58,11 @@ public class RestConnector {
 			ConfiguracionServicio configuracionServicio;
 			String fileInputStr, fileInputProcessed;
 			SOAPEnvelope soapEnvelopeInput, soapEnvelopeOutput;
-
+			SrceiConnector s = new SrceiConnector();
+			Document document;
+			
 			processor = new ExpressionLanguageProcessor();
-			long t1 = System.currentTimeMillis();
-
+			
 			configuracionServicio = configuracionServicioBusiness.findConfiguracionServicio(tokenPisee);
 			if (null != configuracionServicio) {
 				if (ConfiguracionServicio.BLOQUEADO.equals(configuracionServicio.getEstado())) {
@@ -69,54 +75,44 @@ public class RestConnector {
 					fileInputStr = ReaderServicesInput.getInstance().readFile(proveedorServiceName);
 
 					if (null != fileInputStr) {
-						long tp = System.nanoTime();
+						
 						fileInputProcessed = processor.processInput(fileInputStr, inputParameter);
-						LOGGER.info("[nanoTime.] - " + proveedorServiceName + " - time process xml input == " + (System.nanoTime() - tp));
+						
+						is = new ByteArrayInputStream(fileInputProcessed.getBytes(_UTF_8));
 
-						LOGGER.info(transactionLog(inputParameter, configuracionServicio));
-						is = new ByteArrayInputStream(fileInputProcessed.getBytes("UTF-8"));
-						
-						//-----
-						SrceiConnector s = new SrceiConnector();
-						Document document;
-						
-						//FIXME: Dejar en la BD si el servicio necesita ser firmado para su consumo
-						
-						if (configuracionServicio.getHttpUserName().equalsIgnoreCase("GENCHI")){
-							String result = s.firmarEntrada(is);
-							is = new ByteArrayInputStream(result.getBytes("UTF-8"));	
+						if (configuracionServicio.hasFirma()){
+							long tFirmaIN = System.currentTimeMillis();
+							keyStoreParameter = ReaderServicesKeyStore.getInstance().findKeyStore(proveedorServiceName + AppConstants.PREFIX_CONFIG_SERVICES_KEYSTORE);
+							String result = s.firmarEntrada(is, keyStoreParameter);
+							is = new ByteArrayInputStream(result.getBytes(_UTF_8));
+							LOGGER.info(proveedorServiceName + " - time process firma IN == " + (System.currentTimeMillis() - tFirmaIN));
 						}
-						//------
-						
-						
-						
+												
 						soapEnvelopeInput = new SOAPEnvelope(is);
 						LOGGER.info(proveedorServiceName + " - INPUT SERVICE : " + PiseeStringUtils.prettyFormat(soapEnvelopeInput.getAsString()));
 						
+						long tc1 = System.currentTimeMillis();
+						LOGGER.info(transactionLogInput(inputParameter, configuracionServicio));
 						soapEnvelopeOutput = call.invoke(soapEnvelopeInput);
+						LOGGER.info(transactionLogOutput(inputParameter, configuracionServicio));
+						LOGGER.info(proveedorServiceName + " - Tiempo de Respuesta == " + (System.currentTimeMillis() - tc1));
 						
-						//-----
-						if (configuracionServicio.getHttpUserName().equalsIgnoreCase("GENCHI")){					
-							String result = s.descrifarRespuesta(soapEnvelopeOutput.getAsDocument());
-							document = DocumentHelper.parseText(result);	
+						if (configuracionServicio.hasFirma()){
+							long tFirmaOUT = System.currentTimeMillis();
+							String result = s.descrifarRespuesta(soapEnvelopeOutput.getAsDocument(), keyStoreParameter);
+							document = DocumentHelper.parseText(result);
+							LOGGER.info(proveedorServiceName + " - time process firma OUT == " + (System.currentTimeMillis() - tFirmaOUT));
 						}else{
 							document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument());	
 						}
-						//------						
 						
 						LOGGER.info(proveedorServiceName + " - OUTPUT SERVICE : " + PiseeStringUtils.prettyFormat(document.asXML()));
-						LOGGER.info(proveedorServiceName + " - TOTAL TIME STUB == " + (System.currentTimeMillis() - t1) + " [TimeMillis]");
 
 						Element eRoot = document.getRootElement();
-
 						respuesta.setEncabezado(fillEncabezado(eRoot));
-						
-						
 						if (AppConstants._CODE_OK.equals(respuesta.getEncabezado().getEstadoSobre())) {
 							respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
 						}
-						
-						
 					}
 				}
 			} else {
@@ -147,8 +143,7 @@ public class RestConnector {
 			}
 		}
 		
-		
-
+		LOGGER.info(proveedorServiceName + " - TOTAL TIME STUB == " + (System.currentTimeMillis() - t1));
 		
 		return respuesta;
 	}
@@ -254,7 +249,7 @@ public class RestConnector {
 		return resultados;
 	}
 
-	private String transactionLog(InputParameter inputParameter, ConfiguracionServicio configuracionServicio) {
+	private String transactionLogInput(InputParameter inputParameter, ConfiguracionServicio configuracionServicio) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("REST - Invocando a URL: ");
 		sb.append(configuracionServicio.getEndPoint());
@@ -278,7 +273,17 @@ public class RestConnector {
 		sb.append(inputParameter.getHeaderParameter(SobreBusiness.NOMBRE_TRAMITE));
 		return sb.toString();
 	}
-
+	
+	private String transactionLogOutput(InputParameter inputParameter, ConfiguracionServicio configuracionServicio) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("REST - Retorno de la URL: ");
+		sb.append(configuracionServicio.getEndPoint());
+		sb.append("\n");
+		sb.append("idSobre : ");
+		sb.append(inputParameter.getHeaderParameter(SobreBusiness.ID_SOBRE));
+		return sb.toString();
+	}
+	
 	@SuppressWarnings("unchecked")
 	private List<Element> findElements(Element eRoot, String rutaArreglo) {
 		String[] arrRutaArreglo = rutaArreglo.split("/");

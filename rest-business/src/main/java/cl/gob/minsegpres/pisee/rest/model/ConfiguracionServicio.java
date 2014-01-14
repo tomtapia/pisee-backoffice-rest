@@ -54,6 +54,9 @@ public class ConfiguracionServicio implements java.io.Serializable{
 	@Column(name = "CFG_ESTADO", length = 1)
 	private String estado;
 	
+	@Column(name = "CFG_REQUIERE_FIRMA", length = 1)
+	private String requiereFirma;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "STR_ID", nullable = false)		
 	private ServicioTramite servicioTramite;
@@ -92,6 +95,9 @@ public class ConfiguracionServicio implements java.io.Serializable{
 	public String getEstado() {
 		return estado;
 	}
+	public String getRequiereFirma() {
+		return requiereFirma;
+	}
 	
 	//--- setters
 	public void setId(Long id) {
@@ -127,10 +133,15 @@ public class ConfiguracionServicio implements java.io.Serializable{
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
+	public void setRequiereFirma(String requiereFirma) {
+		this.requiereFirma = requiereFirma;
+	}	
 	//------
 	@Transient
 	private String descripcionEstado;
+	
+	@Transient
+	private String descripcionFirma;
 	
 	public String getDescripcionEstado() {
 		if ("1".equals(estado)){
@@ -142,7 +153,25 @@ public class ConfiguracionServicio implements java.io.Serializable{
 		return descripcionEstado;
 	}
 	
+	public String requiereFirma() {
+		if ("1".equals(estado)){
+			descripcionFirma = "Si";
+		}
+		if ("0".equals(estado)){
+			descripcionFirma = "No";
+		}		
+		return descripcionFirma;
+	}
+	
 	public void setDescripcionEstado(String descripcionEstado) {
 		this.descripcionEstado = descripcionEstado;
-	}		
+	}
+	
+	public void setDescripcionFirma(String descripcionFirma) {
+		this.descripcionFirma = descripcionFirma;
+	}
+	
+	public boolean hasFirma(){
+		return "1".equals(requiereFirma) ? true : false;
+	}
 }

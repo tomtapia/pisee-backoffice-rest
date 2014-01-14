@@ -16,6 +16,7 @@ public final class AppConstants {
 
 	public final static String PREFIX_CONFIG_SERVICES_INPUT = "_input.xml";
 	public final static String PREFIX_CONFIG_SERVICES_OUTPUT = "_output.xml";
+	public final static String PREFIX_CONFIG_SERVICES_KEYSTORE = "_keystore.xml";
 	
 	public final static String BRACKET_INI = "[";
 	public final static String BRACKET_END = "]";

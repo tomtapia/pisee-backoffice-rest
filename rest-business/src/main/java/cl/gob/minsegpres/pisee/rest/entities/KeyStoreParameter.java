@@ -2,12 +2,16 @@ package cl.gob.minsegpres.pisee.rest.entities;
 
 public class KeyStoreParameter {
 
+	private String serviceName;
 	private String keystoreType;
 	private String keystoreFile;
 	private String keystorePass;
 	private String privateKeyAlias;
 	private String privateKeyPass;
 	
+	public String getServiceName() {
+		return serviceName;
+	}
 	public String getKeystoreType() {
 		return keystoreType;
 	}
@@ -24,7 +28,9 @@ public class KeyStoreParameter {
 		return privateKeyPass;
 	}
 	
-	
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}	
 	public void setKeystoreType(String keystoreType) {
 		this.keystoreType = keystoreType;
 	}

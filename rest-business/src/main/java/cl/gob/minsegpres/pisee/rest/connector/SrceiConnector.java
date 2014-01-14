@@ -43,15 +43,19 @@ import org.apache.xml.security.utils.EncryptionConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import cl.gob.minsegpres.pisee.rest.entities.KeyStoreParameter;
+
 public class SrceiConnector {
 
+	/*
 	private static String keystoreType = "PKCS12";
 	private static String keystoreFile = "E://USR//certificadoDigital.p12";
 	private static String keystorePass = "genchi2013";
 	private static String privateKeyAlias = "id e-sign s.a. de ricardo david nesvara herrera";
 	private static String privateKeyPass = "genchi2013";
-
-	public String firmarEntrada(InputStream xmlInput) throws Exception {
+	*/
+	
+	public String firmarEntrada(InputStream xmlInput, KeyStoreParameter keyStoreParameter) throws Exception {
 		SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
 		SOAPPart soapPart = soapMessage.getSOAPPart();
 		SOAPEnvelope soapEnvelope = soapPart.getEnvelope();
@@ -77,9 +81,15 @@ public class SrceiConnector {
 				sigFactory.newSignatureMethod(SignatureMethod.RSA_SHA1, null), Collections.singletonList(ref));
 
 		KeyInfoFactory keyInfoFactory = sigFactory.getKeyInfoFactory();
-		KeyStore keyStore = KeyStore.getInstance(keystoreType);
-		keyStore.load(new FileInputStream(keystoreFile), keystorePass.toCharArray());
-		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(privateKeyAlias, new KeyStore.PasswordProtection(privateKeyPass.toCharArray()));
+//		KeyStore keyStore = KeyStore.getInstance(keystoreType);
+//		keyStore.load(new FileInputStream(keystoreFile), keystorePass.toCharArray());
+//		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(privateKeyAlias, new KeyStore.PasswordProtection(privateKeyPass.toCharArray()));
+		
+		KeyStore keyStore = KeyStore.getInstance(keyStoreParameter.getKeystoreType());
+		keyStore.load(new FileInputStream(keyStoreParameter.getKeystoreFile()), keyStoreParameter.getKeystorePass().toCharArray());
+		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(keyStoreParameter.getPrivateKeyAlias(), new KeyStore.PasswordProtection(keyStoreParameter.getPrivateKeyPass().toCharArray()));	
+		
+		
 		X509Certificate cert = (X509Certificate) entry.getCertificate();
 		List<X509Certificate> x509 = new ArrayList<X509Certificate>();
 		x509.add(cert);
@@ -103,16 +113,16 @@ public class SrceiConnector {
 		return writer2.toString();
 	}
 
-	public String descrifarRespuesta(Document respuesta) throws Exception {
+	public String descrifarRespuesta(Document respuesta, KeyStoreParameter keyStoreParameter) throws Exception {
 		Element encryptedDataElement = (Element) respuesta.getElementsByTagNameNS(EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_ENCRYPTEDDATA).item(0);
-		Key secretKey = loadDecryptionKey(respuesta);
+		Key secretKey = loadDecryptionKey(respuesta, keyStoreParameter);
 		XMLCipher xmlCipher = XMLCipher.getInstance();
 		xmlCipher.init(XMLCipher.DECRYPT_MODE, secretKey);
 		xmlCipher.doFinal(respuesta, encryptedDataElement);
 		return getStringFromDocument(respuesta);
 	}
 
-	private static Key loadDecryptionKey(Document document) throws Exception {
+	private Key loadDecryptionKey(Document document, KeyStoreParameter keyStoreParameter) throws Exception {
 		Element e = (Element) document.getElementsByTagNameNS(EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_ENCRYPTEDDATA).item(0);
 		XMLCipher cipher = XMLCipher.getInstance();
 		cipher.init(XMLCipher.DECRYPT_MODE, null);
@@ -122,9 +132,14 @@ public class SrceiConnector {
 		} else if (encryptedData.getKeyInfo() == null) {
 			throw new Exception("KeyInfo de EncryptedData es null");
 		}
-		KeyStore keyStore = KeyStore.getInstance(keystoreType);
-		keyStore.load(new FileInputStream(keystoreFile), keystorePass.toCharArray());
-		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(privateKeyAlias, new KeyStore.PasswordProtection(privateKeyPass.toCharArray()));
+//		KeyStore keyStore = KeyStore.getInstance(keystoreType);
+//		keyStore.load(new FileInputStream(keystoreFile), keystorePass.toCharArray());
+//		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(privateKeyAlias, new KeyStore.PasswordProtection(privateKeyPass.toCharArray()));
+
+		KeyStore keyStore = KeyStore.getInstance(keyStoreParameter.getKeystoreType());
+		keyStore.load(new FileInputStream(keyStoreParameter.getKeystoreFile()), keyStoreParameter.getKeystorePass().toCharArray());
+		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(keyStoreParameter.getPrivateKeyAlias(), new KeyStore.PasswordProtection(keyStoreParameter.getPrivateKeyPass().toCharArray()));
+		
 		EncryptedKey ek = encryptedData.getKeyInfo().itemEncryptedKey(0);
 		Key key = null;
 		if (ek != null) {
