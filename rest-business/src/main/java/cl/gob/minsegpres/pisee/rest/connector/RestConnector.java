@@ -22,6 +22,8 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.xml.sax.SAXException;
 
+import cl.gob.minsegpres.pisee.core.model.ConfiguracionServicio;
+
 import cl.gob.minsegpres.pisee.rest.business.SobreBusiness;
 import cl.gob.minsegpres.pisee.rest.entities.CampoOutputParameter;
 import cl.gob.minsegpres.pisee.rest.entities.InputParameter;
@@ -29,11 +31,9 @@ import cl.gob.minsegpres.pisee.rest.entities.KeyStoreParameter;
 import cl.gob.minsegpres.pisee.rest.entities.OutputParameter;
 import cl.gob.minsegpres.pisee.rest.entities.response.PiseeEncabezado;
 import cl.gob.minsegpres.pisee.rest.entities.response.PiseeRespuesta;
-import cl.gob.minsegpres.pisee.rest.model.ConfiguracionServicio;
 import cl.gob.minsegpres.pisee.rest.readers.ReaderServicesInput;
 import cl.gob.minsegpres.pisee.rest.readers.ReaderServicesKeyStore;
 import cl.gob.minsegpres.pisee.rest.readers.ReaderServicesOutput;
-import cl.gob.minsegpres.pisee.rest.services.ConfiguracionServicioService;
 import cl.gob.minsegpres.pisee.rest.util.AppConstants;
 import cl.gob.minsegpres.pisee.rest.util.PiseeStringUtils;
 import cl.gob.minsegpres.pisee.rest.util.el.ExpressionLanguageProcessor;
@@ -43,82 +43,54 @@ public class RestConnector {
 	private static final String _UTF_8 = "UTF-8";
 	private final static Log LOGGER = LogFactory.getLog(RestConnector.class);
 
-	public PiseeRespuesta callService(String proveedorServiceName, InputParameter inputParameter, String tokenPisee) {
+	public PiseeRespuesta callService(String proveedorServiceName, InputParameter inputParameter, ConfiguracionServicio configuracionServicio) {
 		long t1 = System.currentTimeMillis();
-		
 		KeyStoreParameter keyStoreParameter = null; 
 		PiseeRespuesta respuesta = new PiseeRespuesta();
 		SobreBusiness sobreBusiness = new SobreBusiness();
-		ConfiguracionServicioService configuracionServicioBusiness = new ConfiguracionServicioService();
 		try {
-			
 			Call call;
 			ExpressionLanguageProcessor processor;
 			InputStream is;
-			ConfiguracionServicio configuracionServicio;
 			String fileInputStr, fileInputProcessed;
 			SOAPEnvelope soapEnvelopeInput, soapEnvelopeOutput;
 			SrceiConnector s = new SrceiConnector();
 			Document document;
-			
 			processor = new ExpressionLanguageProcessor();
-			
-			configuracionServicio = configuracionServicioBusiness.findConfiguracionServicio(tokenPisee);
-			if (null != configuracionServicio) {
-				if (ConfiguracionServicio.BLOQUEADO.equals(configuracionServicio.getEstado())) {
-					respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
-					respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_NOK_SERVICE);
-					respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_BLOCKED_SERVICE);
-				} else {
-					call = createCall(configuracionServicio);
-					inputParameter = sobreBusiness.fillSobre(inputParameter, configuracionServicio);
-					fileInputStr = ReaderServicesInput.getInstance().readFile(proveedorServiceName);
-
-					if (null != fileInputStr) {
-						
-						fileInputProcessed = processor.processInput(fileInputStr, inputParameter);
-						
-						is = new ByteArrayInputStream(fileInputProcessed.getBytes(_UTF_8));
-
-						if (configuracionServicio.hasFirma()){
-							long tFirmaIN = System.currentTimeMillis();
-							keyStoreParameter = ReaderServicesKeyStore.getInstance().findKeyStore(proveedorServiceName + AppConstants.PREFIX_CONFIG_SERVICES_KEYSTORE);
-							String result = s.firmarEntrada(is, keyStoreParameter);
-							is = new ByteArrayInputStream(result.getBytes(_UTF_8));
-							LOGGER.info(proveedorServiceName + " - time process firma IN == " + (System.currentTimeMillis() - tFirmaIN));
-						}
-												
-						soapEnvelopeInput = new SOAPEnvelope(is);
-						LOGGER.info(proveedorServiceName + " - INPUT SERVICE : " + PiseeStringUtils.prettyFormat(soapEnvelopeInput.getAsString()));
-						
-						long tc1 = System.currentTimeMillis();
-						LOGGER.info(transactionLogInput(inputParameter, configuracionServicio));
-						soapEnvelopeOutput = call.invoke(soapEnvelopeInput);
-						LOGGER.info(transactionLogOutput(inputParameter, configuracionServicio));
-						LOGGER.info(proveedorServiceName + " - Tiempo de Respuesta == " + (System.currentTimeMillis() - tc1));
-						
-						if (configuracionServicio.hasFirma()){
-							long tFirmaOUT = System.currentTimeMillis();
-							String result = s.descrifarRespuesta(soapEnvelopeOutput.getAsDocument(), keyStoreParameter);
-							document = DocumentHelper.parseText(result);
-							LOGGER.info(proveedorServiceName + " - time process firma OUT == " + (System.currentTimeMillis() - tFirmaOUT));
-						}else{
-							document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument());	
-						}
-						
-						LOGGER.info(proveedorServiceName + " - OUTPUT SERVICE : " + PiseeStringUtils.prettyFormat(document.asXML()));
-
-						Element eRoot = document.getRootElement();
-						respuesta.setEncabezado(fillEncabezado(eRoot));
-						if (AppConstants._CODE_OK.equals(respuesta.getEncabezado().getEstadoSobre())) {
-							respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
-						}
-					}
+			call = createCall(configuracionServicio);
+			inputParameter = sobreBusiness.fillSobre(inputParameter, configuracionServicio);
+			fileInputStr = ReaderServicesInput.getInstance().readFile(proveedorServiceName);
+			if (null != fileInputStr) {
+				fileInputProcessed = processor.processInput(fileInputStr, inputParameter);
+				is = new ByteArrayInputStream(fileInputProcessed.getBytes(_UTF_8));
+				if (configuracionServicio.isRequiereFirma()){
+					long tFirmaIN = System.currentTimeMillis();
+					keyStoreParameter = ReaderServicesKeyStore.getInstance().findKeyStore(proveedorServiceName + AppConstants.PREFIX_CONFIG_SERVICES_KEYSTORE);
+					String result = s.firmarEntrada(is, keyStoreParameter);
+					is = new ByteArrayInputStream(result.getBytes(_UTF_8));
+					LOGGER.info(proveedorServiceName + " - Tiempo en firmar entrada == " + (System.currentTimeMillis() - tFirmaIN));
 				}
-			} else {
-				respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
-				respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_NOK_TOKEN);
-				respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INVALID_TOKEN);
+				soapEnvelopeInput = new SOAPEnvelope(is);
+				LOGGER.info(proveedorServiceName + " - INPUT SERVICE : " + PiseeStringUtils.prettyFormat(soapEnvelopeInput.getAsString()));
+				long tc1 = System.currentTimeMillis();
+				LOGGER.info(transactionLogInput(inputParameter, configuracionServicio));
+				soapEnvelopeOutput = call.invoke(soapEnvelopeInput);
+				LOGGER.info(transactionLogOutput(inputParameter, configuracionServicio));
+				LOGGER.info(proveedorServiceName + " - Tiempo de respuesta del servicio == " + (System.currentTimeMillis() - tc1));
+				if (configuracionServicio.isRequiereFirma()){
+					long tFirmaOUT = System.currentTimeMillis();
+					String result = s.descrifarRespuesta(soapEnvelopeOutput.getAsDocument(), keyStoreParameter);
+					document = DocumentHelper.parseText(result);
+					LOGGER.info(proveedorServiceName + " - Tiempo en descrifrar respuesta == " + (System.currentTimeMillis() - tFirmaOUT));
+				}else{
+					document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument());	
+				}
+				LOGGER.info(proveedorServiceName + " - OUTPUT SERVICE : " + PiseeStringUtils.prettyFormat(document.asXML()));
+				Element eRoot = document.getRootElement();
+				respuesta.setEncabezado(fillEncabezado(eRoot));
+				if (AppConstants._CODE_OK.equals(respuesta.getEncabezado().getEstadoSobre())) {
+					respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
+				}
 			}
 		} catch (AxisFault e) {
 			LOGGER.error("AxisFault Error en la llamada al servicio : " + " - " + e);
@@ -136,15 +108,15 @@ public class RestConnector {
 			LOGGER.error("Exception == " + e);
 			e.printStackTrace();
 		} finally {
-			if (!AppConstants._CODE_OK.equals(respuesta.getEncabezado().getEstadoSobre()) && !AppConstants._CODE_NOK_TOKEN.equals(respuesta.getEncabezado().getEstadoSobre())) {
+			if (!AppConstants._CODE_OK.equals(respuesta.getEncabezado().getEstadoSobre()) && 
+					!AppConstants._CODE_NOK_TOKEN.equals(respuesta.getEncabezado().getEstadoSobre()) &&
+						!ConfiguracionServicio.BLOQUEADO.equals(configuracionServicio.getEstado())) {
 				respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 				respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_NOK_INTERNAL);
 				respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INTERNAL_ERROR);
 			}
 		}
-		
 		LOGGER.info(proveedorServiceName + " - TOTAL TIME STUB == " + (System.currentTimeMillis() - t1));
-		
 		return respuesta;
 	}
 
@@ -170,7 +142,6 @@ public class RestConnector {
 		PiseeEncabezado encabezado = new PiseeEncabezado();
 		Element eIdSobre, eFechaHora, eFechaHoraReq, eNombreProveedor, eNombreServicio, eNombreConsumidor, eNombreTramite;
 		Element eEmisorSobre, eEstadoSobre, eGlosaSobre;
-
 		eIdSobre = PiseeStringUtils.elementRecursive("Body/sobre/encabezado/idSobre", eRoot);
 		if (null != eIdSobre) {
 			encabezado.setIdSobre(eIdSobre.getTextTrim());
@@ -183,7 +154,6 @@ public class RestConnector {
 		if (null != eFechaHoraReq) {
 			encabezado.setFechaHoraReq(eFechaHoraReq.getTextTrim());
 		}
-
 		eNombreProveedor = PiseeStringUtils.elementRecursive("Body/sobre/encabezado/proveedor/nombre", eRoot);
 		if (null != eNombreProveedor) {
 			encabezado.setNombreProveedor(eNombreProveedor.getTextTrim());
@@ -200,7 +170,6 @@ public class RestConnector {
 		if (null != eNombreTramite) {
 			encabezado.setNombreConsumidor(eNombreTramite.getTextTrim());
 		}
-
 		eEmisorSobre = PiseeStringUtils.elementRecursive("Body/sobre/encabezado/emisor", eRoot);
 		if (null != eEmisorSobre) {
 			encabezado.setEmisorSobre(eEmisorSobre.getTextTrim());
@@ -213,7 +182,6 @@ public class RestConnector {
 		if (null != eGlosaSobre) {
 			encabezado.setGlosaSobre(eGlosaSobre.getTextTrim());
 		}
-
 		return encabezado;
 	}
 
@@ -223,7 +191,6 @@ public class RestConnector {
 		List<Map<String, String>> resultados = new ArrayList<Map<String, String>>();
 		Map<String, String> resultado;
 		if (null != outputParameter) {
-			// Si es arreglo
 			if (null != outputParameter.getRutaArreglo()) {
 				for (Element element : findElements(eRoot, outputParameter.getRutaArreglo())) {
 					resultado = new HashMap<String, String>();
@@ -249,6 +216,17 @@ public class RestConnector {
 		return resultados;
 	}
 
+	@SuppressWarnings("unchecked")
+	private List<Element> findElements(Element eRoot, String rutaArreglo) {
+		String[] arrRutaArreglo = rutaArreglo.split("/");
+		Element tmpElement;
+		tmpElement = eRoot;
+		for (int i = 0; i < arrRutaArreglo.length - 1; i++) {
+			tmpElement = tmpElement.element(arrRutaArreglo[i].toString());
+		}
+		return tmpElement.elements(arrRutaArreglo[arrRutaArreglo.length - 1].toString());
+	}
+	
 	private String transactionLogInput(InputParameter inputParameter, ConfiguracionServicio configuracionServicio) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("REST - Invocando a URL: ");
@@ -284,15 +262,6 @@ public class RestConnector {
 		return sb.toString();
 	}
 	
-	@SuppressWarnings("unchecked")
-	private List<Element> findElements(Element eRoot, String rutaArreglo) {
-		String[] arrRutaArreglo = rutaArreglo.split("/");
-		Element tmpElement;
-		tmpElement = eRoot;
-		for (int i = 0; i < arrRutaArreglo.length - 1; i++) {
-			tmpElement = tmpElement.element(arrRutaArreglo[i].toString());
-		}
-		return tmpElement.elements(arrRutaArreglo[arrRutaArreglo.length - 1].toString());
-	}
+
 
 }

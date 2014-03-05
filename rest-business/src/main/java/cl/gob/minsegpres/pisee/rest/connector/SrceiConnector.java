@@ -23,6 +23,7 @@ import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 import javax.xml.crypto.dsig.keyinfo.X509Data;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
@@ -34,6 +35,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.xml.security.encryption.EncryptedData;
@@ -42,20 +44,23 @@ import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.utils.EncryptionConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 import cl.gob.minsegpres.pisee.rest.entities.KeyStoreParameter;
 
 public class SrceiConnector {
 
-	/*
-	private static String keystoreType = "PKCS12";
-	private static String keystoreFile = "E://USR//certificadoDigital.p12";
-	private static String keystorePass = "genchi2013";
-	private static String privateKeyAlias = "id e-sign s.a. de ricardo david nesvara herrera";
-	private static String privateKeyPass = "genchi2013";
-	*/
-	
+	public SrceiConnector() {
+//		System.out.println("SrceiConnector - INIT");
+		org.apache.xml.security.Init.init();
+	}
+
 	public String firmarEntrada(InputStream xmlInput, KeyStoreParameter keyStoreParameter) throws Exception {
+		
+        System.setProperty("javax.xml.soap.MessageFactory","com.sun.xml.messaging.saaj.soap.ver1_1.SOAPMessageFactory1_1Impl");
+//        System.setProperty("javax.xml.soap.SOAPConnectionFactory","weblogic.wsee.saaj.SOAPConnectionFactoryImpl");		
+		
+/*
 		SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
 		SOAPPart soapPart = soapMessage.getSOAPPart();
 		SOAPEnvelope soapEnvelope = soapPart.getEnvelope();
@@ -65,14 +70,54 @@ public class SrceiConnector {
 		dbfc.setNamespaceAware(true);
 		Document docm = dbfc.newDocumentBuilder().parse(xmlInput);
 		soapBody.addDocument(docm);
-
+		System.out.println("firmarEntrada == soapBody.getTextContent() == " + soapBody.getTextContent());
 		Source source = soapPart.getContent();
 		org.w3c.dom.Node root = null;
 		root = ((DOMSource) source).getNode();
+*/
+		// -------
 
-		StringWriter writer = new StringWriter();
-		Transformer transformer = TransformerFactory.newInstance().newTransformer();
-		transformer.transform(new DOMSource(root), new StreamResult(writer));
+		SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
+		SOAPPart soapPart = soapMessage.getSOAPPart();
+		SOAPEnvelope soapEnvelope = soapPart.getEnvelope();
+		//SOAPHeader soapHeader = soapEnvelope.getHeader();
+		SOAPBody soapBody = soapEnvelope.getBody();
+		soapBody.addAttribute(soapEnvelope.createName("id", "soapenv", "http://schemas.xmlsoap.org/soap/security/2000-12"), "Body");
+		DocumentBuilderFactory dbfc = DocumentBuilderFactory.newInstance();
+		dbfc.setNamespaceAware(true);
+		Document docm = dbfc.newDocumentBuilder().parse(xmlInput);
+		soapBody.addDocument(docm);
+//		System.out.println("firmarEntrada == soapBody.getTextContent() == " + soapBody.getTextContent());
+		Source source = soapPart.getContent();
+		org.w3c.dom.Node root = null;
+		if (source instanceof DOMSource) {
+			root = ((DOMSource) source).getNode();
+//			System.out.println("DOM");
+		} else if (source instanceof SAXSource) {
+			InputSource inSource = ((SAXSource) source).getInputSource();
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			dbf.setNamespaceAware(true);
+			DocumentBuilder db = null;
+			synchronized (dbf) {
+				db = dbf.newDocumentBuilder();
+			}
+			Document doc = db.parse(inSource);
+			root = (org.w3c.dom.Node) doc.getDocumentElement();
+//			System.out.println("SAX");
+		} else {
+			System.err.println("error: cannot convert SOAP message (" + source.getClass().getName() + ") into a W3C DOM tree");
+			// System.exit(-1);
+		}
+
+//		System.out.println("firmarEntrada == root.getTextContent() == " + root.getTextContent());
+		
+//		XStream xxx = new XStream();
+//		System.out.println("getFirstChild == " +  xxx.toXML(root.getFirstChild()));
+//		System.out.println("getNextSibling == " +  xxx.toXML(root.getNextSibling()));
+		
+		
+		
+
 		String providerName = System.getProperty("jsr105Provider", "org.jcp.xml.dsig.internal.dom.XMLDSigRI");
 
 		XMLSignatureFactory sigFactory = XMLSignatureFactory.getInstance("DOM", (Provider) Class.forName(providerName).newInstance());
@@ -81,15 +126,11 @@ public class SrceiConnector {
 				sigFactory.newSignatureMethod(SignatureMethod.RSA_SHA1, null), Collections.singletonList(ref));
 
 		KeyInfoFactory keyInfoFactory = sigFactory.getKeyInfoFactory();
-//		KeyStore keyStore = KeyStore.getInstance(keystoreType);
-//		keyStore.load(new FileInputStream(keystoreFile), keystorePass.toCharArray());
-//		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(privateKeyAlias, new KeyStore.PasswordProtection(privateKeyPass.toCharArray()));
-		
 		KeyStore keyStore = KeyStore.getInstance(keyStoreParameter.getKeystoreType());
 		keyStore.load(new FileInputStream(keyStoreParameter.getKeystoreFile()), keyStoreParameter.getKeystorePass().toCharArray());
-		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(keyStoreParameter.getPrivateKeyAlias(), new KeyStore.PasswordProtection(keyStoreParameter.getPrivateKeyPass().toCharArray()));	
-		
-		
+		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(keyStoreParameter.getPrivateKeyAlias(), new KeyStore.PasswordProtection(keyStoreParameter.getPrivateKeyPass()
+				.toCharArray()));
+
 		X509Certificate cert = (X509Certificate) entry.getCertificate();
 		List<X509Certificate> x509 = new ArrayList<X509Certificate>();
 		x509.add(cert);
@@ -100,7 +141,12 @@ public class SrceiConnector {
 		XMLSignature sig = sigFactory.newXMLSignature(signedInfo, keyInfo);
 
 		Element envelope = getFirstChildElement(root);
+//		System.out.println("envelope.getTagName == " + envelope.getTagName());
+//		System.out.println("envelope.getTextContent == " + envelope.getTextContent());
+
 		Element header = getFirstChildElement(envelope);
+//		System.out.println("header.getTagName == " + header.getTagName());
+//		System.out.println("header.getTextContent == " + header.getTextContent());
 
 		DOMSignContext sigContext = new DOMSignContext(entry.getPrivateKey(), header);
 		sigContext.putNamespacePrefix(XMLSignature.XMLNS, "ds");
@@ -132,14 +178,12 @@ public class SrceiConnector {
 		} else if (encryptedData.getKeyInfo() == null) {
 			throw new Exception("KeyInfo de EncryptedData es null");
 		}
-//		KeyStore keyStore = KeyStore.getInstance(keystoreType);
-//		keyStore.load(new FileInputStream(keystoreFile), keystorePass.toCharArray());
-//		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(privateKeyAlias, new KeyStore.PasswordProtection(privateKeyPass.toCharArray()));
 
 		KeyStore keyStore = KeyStore.getInstance(keyStoreParameter.getKeystoreType());
 		keyStore.load(new FileInputStream(keyStoreParameter.getKeystoreFile()), keyStoreParameter.getKeystorePass().toCharArray());
-		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(keyStoreParameter.getPrivateKeyAlias(), new KeyStore.PasswordProtection(keyStoreParameter.getPrivateKeyPass().toCharArray()));
-		
+		KeyStore.PrivateKeyEntry entry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(keyStoreParameter.getPrivateKeyAlias(), new KeyStore.PasswordProtection(keyStoreParameter.getPrivateKeyPass()
+				.toCharArray()));
+
 		EncryptedKey ek = encryptedData.getKeyInfo().itemEncryptedKey(0);
 		Key key = null;
 		if (ek != null) {

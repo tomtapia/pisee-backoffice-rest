@@ -1,7 +1,10 @@
-package cl.gob.minsegpres.pisee.rest.entities.services;
+package cl.gob.minsegpres.pisee.rest.business;
 
+
+//TODO: Cambiar de nombrey de package
 public final class ProveedoresServicios {
 
+	
 	//Servicios de MINEDUC
 	public static final String MINEDUC__LICENCIA_ENSENANZA_MEDIA = "MINEDUC_DispoLicenciaEnsenanzaMedia";
 	

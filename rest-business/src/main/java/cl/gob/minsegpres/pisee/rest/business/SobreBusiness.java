@@ -4,16 +4,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import cl.gob.minsegpres.pisee.rest.entities.InputParameter;
-import cl.gob.minsegpres.pisee.rest.model.ConfiguracionServicio;
+import cl.gob.minsegpres.pisee.core.model.ConfiguracionServicio;
 
 public class SobreBusiness {
 
-	public static final String NOMBRE_TRAMITE = "nombreTramite";
-	public static final String NOMBRE_CONSUMIDOR = "nombreConsumidor";
-	public static final String NOMBRE_SERVICIO = "nombreServicio";
-	public static final String NOMBRE_PROVEEDOR = "nombreProveedor";
-	public static final String FECHA_HORA = "fechaHora";
-	public static final String ID_SOBRE = "idSobre";
+	public static final String FECHA_HORA_REQ = "fecha_hora_req";
+	public static final String NOMBRE_TRAMITE = "nombre_tramite";
+	public static final String NOMBRE_CONSUMIDOR = "nombre_consumidor";
+	public static final String NOMBRE_SERVICIO = "nombre_servicio";
+	public static final String NOMBRE_PROVEEDOR = "nombre_proveedor";
+	public static final String FECHA_HORA = "fecha_hora";
+	public static final String ID_SOBRE = "id_sobre";
 	
 	private static final String FORMAT_AGNO_MES_DIA = "yyyyMMdd";
 	private static final String FORMAT_FULL = "yyyy-MM-dd'T'HH:mm:ss";
@@ -33,7 +34,7 @@ public class SobreBusiness {
 		input.addHeaderParameter(NOMBRE_SERVICIO, config.getServicioTramite().getServicio().getNombreCorto());
 		input.addHeaderParameter(NOMBRE_CONSUMIDOR, config.getServicioTramite().getTramite().getOrganismo().getSigla());
 		input.addHeaderParameter(NOMBRE_TRAMITE, config.getServicioTramite().getTramite().getNombre());
-		input.addHeaderParameter("fechaHoraReq", sobreFechaHora());
+		input.addHeaderParameter(FECHA_HORA_REQ, sobreFechaHora());
 		return input;
 	}
 	
