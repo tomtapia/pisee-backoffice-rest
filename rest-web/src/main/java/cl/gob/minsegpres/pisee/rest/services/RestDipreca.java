@@ -14,12 +14,13 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import cl.gob.minsegpres.pisee.rest.connector.RestConnector;
+import cl.gob.minsegpres.pisee.rest.business.ProveedoresServicios;
+import cl.gob.minsegpres.pisee.rest.business.RestBusiness;
 import cl.gob.minsegpres.pisee.rest.entities.InputParameter;
 import cl.gob.minsegpres.pisee.rest.entities.response.PiseeRespuesta;
-import cl.gob.minsegpres.pisee.rest.entities.services.ProveedoresServicios;
 import cl.gob.minsegpres.pisee.rest.util.AppConstants;
 import cl.gob.minsegpres.pisee.rest.util.JSONUtil;
+import cl.gob.minsegpres.pisee.rest.util.ParametersName;
 
 @Path("/dipreca")
 @Component
@@ -33,44 +34,38 @@ public class RestDipreca {
 	@GET
 	@Path("consultaImponentes")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	//@Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
-	public String getConsultaImponentes(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("tokenPisee") String tokenPisee) {
-		
+	public String getConsultaImponentes(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
 		Date d1,d2;
 		d1 = new Date();
 		long t1 = d1.getTime();
-		
 		InputParameter inputParameter;
 		JSONUtil jsonUtil;
 		PiseeRespuesta respuesta;
-		RestConnector restConnector; 
-		
+		RestBusiness restService; 
 		inputParameter = new InputParameter();
 		jsonUtil = new JSONUtil();
-		restConnector = new RestConnector();
-		
-		inputParameter.addBodyParameter("numero", rut);
-		inputParameter.addBodyParameter("dv", dv);
-		inputParameter.addBodyParameter("tokenPisee", tokenPisee);
-		
+		restService = new RestBusiness();
+		inputParameter.addBodyParameter(ParametersName.RUT, rut);
+		inputParameter.addBodyParameter(ParametersName.DV, dv);
+		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);
+		inputParameter.addBodyParameter(ParametersName.OAUTH_SCOPE, ProveedoresServicios.DIPRECA__CONSULTA_IMPONENTES);
 		if (isValidParameters(_METHOD_GETCONSULTAIMPONENTES, inputParameter)){
-			respuesta = restConnector.callService(ProveedoresServicios.DIPRECA__CONSULTA_IMPONENTES, inputParameter, tokenPisee);			
+			respuesta = restService.callService(ProveedoresServicios.DIPRECA__CONSULTA_IMPONENTES, inputParameter);			
 		}else{
 			respuesta = createValidParameterError(_METHOD_GETCONSULTAIMPONENTES, inputParameter);
 		}
-		
 		String value = jsonUtil.toJSON(respuesta);
 		d2 = new Date();
 		long t2 = d2.getTime();		
-		LOGGER.info("getConsultaImponentes - TIME == " + (t2 - t1));
+		LOGGER.debug("consultaImponentes - TIME == " + (t2 - t1));
 	    return value;
     }
 
 	private boolean isValidParameters(String serviceName, InputParameter inputParameter){
 		if (_METHOD_GETCONSULTAIMPONENTES.equals(serviceName)){
-			if (!StringUtils.isEmpty((String)inputParameter.getBodyParameter("numero")) 
-					&& !StringUtils.isEmpty((String)inputParameter.getBodyParameter("dv")) 
-						&& !StringUtils.isEmpty((String)inputParameter.getBodyParameter("tokenPisee"))){
+			if (!StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.RUT)) 
+					&& !StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.DV)) 
+						&& !StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.PISEE_TOKEN))){
 				return true;	
 			}			
 		}
@@ -79,20 +74,23 @@ public class RestDipreca {
 	
 	private PiseeRespuesta createValidParameterError(String serviceName, InputParameter inputParameter){
 		PiseeRespuesta respuesta = new PiseeRespuesta();
-		String mensaje = "";
+		StringBuffer mensaje = new StringBuffer();
 		if (_METHOD_GETCONSULTAIMPONENTES.equals(serviceName)){
-			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter("numero"))){
-				mensaje = mensaje + "rut ";
+			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.RUT))){
+				mensaje.append(ParametersName.RUT);
+				mensaje.append(AppConstants.SPACE);
 			}
-			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter("dv"))){
-				mensaje = mensaje + "dv ";
+			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.DV))){
+				mensaje.append(ParametersName.DV);
+				mensaje.append(AppConstants.SPACE);
 			}			
-			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter("tokenPisee"))){
-				mensaje = mensaje + "tokenPisee ";
+			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.PISEE_TOKEN))){
+				mensaje.append(ParametersName.PISEE_TOKEN);
+				mensaje.append(AppConstants.SPACE);
 			}		
 			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 			respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_NOK_PARAMETER);
-			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INVALID_NULL_PARAMETER + mensaje);			
+			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INVALID_NULL_PARAMETER + mensaje.toString());			
 		}
 		return respuesta;
 	}

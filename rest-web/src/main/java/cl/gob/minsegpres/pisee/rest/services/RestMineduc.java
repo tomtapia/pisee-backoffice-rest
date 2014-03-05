@@ -14,13 +14,16 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import cl.gob.minsegpres.pisee.rest.connector.RestConnector;
+import cl.gob.minsegpres.pisee.rest.business.ProveedoresServicios;
+import cl.gob.minsegpres.pisee.rest.business.RestBusiness;
 import cl.gob.minsegpres.pisee.rest.entities.InputParameter;
 import cl.gob.minsegpres.pisee.rest.entities.response.PiseeRespuesta;
-import cl.gob.minsegpres.pisee.rest.entities.services.ProveedoresServicios;
 import cl.gob.minsegpres.pisee.rest.util.AppConstants;
 import cl.gob.minsegpres.pisee.rest.util.JSONUtil;
+import cl.gob.minsegpres.pisee.rest.util.ParametersName;
 
+
+//@Api(value = "/users", description = "Operaciones con usuarios")
 @Path("/mineduc")
 @Component
 @Scope("singleton")
@@ -30,30 +33,30 @@ public class RestMineduc {
 	
 	private static final String _METHOD_GETLICENCIA = "getLicencia";
 
+//    @ApiOperation(
+//            value = "Devuelve todos los usuarios",
+//            notes = "Devuelve todos los usuarios del sistema"
+//    )
 	@GET
 	@Path("licenciaMedia")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public String getLicencia(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("tokenPisee") String tokenPisee) {
-		
+	public String getLicencia(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
 		Date d1,d2;
 		d1 = new Date();
 		long t1 = d1.getTime();
-		
 		InputParameter inputParameter;
 		JSONUtil jsonUtil;
 		PiseeRespuesta respuesta;
-		RestConnector restConnector; 
-		
+		RestBusiness restService; 
 		inputParameter = new InputParameter();
 		jsonUtil = new JSONUtil();
-		restConnector = new RestConnector();
-		
-		inputParameter.addBodyParameter("numero", rut);
-		inputParameter.addBodyParameter("dv", dv);
-		inputParameter.addBodyParameter("tokenPisee", tokenPisee);
-		
+		restService = new RestBusiness();
+		inputParameter.addBodyParameter(ParametersName.RUT, rut);
+		inputParameter.addBodyParameter(ParametersName.DV, dv);
+		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);
+		inputParameter.addBodyParameter(ParametersName.OAUTH_SCOPE, ProveedoresServicios.MINEDUC__LICENCIA_ENSENANZA_MEDIA);
 		if (isValidParameters(_METHOD_GETLICENCIA, inputParameter)){			
-			respuesta = restConnector.callService(ProveedoresServicios.MINEDUC__LICENCIA_ENSENANZA_MEDIA, inputParameter, tokenPisee);
+			respuesta = restService.callService(ProveedoresServicios.MINEDUC__LICENCIA_ENSENANZA_MEDIA, inputParameter);
 		}else{
 			respuesta = createValidParameterError(_METHOD_GETLICENCIA, inputParameter);
 		}
@@ -61,15 +64,39 @@ public class RestMineduc {
 		String value = jsonUtil.toJSON(respuesta);
 		d2 = new Date();
 		long t2 = d2.getTime();		
-		LOGGER.info("getConsultaImponentes - TIME == " + (t2 - t1));
+		LOGGER.debug("licenciaMedia - TIME == " + (t2 - t1));
 	    return value;		
     }
-
+	
+	@GET
+	@Path("licenciaMediaOAuth")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public String getLicenciaOAuth(@QueryParam("access_token") String accessToken) {
+		Date d1,d2;
+		d1 = new Date();
+		long t1 = d1.getTime();
+		InputParameter inputParameter;
+		JSONUtil jsonUtil;
+		PiseeRespuesta respuesta;
+		RestBusiness restService; 
+		inputParameter = new InputParameter();
+		jsonUtil = new JSONUtil();
+		restService = new RestBusiness();
+		inputParameter.addBodyParameter(ParametersName.OAUTH_ACCESS_TOKEN, accessToken);
+		inputParameter.addBodyParameter(ParametersName.OAUTH_SCOPE, ProveedoresServicios.MINEDUC__LICENCIA_ENSENANZA_MEDIA);
+		respuesta = restService.callServiceOAuth(ProveedoresServicios.MINEDUC__LICENCIA_ENSENANZA_MEDIA, inputParameter);
+		String value = jsonUtil.toJSON(respuesta);
+		d2 = new Date();
+		long t2 = d2.getTime();		
+		LOGGER.info("licenciaMediaOAuth - TIME == " + (t2 - t1));
+	    return value;		
+    }	
+	
 	private boolean isValidParameters(String serviceName, InputParameter inputParameter){
 		if (_METHOD_GETLICENCIA.equals(serviceName)){
-			if (!StringUtils.isEmpty((String)inputParameter.getBodyParameter("numero")) 
-					&& !StringUtils.isEmpty((String)inputParameter.getBodyParameter("dv")) 
-						&& !StringUtils.isEmpty((String)inputParameter.getBodyParameter("tokenPisee"))){
+			if (!StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.RUT)) 
+					&& !StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.DV)) 
+						&& !StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.PISEE_TOKEN))){
 				return true;	
 			}			
 		}
@@ -78,20 +105,23 @@ public class RestMineduc {
 	
 	private PiseeRespuesta createValidParameterError(String serviceName, InputParameter inputParameter){
 		PiseeRespuesta respuesta = new PiseeRespuesta();
-		String mensaje = "";
+		StringBuffer mensaje = new StringBuffer();
 		if (_METHOD_GETLICENCIA.equals(serviceName)){
-			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter("numero"))){
-				mensaje = mensaje + "rut ";
+			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.RUT))){
+				mensaje.append(ParametersName.RUT);
+				mensaje.append(AppConstants.SPACE);
 			}
-			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter("dv"))){
-				mensaje = mensaje + "dv ";
+			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.DV))){
+				mensaje.append(ParametersName.DV);
+				mensaje.append(AppConstants.SPACE);
 			}			
-			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter("tokenPisee"))){
-				mensaje = mensaje + "tokenPisee ";
+			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.PISEE_TOKEN))){
+				mensaje.append(ParametersName.PISEE_TOKEN);
+				mensaje.append(AppConstants.SPACE);
 			}		
 			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 			respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_NOK_PARAMETER);
-			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INVALID_NULL_PARAMETER + mensaje);			
+			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INVALID_NULL_PARAMETER + mensaje.toString());			
 		}
 		return respuesta;
 	}
