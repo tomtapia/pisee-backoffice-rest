@@ -4,7 +4,7 @@
 	<groupId>cl.gob.minsegpres.pisee.rest</groupId>
 	<artifactId>rest-web</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<name>rest-web</name>
 	<url>http://www.pisee.cl</url>
 	<description>WAR con la logica para consumir servicios (SOAP)integrados en la pisee pero desplegados via REST</description>
@@ -184,26 +184,23 @@
 			<artifactId>xstream</artifactId>
 			<version>1.3.1</version>
 		</dependency>
-		<dependency>
-			<groupId>cl.gob.minsegpres.pisee.rest</groupId>
-			<artifactId>rest-business</artifactId>
-			<version>0.0.1</version>
-		</dependency>		
         <dependency>  
             <groupId>javax.persistence</groupId>  
             <artifactId>persistence-api</artifactId>  
             <version>1.0</version>  
             <scope>provided</scope>
         </dependency>
-        
-        
-<!-- <dependency> -->
-<!-- 	<groupId>com.wordnik</groupId> -->
-<!-- 	<artifactId>swagger-jaxrs_2.9.1</artifactId> -->
-<!-- 	<version>1.3.1</version> -->
-<!-- </dependency> -->
-        
-        
-		
+		<!--  PISEE - CORE -->		
+        <dependency>  
+            <groupId>cl.gob.minsegpres.pisee.core</groupId>  
+            <artifactId>pisee-core</artifactId>  
+            <version>0.0.2</version>
+        </dependency>
+        <!--  REST - BUSINESS -->
+		<dependency>
+			<groupId>cl.gob.minsegpres.pisee.rest</groupId>
+			<artifactId>rest-business</artifactId>
+			<version>0.0.2</version>
+		</dependency>
 	</dependencies>
 </project>
