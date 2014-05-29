@@ -4,8 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
   http://www.springframework.org/schema/beans/spring-beans.xsd
   http://www.springframework.org/schema/context
-  http://www.springframework.org/schema/context/spring-context.xsd"
-        >
+  http://www.springframework.org/schema/context/spring-context.xsd">
 	
 	<context:component-scan base-package="cl.gob.minsegpres.pisee.rest.services" />
 
@@ -16,5 +15,19 @@
 	<bean id="restIsp" class="cl.gob.minsegpres.pisee.rest.services.RestIsp" autowire="byName" />
 	
 	<bean id="restSrcei" class="cl.gob.minsegpres.pisee.rest.services.RestSrcei" autowire="byName" />
+	
+	<bean id="restSgs" class="cl.gob.minsegpres.pisee.rest.services.RestSgs" autowire="byName" />
+	
+	<bean id="restCplt" class="cl.gob.minsegpres.pisee.rest.services.RestCplt" autowire="byName" />
+	
+	<bean id="restDgmn" class="cl.gob.minsegpres.pisee.rest.services.RestDgmn" autowire="byName" />
+	
+	<bean id="restModernizacion" class="cl.gob.minsegpres.pisee.rest.services.RestModernizacion" autowire="byName" />
+	
+	
+	<!-- Pruebas -->
+	
+	<bean id="restFile" class="cl.gob.minsegpres.pisee.rest.services.RestFile" autowire="byName" />
+	
 	
 </beans>
