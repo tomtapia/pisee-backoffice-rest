@@ -1,6 +1,6 @@
-package cl.gob.minsegpres.pisee.rest.entities;
+package cl.gob.minsegpres.pisee.rest.entities.soap;
 
-public class KeyStoreParameter {
+public class KeyStoreParameterSOAP {
 
 	private String serviceName;
 	private String keystoreType;

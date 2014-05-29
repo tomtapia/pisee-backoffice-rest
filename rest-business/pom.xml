@@ -4,47 +4,47 @@
 	<groupId>cl.gob.minsegpres.pisee.rest</groupId>
 	<artifactId>rest-business</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<name>rest-business</name>
 	<url>http://www.pisee.cl</url>
 	<description>Artefacto con la logica para consumir servicios (SOAP)integrados en la pisee pero desplegados via REST</description>
-	<profiles>
-		<profile>
-			<id>AmbienteDefault</id>
-			<properties>
-				<jndi.name>java:/piseeDS</jndi.name>
-			</properties>
-			<activation>
-				<property>
-					<name>!ambiente</name>
-				</property>
-			</activation>
-		</profile>
-		<profile>
-			<id>dev</id>
-			<properties>
-				<jndi.name>java:/piseeDS</jndi.name>
-			</properties>
-			<activation>
-				<property>
-					<name>ambiente</name>
-					<value>dev</value>
-				</property>
-			</activation>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<jndi.name>piseeDS</jndi.name>
-			</properties>
-			<activation>
-				<property>
-					<name>ambiente</name>
-					<value>prod</value>
-				</property>
-			</activation>
-		</profile>
-	</profiles>
+<!-- 	<profiles> -->
+<!-- 		<profile> -->
+<!-- 			<id>AmbienteDefault</id> -->
+<!-- 			<properties> -->
+<!-- 				<jndi.name>java:/piseeDS</jndi.name> -->
+<!-- 			</properties> -->
+<!-- 			<activation> -->
+<!-- 				<property> -->
+<!-- 					<name>!ambiente</name> -->
+<!-- 				</property> -->
+<!-- 			</activation> -->
+<!-- 		</profile> -->
+<!-- 		<profile> -->
+<!-- 			<id>dev</id> -->
+<!-- 			<properties> -->
+<!-- 				<jndi.name>java:/piseeDS</jndi.name> -->
+<!-- 			</properties> -->
+<!-- 			<activation> -->
+<!-- 				<property> -->
+<!-- 					<name>ambiente</name> -->
+<!-- 					<value>dev</value> -->
+<!-- 				</property> -->
+<!-- 			</activation> -->
+<!-- 		</profile> -->
+<!-- 		<profile> -->
+<!-- 			<id>prod</id> -->
+<!-- 			<properties> -->
+<!-- 				<jndi.name>piseeDS</jndi.name> -->
+<!-- 			</properties> -->
+<!-- 			<activation> -->
+<!-- 				<property> -->
+<!-- 					<name>ambiente</name> -->
+<!-- 					<value>prod</value> -->
+<!-- 				</property> -->
+<!-- 			</activation> -->
+<!-- 		</profile> -->
+<!-- 	</profiles> -->
 	<build>
 		<extensions>
 			<extension>
@@ -171,6 +171,17 @@
 			<artifactId>jersey-servlet</artifactId>
 			<version>1.17.1</version>
 		</dependency>
+		
+		
+		
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-multipart</artifactId>
+			<version>1.17.1</version>
+		</dependency>		
+		
+		
+		
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
@@ -274,34 +285,17 @@
 			<artifactId>xmlsec</artifactId>
 			<version>1.4.6</version>
 		</dependency>
-		
-		
         <dependency>  
             <groupId>javax.persistence</groupId>  
             <artifactId>persistence-api</artifactId>  
             <version>1.0</version>  
             <scope>provided</scope>
         </dependency>		
-		
-
-
-
-		<!--   -->		
+		<!--  PISEE - CORE -->		
         <dependency>  
             <groupId>cl.gob.minsegpres.pisee.core</groupId>  
             <artifactId>pisee-core</artifactId>  
-            <version>0.0.16</version>  
+            <version>0.0.2</version>
         </dependency>				
-		
-
-		
-		
-		
-		
-		
-		
-
-		
-		
 	</dependencies>
 </project>

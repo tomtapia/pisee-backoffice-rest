@@ -46,16 +46,16 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
-import cl.gob.minsegpres.pisee.rest.entities.KeyStoreParameter;
+import cl.gob.minsegpres.pisee.rest.entities.soap.KeyStoreParameterSOAP;
 
-public class SrceiConnector {
+public class SrceiRestToSoapConnector {
 
-	public SrceiConnector() {
+	public SrceiRestToSoapConnector() {
 //		System.out.println("SrceiConnector - INIT");
 		org.apache.xml.security.Init.init();
 	}
 
-	public String firmarEntrada(InputStream xmlInput, KeyStoreParameter keyStoreParameter) throws Exception {
+	public String firmarEntrada(InputStream xmlInput, KeyStoreParameterSOAP keyStoreParameter) throws Exception {
 		
         System.setProperty("javax.xml.soap.MessageFactory","com.sun.xml.messaging.saaj.soap.ver1_1.SOAPMessageFactory1_1Impl");
 //        System.setProperty("javax.xml.soap.SOAPConnectionFactory","weblogic.wsee.saaj.SOAPConnectionFactoryImpl");		
@@ -159,7 +159,7 @@ public class SrceiConnector {
 		return writer2.toString();
 	}
 
-	public String descrifarRespuesta(Document respuesta, KeyStoreParameter keyStoreParameter) throws Exception {
+	public String descrifarRespuesta(Document respuesta, KeyStoreParameterSOAP keyStoreParameter) throws Exception {
 		Element encryptedDataElement = (Element) respuesta.getElementsByTagNameNS(EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_ENCRYPTEDDATA).item(0);
 		Key secretKey = loadDecryptionKey(respuesta, keyStoreParameter);
 		XMLCipher xmlCipher = XMLCipher.getInstance();
@@ -168,7 +168,7 @@ public class SrceiConnector {
 		return getStringFromDocument(respuesta);
 	}
 
-	private Key loadDecryptionKey(Document document, KeyStoreParameter keyStoreParameter) throws Exception {
+	private Key loadDecryptionKey(Document document, KeyStoreParameterSOAP keyStoreParameter) throws Exception {
 		Element e = (Element) document.getElementsByTagNameNS(EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_ENCRYPTEDDATA).item(0);
 		XMLCipher cipher = XMLCipher.getInstance();
 		cipher.init(XMLCipher.DECRYPT_MODE, null);

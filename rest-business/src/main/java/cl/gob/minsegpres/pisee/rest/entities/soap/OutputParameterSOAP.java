@@ -1,19 +1,19 @@
-package cl.gob.minsegpres.pisee.rest.entities;
+package cl.gob.minsegpres.pisee.rest.entities.soap;
 
 import java.util.List;
 
-public class OutputParameter {
+public class OutputParameterSOAP {
 	
 	//-- attribs
 	private String serviceName;
 	private String rutaArreglo;
-	private List<CampoOutputParameter> campos;
+	private List<CampoOutputParameterSOAP> campos;
 	
 	//-- getters
 	public String getServiceName() {
 		return serviceName;
 	}
-	public List<CampoOutputParameter> getCampos() {
+	public List<CampoOutputParameterSOAP> getCampos() {
 		return campos;
 	}
 	public String getRutaArreglo() {
@@ -24,7 +24,7 @@ public class OutputParameter {
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
 	}
-	public void setCampos(List<CampoOutputParameter> campos) {
+	public void setCampos(List<CampoOutputParameterSOAP> campos) {
 		this.campos = campos;
 	}
 	public void setRutaArreglo(String rutaArreglo) {

@@ -1,8 +1,11 @@
 package cl.gob.minsegpres.pisee.rest.entities.response;
 
-public class PiseeEncabezado {
+import java.io.Serializable;
+
+public class PiseeEncabezado implements Serializable{
 
 	//-- attribs
+	private static final long serialVersionUID = -1023810672259549996L;
 	private String idSobre;
 	private String emisorSobre;
 	private String estadoSobre;

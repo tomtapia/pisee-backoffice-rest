@@ -1,6 +1,6 @@
-package cl.gob.minsegpres.pisee.rest.entities;
+package cl.gob.minsegpres.pisee.rest.entities.soap;
 
-public class CampoOutputParameter {
+public class CampoOutputParameterSOAP {
 
 	//-- attribs
 	private String enArreglo;

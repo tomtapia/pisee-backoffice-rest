@@ -21,6 +21,23 @@ public class SobreBusiness {
 	private static final String CODE_NO_ORQUESTA = "00";
 	
 	public InputParameter fillSobre(InputParameter input, ConfiguracionServicio config) {
+		input.addHeaderParameter(ID_SOBRE, generateSobreID(config));
+		input.addHeaderParameter(FECHA_HORA, generateSobreFechaHora());
+		input.addHeaderParameter(NOMBRE_PROVEEDOR, config.getServicioTramite().getServicio().getOrganismo().getSigla());
+		input.addHeaderParameter(NOMBRE_SERVICIO, config.getServicioTramite().getServicio().getNombreCorto());
+		input.addHeaderParameter(NOMBRE_CONSUMIDOR, config.getServicioTramite().getTramite().getOrganismo().getSigla());
+		input.addHeaderParameter(NOMBRE_TRAMITE, config.getServicioTramite().getTramite().getNombre());
+		input.addHeaderParameter(FECHA_HORA_REQ, generateSobreFechaHora());
+		return input;
+	}
+	
+	public String generateSobreFechaHora(){
+		Date today = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_FULL);
+		return sdf.format(today);
+	}
+	
+	public String generateSobreID(ConfiguracionServicio config){
 		StringBuffer idSobre;
 		idSobre = new StringBuffer();
 		idSobre.append(config.getCodigoInstitucion());
@@ -28,20 +45,7 @@ public class SobreBusiness {
 		idSobre.append(idSobreFechaActual());
 		idSobre.append(idSobreNumeroTransaccion());
 		idSobre.append(CODE_NO_ORQUESTA);
-		input.addHeaderParameter(ID_SOBRE, idSobre.toString());
-		input.addHeaderParameter(FECHA_HORA, sobreFechaHora());
-		input.addHeaderParameter(NOMBRE_PROVEEDOR, config.getServicioTramite().getServicio().getOrganismo().getSigla());
-		input.addHeaderParameter(NOMBRE_SERVICIO, config.getServicioTramite().getServicio().getNombreCorto());
-		input.addHeaderParameter(NOMBRE_CONSUMIDOR, config.getServicioTramite().getTramite().getOrganismo().getSigla());
-		input.addHeaderParameter(NOMBRE_TRAMITE, config.getServicioTramite().getTramite().getNombre());
-		input.addHeaderParameter(FECHA_HORA_REQ, sobreFechaHora());
-		return input;
-	}
-	
-	private String sobreFechaHora(){
-		Date today = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_FULL);
-		return sdf.format(today);
+		return idSobre.toString();
 	}
 	
 	private String idSobreFechaActual(){

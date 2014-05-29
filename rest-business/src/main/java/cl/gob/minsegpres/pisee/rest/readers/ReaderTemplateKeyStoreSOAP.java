@@ -12,20 +12,20 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import cl.gob.minsegpres.pisee.rest.entities.KeyStoreParameter;
+import cl.gob.minsegpres.pisee.rest.entities.soap.KeyStoreParameterSOAP;
 import cl.gob.minsegpres.pisee.rest.util.AppConstants;
 
-public class ReaderServicesKeyStore {
+public class ReaderTemplateKeyStoreSOAP {
 
-	private static final Log LOGGER = LogFactory.getLog(ReaderServicesKeyStore.class);
-	private static ReaderServicesKeyStore _READER = null;
-	private List<KeyStoreParameter> keyStoreParameters = new ArrayList<KeyStoreParameter>();
+	private static final Log LOGGER = LogFactory.getLog(ReaderTemplateKeyStoreSOAP.class);
+	private static ReaderTemplateKeyStoreSOAP _READER = null;
+	private List<KeyStoreParameterSOAP> keyStoreParameters = new ArrayList<KeyStoreParameterSOAP>();
 	
 	//--- getters
-	public synchronized static ReaderServicesKeyStore getInstance() {
+	public synchronized static ReaderTemplateKeyStoreSOAP getInstance() {
 		try {
 			if (_READER == null) {
-				_READER = new ReaderServicesKeyStore();
+				_READER = new ReaderTemplateKeyStoreSOAP();
 			}
 		} catch (Exception e) {			
 			LOGGER.error("Exception == " + e.fillInStackTrace() );
@@ -34,18 +34,18 @@ public class ReaderServicesKeyStore {
 	}
 	
 	//-- getters
-	public List<KeyStoreParameter> getKeyStoreParameters() {
+	public List<KeyStoreParameterSOAP> getKeyStoreParameters() {
 		return keyStoreParameters;
 	}
 	
 	//--- constructor
-	private ReaderServicesKeyStore() {
+	private ReaderTemplateKeyStoreSOAP() {
 		readFiles();
 	}
 	
 	//--- public
-	public synchronized KeyStoreParameter findKeyStore(String serviceName){
-		for (KeyStoreParameter keyStoreParameter: keyStoreParameters){
+	public synchronized KeyStoreParameterSOAP findKeyStore(String serviceName){
+		for (KeyStoreParameterSOAP keyStoreParameter: keyStoreParameters){
 			if (serviceName.equals(keyStoreParameter.getServiceName())){
 				return keyStoreParameter;
 			}
@@ -75,13 +75,13 @@ public class ReaderServicesKeyStore {
 		}
 	}	
 	
-	private KeyStoreParameter readKeyStoreFile(String fileName, String pathFileName) {
-		KeyStoreParameter keyStoreParameter = null;
+	private KeyStoreParameterSOAP readKeyStoreFile(String fileName, String pathFileName) {
+		KeyStoreParameterSOAP keyStoreParameter = null;
 		SAXReader reader = new SAXReader();
 		try {
 			Document document = reader.read(pathFileName);
 			Element eRoot = document.getRootElement();
-			keyStoreParameter = new KeyStoreParameter();
+			keyStoreParameter = new KeyStoreParameterSOAP();
 			keyStoreParameter.setServiceName(fileName);
 			keyStoreParameter.setKeystoreType(eRoot.elementTextTrim("keystore_type"));
 			keyStoreParameter.setKeystoreFile(eRoot.elementTextTrim("keystore_file"));

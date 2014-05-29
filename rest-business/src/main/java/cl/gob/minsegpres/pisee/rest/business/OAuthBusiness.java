@@ -20,7 +20,7 @@ import com.sun.jersey.api.client.WebResource;
 
 public class OAuthBusiness {
 
-	//FIXME: Dejar en un propertie
+	//TODO: Dejar en un propertie
 	private static final String _SERVICE_OAUTH = "http://192.168.29.205/claveunica/oauth2/check_token?access_token=";
 	private static final String _TEXT_HTML = "text/html";
 	//private static final String _APPLICATION_JSON = "application/json";
@@ -28,7 +28,7 @@ public class OAuthBusiness {
 	
 	public boolean isValidRespuestaAutorizacion(RespuestaAutorizacion respuesta, InputParameter inputParameter, ConfiguracionServicio configuracion){
 
-		//TODO: Validat scope
+		//TODO: Validate scope
 		
 		//String scope = (String)inputParameter.getBodyParameter(ParametersName.SCOPE);
 //		String scope = "educacion";

@@ -1,6 +1,9 @@
 package cl.gob.minsegpres.pisee.rest.entities;
 
+import java.util.Calendar;
 import java.util.HashMap;
+
+import cl.gob.minsegpres.pisee.rest.util.ParametersName;
 
 public class InputParameter {
 
@@ -22,6 +25,11 @@ public class InputParameter {
 	}
 	public void setBodyParameters(HashMap<String, Object> bodyMapParameters) {
 		this.bodyParameters = bodyMapParameters;
+	}
+	
+	//-- constructor
+	public InputParameter(){
+		addHeaderParameter(ParametersName.FECHA_CONSULTA_RECIBIDA, Calendar.getInstance());
 	}
 	
 	//-- adds

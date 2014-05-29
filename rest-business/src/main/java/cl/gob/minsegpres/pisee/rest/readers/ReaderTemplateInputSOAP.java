@@ -11,17 +11,17 @@ import org.apache.commons.logging.LogFactory;
 
 import cl.gob.minsegpres.pisee.rest.util.AppConstants;
 
-public final class ReaderServicesInput {
+public final class ReaderTemplateInputSOAP {
 	
-	private final static Log LOGGER = LogFactory.getLog(ReaderServicesInput.class);
-	private static ReaderServicesInput instance = null;
+	private final static Log LOGGER = LogFactory.getLog(ReaderTemplateInputSOAP.class);
+	private static ReaderTemplateInputSOAP instance = null;
 	private Map<String, String> pathFiles = new HashMap<String,String>();
 	
-	private ReaderServicesInput(){ 	}
+	private ReaderTemplateInputSOAP(){ 	}
 	
-	public static synchronized ReaderServicesInput getInstance() {
+	public static synchronized ReaderTemplateInputSOAP getInstance() {
 		if (instance == null){
-			instance = new ReaderServicesInput();
+			instance = new ReaderTemplateInputSOAP();
 		}
 		return instance;
 	}
