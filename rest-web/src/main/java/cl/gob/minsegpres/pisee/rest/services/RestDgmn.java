@@ -18,30 +18,34 @@ import cl.gob.minsegpres.pisee.rest.util.ConfigProveedoresServicios;
 import cl.gob.minsegpres.pisee.rest.util.JSONUtil;
 import cl.gob.minsegpres.pisee.rest.util.ParametersName;
 
-@Path("/isp")
+@Path("/dgmn")
 @Component
 @Scope("singleton")
-public class RestIsp {
+public class RestDgmn {
 
-	private final static Log LOGGER = LogFactory.getLog(RestIsp.class);
-	
+	private final static Log LOGGER = LogFactory.getLog(RestDgmn.class);
+
 	@GET
-	@Path("v1/listadoEsperaCorazon")
+	@Path("v1/consultaSituacionMilitar")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public String getListadoEsperaCorazon(@QueryParam("pisee_token") String piseeToken) {
+	public String getConsultaSituacionMilitar(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
 		long startTime = System.currentTimeMillis();
+		
 		InputParameter inputParameter = new InputParameter();
 		JSONUtil jsonUtil = new JSONUtil();
 		CallerServiceBusiness restBusiness = new CallerServiceBusiness();
 		PiseeRespuesta respuesta;
 		
-		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);
-		inputParameter.addBodyParameter(ParametersName.OAUTH_SCOPE, ConfigProveedoresServicios.SOAP_ISP__LISTADO_ESPERA_CORAZON);
-		respuesta = restBusiness.callService(ConfigProveedoresServicios.SOAP_ISP__LISTADO_ESPERA_CORAZON, inputParameter);
+		inputParameter.addBodyParameter(ParametersName.RUT, rut);
+		inputParameter.addBodyParameter(ParametersName.DV, dv);
+		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);		
+		
+		respuesta = restBusiness.callService(ConfigProveedoresServicios.SOAP_DGMN_SITUACION_MILITAR, inputParameter, true);
 		
 		String value = jsonUtil.toJSON(respuesta);
 		long endTime = System.currentTimeMillis();		
-		LOGGER.info("getListadoEsperaCorazon - TIME == " + (endTime - startTime) + " MILISECONDS");
+		LOGGER.info("getConsultaSituacionMilitar - TIME == " + (endTime - startTime) + " MILISECONDS");
+		
 	    return value;
     }
 	
