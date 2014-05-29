@@ -1,0 +1,17 @@
+0.0.1 = Prueba Concepto - Local 		29/03/2014.
+- Primera version instalada en TEST la cual funciona como wrapper de servicios SOAP y los expone via REST
+
+0.0.2 = Cambios realizados 	04/01/2013
+* Funcionalidades
+	- Integracion servicios REST ya sean en formato PISEE o no
+	- Trazabilidad de servicios REST
+	- Conector HTTP, HTTPS
+* Servicios Integrados		
+	ORGANISMO		SERVICIO							TIPO	SOLUCION
+	ISP				Listado Espera Trasplante Corazón	SOAP	PISEE – WRAPPER
+	DIPRECA			Consulta Imponentes					SOAP	PISEE – WRAPPER
+	MINEDUC			Licencia Enseñanza Media			SOAP	PISEE – WRAPPER
+	DGMN			Situación Militar					SOAP	PISEE – WRAPPER
+	SGS				Solicitud Transparencia				SOAP	PISEE – WRAPPER
+	CPLT			Solicitud Transparencia				SOAP	PISEE – WRAPPER
+	Modernización	División Político Administrativa	REST	PISEE - REST
