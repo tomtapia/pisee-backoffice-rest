@@ -1,0 +1,17 @@
+<rest_services>
+		
+	<rest_service id="PISEE_TestPut">
+		<description>Servicio de Prueba para metodos PUT</description>
+		<method>PUT</method>			
+		<base_endpoint>http://www3.pisee.cl/rest-web/file</base_endpoint>
+		<extend_endpoint>/v1/testPut</extend_endpoint>
+		<path_parameters/>		
+		<query_parameters>
+			<parameter optional="false">param01</parameter>
+			<parameter optional="false">param02</parameter>
+			<parameter optional="false">param0</parameter>
+		</query_parameters>		
+	</rest_service>
+
+</rest_services>
+

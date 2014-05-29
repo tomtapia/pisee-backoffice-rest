@@ -1,0 +1,16 @@
+<rest_services>
+		
+	<rest_service id="PISEE_TestPost">
+		<description>Servicio de Prueba para metodos POST</description>
+		<method>POST</method>			
+		<base_endpoint>http://www3.pisee.cl/rest-web/file</base_endpoint>
+		<extend_endpoint>/v1/testPost</extend_endpoint>
+		<path_parameters/>		
+		<query_parameters>
+			<parameter optional="false">param01</parameter>
+			<parameter optional="true">param02</parameter>
+		</query_parameters>		
+	</rest_service>
+
+</rest_services>
+

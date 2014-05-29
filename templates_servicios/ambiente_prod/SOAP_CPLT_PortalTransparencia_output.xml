@@ -1,0 +1,14 @@
+<campos>		
+	<campo>
+		<nombre>NumSolicitud</nombre>
+		<ruta>Body/sobre/cuerpo/documento/TransparenciaEventoInteroperacionSAI/Operacion/NumSolicitud</ruta>
+	</campo>			
+	<campo>
+		<nombre>Evento</nombre>
+		<ruta>Body/sobre/cuerpo/documento/TransparenciaEventoInteroperacionSAI/Operacion/Evento</ruta>
+	</campo>		
+	<campo>
+		<nombre>Observaciones</nombre>
+		<ruta>Body/sobre/cuerpo/documento/TransparenciaEventoInteroperacionSAI/Operacion/Observaciones</ruta>
+	</campo>				
+</campos>

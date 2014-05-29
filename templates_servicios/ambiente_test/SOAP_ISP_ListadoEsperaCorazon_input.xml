@@ -1,0 +1,41 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:q0="http://www.ispch.cl/" xmlns:q1="http://valida.aem.gob.cl" xmlns:q2="http://www.w3.org/2000/09/xmldsig#" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <soapenv:Body>
+      <q1:sobre xsi:schemaLocation="http://valida.aem.gob.cl http://valida.aem.gob.cl/documentales/AEM/sobre.xsd" xmlns:aem="http://valida.aem.gob.cl" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:n3="http://www.altova.com/samplexml/other-namespace">
+         <q1:encabezado>
+            <q1:idSobre>ELPISEE.inputParameter.headerParameters['id_sobre']</q1:idSobre>
+            <q1:fechaHora>ELPISEE.inputParameter.headerParameters['fecha_hora']</q1:fechaHora>
+            <q1:proveedor>
+               <q1:nombre>ELPISEE.inputParameter.headerParameters['nombre_proveedor']</q1:nombre>
+               <q1:servicios>
+                  <q1:servicio>ELPISEE.inputParameter.headerParameters['nombre_servicio']</q1:servicio>
+                  <q1:respuestaServicio>
+                     <q1:estado>SI</q1:estado>
+                     <q1:glosa>RESPUESTA EXITOSA</q1:glosa>
+                  </q1:respuestaServicio>
+               </q1:servicios>
+            </q1:proveedor>
+            <q1:consumidor>
+               <q1:nombre>ELPISEE.inputParameter.headerParameters['nombre_consumidor']</q1:nombre>
+               <q1:tramite>ELPISEE.inputParameter.headerParameters['nombre_tramite']</q1:tramite>
+               <q1:certificado>
+                  <ds:X509Data>
+                     <ds:X509IssuerSerial>
+                        <ds:X509IssuerName>IN</ds:X509IssuerName>
+                        <ds:X509SerialNumber>0</ds:X509SerialNumber>
+                     </ds:X509IssuerSerial>
+                  </ds:X509Data>
+               </q1:certificado>
+            </q1:consumidor>
+            <q1:fechaHoraReq>ELPISEE.inputParameter.headerParameters['fecha_hora']</q1:fechaHoraReq>
+            <q1:emisor>ELPISEE.inputParameter.headerParameters['nombre_consumidor']</q1:emisor>
+            <q1:metadataOperacional>
+               <q1:estadoSobre>00</q1:estadoSobre>
+               <q1:glosaSobre>REST</q1:glosaSobre>               
+            </q1:metadataOperacional>
+         </q1:encabezado>
+         <q1:cuerpo>
+            <q1:documento/>
+         </q1:cuerpo>
+      </q1:sobre>
+   </soapenv:Body>
+</soapenv:Envelope>
