@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>PISEE - API REST</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript" src="/rest-api/js/jquery.min.js"></script>
+<script type="text/javascript" src="/rest-api/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/rest-api/js/util.js"></script>
+
+<link rel="stylesheet" href="/rest-api/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/rest-api/css/font-awesome.css" />
+<link rel="stylesheet" href="/rest-api/css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="/rest-api/css/base.css" />
+
+<!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<span class="label pull-right">PISEE REST</span> <a class="brand" href="/rest-api/index.html">Documentación API</a>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span3">
+				<div class="well sidebar-nav" id="apidiv">
+				</div>
+			</div>
+			<div class="span5">
+				<div id="content">
+				</div>
+			</div>
+			<div class="span4">
+				<div class="row-fluid">
+					<div id="divLinks" class="span12" style="margin-left: 0px">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	    $(document).ready(function() {
+	    	drawLinks();
+	    	drawServices(true);
+	    });
+	</script>
+</body>
+</html>

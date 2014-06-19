@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>PISEE - API REST</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript" src="/rest-api/js/jquery.min.js"></script>
+<script type="text/javascript" src="/rest-api/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/rest-api/js/util.js"></script>
+
+<link rel="stylesheet" href="/rest-api/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/rest-api/css/font-awesome.css" />
+<link rel="stylesheet" href="/rest-api/css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="/rest-api/css/base.css" />
+
+<!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<span class="label pull-right">PISEE REST</span> <a class="brand" href="/rest-api/index.html">Documentación API</a>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span3">
+				<div class="well sidebar-nav" id="apidiv">
+				</div>
+			</div>
+			<div class="span5">
+				<div id="content">
+					<blockquote>
+						<p style="text-transform: uppercase;">
+							<span id="apiName">Errores PISEE</span>
+						</p>
+						<small>
+							<span id="apiDescription">A continuación se detallan todos los posibles errores que arroja la PISEE</span>
+						</small>
+					</blockquote>					
+					<table class="table table-condensed table-striped table-bordered">
+						<tbody>
+							<tr>
+								<th>Descripción</th>
+								<td>Una vez que se conoce la estructura de la respuesta PISEE se debe explicar cuales son los posibles errores que pueden aparecer, lo primero a señalar es que todas las respuestas de la PISEE 
+								son con código 200 HTTP y es en la sección <strong>"encabezado"</strong> en donde se detalla el error, específicamente los campos en cuestión son <code>emisor_sobre, 
+								estado_sobre y glosa_sobre</code></td>
+							</tr>
+							<tr>
+								<th>Ejemplo Respuesta</th>
+								<td>
+									<pre id="ejemplo_respuesta">
+									{ 
+										"encabezado": { 
+											"id_sobre": "666666444420140303000000100",											
+											"emisor_sobre": "MINEDUC", 
+											"estado_sobre": "00", 
+											"glosa_sobre": "TRANSACCION EXITOSA",											
+											"proveedor": "MINEDUC", 
+											"servicio": "DISPONIBILIDAD LICENCIA ENSENANZA MEDIA", 
+											"consumidor": "CORFO", 
+											"tramite": "SOLICITUD DE INFORMACION LICENCIA MEDIA", 
+											"fecha_hora": "2014-03-03T15:12:14.328Z" 
+										}, 
+										"cuerpo": { 
+											"tiene_licencia": "true" 
+										} 
+									}
+									</pre>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="table table-condensed table-striped table-bordered">
+						<thead>
+							<tr>
+								<th align="center" colspan="4">Errores PISEE</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="font-weight: bold;">Emisor Sobre</td>
+								<td style="font-weight: bold;">Estado Sobre</td>
+								<td style="font-weight: bold;">Glosa Sobre</td>
+							</tr>
+							<tr>
+								<th>PISEE</th>
+								<td>00</td>
+								<td>Transaccion Exitosa</td>
+							</tr>
+							<tr>
+								<th>PISEE</th>
+								<td>02</td>
+								<td>El servicio se encuentra bloqueado para consumo via REST</td>
+							</tr>							
+							<tr>
+								<th>PISEE</th>
+								<td>03</td>
+								<td>El siguiente parametro es obligatorio y tiene valor en null: {param}</td>
+							</tr>							
+							<tr>
+								<th>PISEE</th>
+								<td>03</td>
+								<td>Error interno en el proceso de llamado al Proveedor</td>
+							</tr>							
+							<tr>
+								<th>PISEE</th>
+								<td>03</td>
+								<td>El Rut ingresado no es valido</td>
+							</tr>							
+							<tr>
+								<th>PISEE</th>
+								<td>03</td>
+								<td>Token invalido para consumo de servicio</td>
+							</tr>
+							<tr>
+								<th>PISEE</th>
+								<td>06</td>
+								<td>Error por timeout del servicio del proveedor</td>
+							</tr>														
+							<tr>
+								<th>PISEE</th>
+								<td>08</td>
+								<td>El siguiente metodo HTTP no se encuentra soportado: {method}</td>
+							</tr>
+							<tr>
+								<th>Nombre del Proveedor</th>
+								<td>01</td>
+								<td>Error de Autenticación</td>
+							</tr>
+							<tr>
+								<th>Nombre del Proveedor</th>
+								<td>02</td>
+								<td>Error de Autorización</td>
+							</tr>
+							<tr>
+								<th>Nombre del Proveedor</th>
+								<td>05</td>
+								<td>No Existen datos para responder consulta</td>
+							</tr>																														
+						</tbody>
+					</table>					
+				</div>
+			</div>
+			<div class="span4">
+				<div class="row-fluid">
+					<div id="divLinks" class="span12" style="margin-left: 0px">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	    $(document).ready(function() {
+	    	drawLinks();
+	    	drawServices(false);
+
+	    	var ejemploRespuesta = $("#ejemplo_respuesta").html();
+	    	$("#ejemplo_respuesta").html(JSON.stringify(JSON.parse(ejemploRespuesta), null, '\t'));	    	
+	    });
+	</script>
+</body>
+</html>

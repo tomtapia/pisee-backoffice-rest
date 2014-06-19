@@ -1,0 +1,8 @@
+<jboss-web>
+	<context-root>rest-api</context-root>
+</jboss-web>
+
+
+
+
+

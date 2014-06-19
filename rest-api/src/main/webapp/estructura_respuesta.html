@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>PISEE - API REST</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript" src="/rest-api/js/jquery.min.js"></script>
+<script type="text/javascript" src="/rest-api/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/rest-api/js/util.js"></script>
+
+<link rel="stylesheet" href="/rest-api/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/rest-api/css/font-awesome.css" />
+<link rel="stylesheet" href="/rest-api/css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="/rest-api/css/base.css" />
+
+<!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<span class="label pull-right">PISEE REST</span> <a class="brand" href="/rest-api/index.html">Documentación API</a>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span3">
+				<div class="well sidebar-nav" id="apidiv">
+
+				</div>
+			</div>
+			<div class="span5">
+				<div id="content">
+					<blockquote>
+						<p style="text-transform: uppercase;">
+							<span id="apiName">Estructura de una respuesta PISEE</span>
+						</p>
+						<small>
+							<span id="apiDescription">A continuación se detalla la estructura de la respuesta PISEE en cada uno de los servicios integrados</span>
+						</small>
+					</blockquote>					
+					<table class="table table-condensed table-striped table-bordered">
+						<tbody>
+							<tr>
+								<th>Descripción</th>
+								<td>Todas las respuestas de un servicio integrado en la PISEE se compone de dos secciones una denominada <strong>"encabezado"</strong> la cual no varía según el servicio, en ésta
+								sección se encuentran los datos asociados al consumidor y proveedor del servicio. Por otro lado se encuentra la sección denominada <strong>"cuerpo"</strong> la cual varía según el servicio y es
+								en ésta donde finalmente se encuentran los datos que retorna el servicio en particular</td>
+							</tr>
+							<tr>
+								<th>Ejemplo Respuesta</th>
+								<td>
+									<pre id="ejemplo_respuesta">
+									{ 
+										"encabezado": { 
+											"id_sobre": "666666444420140303000000100", 
+											"emisor_sobre": "MINEDUC", 
+											"estado_sobre": "00", 
+											"glosa_sobre": "TRANSACCION EXITOSA",
+											"proveedor": "MINEDUC", 
+											"servicio": "DISPONIBILIDAD LICENCIA ENSENANZA MEDIA", 
+											"consumidor": "CORFO", 
+											"tramite": "SOLICITUD DE INFORMACION LICENCIA MEDIA", 
+											"fecha_hora": "2014-03-03T15:12:14.328Z" 
+										}, 
+										"cuerpo": { 
+											"tiene_licencia": "true" 
+										} 
+									}
+									</pre>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="table table-condensed table-striped table-bordered">
+						<thead>
+							<tr>
+								<th align="center" colspan="4">Parámetros del Encabezado</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="font-weight: bold;">Nombre</td>
+								<td style="font-weight: bold;">Descripción</td>
+							</tr>
+							<tr>
+								<th>id_sobre</th>
+								<td>Es el identificador de la transacción, mas información en http://www.modernizacion.gob.cl/interoperabilidad/assets/docs/Tecnica_PISEE/IntegracionOrganismoConsumidor_V2.0.pdf</td>
+							</tr>
+							<tr>
+								<th>emisor_sobre</th>
+								<td>Corresponde al organismo que respondió la transacción puede ser el proveedor o la PISEE</td>
+							</tr>
+							<tr>
+								<th>estado_sobre</th>
+								<td>Es el código que indica el estado de la transacción, mas información en el link <strong>Errores PISEE</strong></td>
+							</tr>
+							<tr>
+								<th>glosa_sobre</th>
+								<td>Es la descripción del estado de la transacción</td>
+							</tr>
+							<tr>
+								<th>proveedor</th>
+								<td>Nombre del organismo que expone el servicio</td>
+							</tr>
+							<tr>
+								<th>servicio</th>
+								<td>Descripción del servicio consultado</td>
+							</tr>
+							<tr>
+								<th>tramite</th>
+								<td>Es el nombre del trámite por el cual el organismo consumidor solicita información al proveedor</td>
+							</tr>
+							<tr>
+								<th>consumidor</th>
+								<td>Nombre del organismo que solicita información</td>
+							</tr>
+							<tr>
+								<th>fecha_hora</th>
+								<td>Indica la fecha y hora en que originó la transacción</td>
+							</tr>																																																								
+						</tbody>
+					</table>					
+					<table class="table table-condensed table-striped table-bordered">
+						<thead>
+							<tr>
+								<th align="center" colspan="4">Parámetros del Cuerpo</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>								
+								<td colspan="2">Los parámetros del cuerpo se encuentran definidos en cada servicio que se encuentra documentado</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="span4">
+				<div class="row-fluid">
+					<div id="divLinks" class="span12" style="margin-left: 0px">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	    $(document).ready(function() {
+	    	drawLinks();
+	    	drawServices(false);
+
+	    	var ejemploRespuesta = $("#ejemplo_respuesta").html();
+	    	$("#ejemplo_respuesta").html(JSON.stringify(JSON.parse(ejemploRespuesta), null, '\t'));
+	    	
+	    });
+	</script>
+</body>
+</html>
