@@ -1,0 +1,137 @@
+<api_services>
+	<api_service id="dipreca">		
+		<name>DIPRECA - Direcci&#243;n Previsional de Carabineros</name>
+		<description>Listado de todos los servicios provistos por la Direcci&#243;n Previsional de Carabineros</description>
+		<path>/dipreca</path>
+		<api_methods>
+			<api_method id="dipreca_imponentes">				
+				<name>Informaci&#243;n Imponentes</name>
+				<description>Permite conocer la informacion asociado a los benefeciarios de DIPRECA</description>
+				<request>
+					<version>1</version>
+					<path>consulta_imponentes_dipreca</path>
+					<method>GET</method>
+					<example_uri>http://www3.pisee.cl/rest-web/dipreca/v1/consulta_imponentes_dipreca?rut=12909801&amp;dv=5&amp;pisee_token=ABCDE12345</example_uri>					
+					<parameters>
+						<param id="1">
+							<name>rut</name>
+							<description>Corresponde al Rut del ciudadano a consultar</description>
+							<required>true</required>
+							<type>String</type>
+						</param>
+						<param id="2">							
+							<name>dv</name>
+							<description>Corresponde al digito verificador del ciudadano a consultar</description>
+							<required>true</required>
+							<type>String</type>
+						</param>					
+						<param id="3">
+							<name>pisee_token</name>
+							<description>Corresponde al token entregado por la PISEE para consumir el servicio</description>
+							<required>true</required>
+							<type>String</type>
+						</param>
+					</parameters>
+				</request>
+				<response>
+					<produces>application/json</produces>
+					<parameters>
+						<param id="1">
+							<name>rut</name>
+							<description>Rut del ciudadano</description>
+							<type>Numeric</type>
+						</param>
+						<param id="2">
+							<name>dv</name>
+							<description>Digito verficiador del Rut del ciudadano</description>
+							<type>String</type>
+						</param>
+						<param id="3">
+							<name>nombres</name>
+							<description>Nombres del ciudadano</description>
+							<type>String</type>
+						</param>
+						<param id="4">
+							<name>apellido_paterno</name>
+							<description>Apellido Paterno del ciudadano</description>
+							<type>String</type>
+						</param>						
+						<param id="5">
+							<name>apellido_materno</name>
+							<description>Apellido Materno del ciudadano</description>
+							<type>String</type>
+						</param>												
+						<param id="6">
+							<name>sexo</name>
+							<description>Sexo del ciudadano, valores posibles M F</description>
+							<type>String</type>
+						</param>						
+						<param id="7">
+							<name>tipo_pension</name>
+							<description>Pension del ciudadano, valores posibles T N S</description>
+							<type>String</type>
+						</param>						
+						<param id="8">
+							<name>fecha_informe</name>
+							<description>Fecha Actual en la que se realizo la consulta</description>
+							<type>String</type>
+						</param>		
+						<param id="9">
+							<name>fecha_nacimiento</name>
+							<description>Fecha de Nacimiento del ciudadano</description>
+							<type>String</type>
+						</param>
+						<param id="10">
+							<name>fecha_pension</name>
+							<description>Fecha a partir fue ingresado como Imponente de DIPRECA</description>
+							<type>String</type>
+						</param>						
+						<param id="11">
+							<name>tipo_pension</name>
+							<description>Situacion del ciudadano, valores posibles P I</description>
+							<type>String</type>
+						</param>	
+						<param id="11">
+							<name>mensaje_web_services</name>
+							<description>Estado de Respuesta del Servicio Web</description>
+							<type>String</type>
+						</param>						
+					</parameters>
+					<example>
+						{
+							"encabezado": {
+								"id_sobre": "160401000120140619000000100",
+								"emisor_sobre": "DIPRECA",
+								"estado_sobre": "00",
+								"glosa_sobre": "TRANSACCION EXITOSA",
+								"proveedor": "DIPRECA",
+								"servicio": "IMPONENTES DIPRECA",
+								"consumidor": "IPS",
+								"tramite": "SISTEMA PENSION SOLIDARIA",
+								"fecha_hora": "2014-06-19T19:19:21.104Z"								
+							},
+							"cuerpo": {
+								"rut": "1111111",
+								"dv": "1",
+								"nombres": "EUFRASIO",
+								"apellido_paterno": "MEDINA",								
+								"apellido_materno": "CARRASCO",
+								"sexo": "M",
+								"tipo_pension": "T",								
+								"fecha_informe": "2014-06-19",								
+								"fecha_nacimiento": "1942-07-01",								
+								"fecha_pension": "1993-08-01",
+								"situacion_individuo": "P",
+								"mensaje_web_services": "R.U.T. VIGENTE EN DIPRECA"
+							}
+						}						
+					</example>
+				</response>
+			</api_method>
+		</api_methods>
+	</api_service>
+</api_services>
+
+
+
+

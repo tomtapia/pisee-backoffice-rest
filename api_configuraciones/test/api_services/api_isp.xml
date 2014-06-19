@@ -1,0 +1,186 @@
+<api_services>
+	<api_service id="isp">		
+		<name>ISP - Instituto de Salud P&#250;blica</name>
+		<description>Listado de todos los servicios provistos por el Instituto de Salud P&#250;blica</description>
+		<path>/isp</path>
+		<api_methods>
+			<api_method id="isp_espera_transplante_corazon">				
+				<name>Espera Transplante Corazon</name>
+				<description>Permite conocer la lista de personas que se encuentra a la espera de un transplante de corazon</description>
+				<request>
+					<version>1</version>
+					<path>listado_espera_corazon</path>
+					<method>GET</method>
+					<example_uri>http://www3.pisee.cl/rest-web/isp/v1/listado_espera_corazon?pisee_token=ABCDE12345</example_uri>					
+					<parameters>
+						<param id="1">
+							<name>pisee_token</name>
+							<description>Corresponde al token entregado por la PISEE para consumir el servicio</description>
+							<required>true</required>
+							<type>String</type>
+						</param>
+					</parameters>
+				</request>
+				<response>
+					<produces>application/json</produces>
+					<parameters>
+						<param id="1">
+							<name>rut</name>
+							<description>Rut del ciudadano</description>
+							<type>Numeric</type>
+						</param>
+						<param id="2">
+							<name>dv</name>
+							<description>Digito verficiador del Rut del ciudadano</description>
+							<type>String</type>
+						</param>
+						<param id="3">
+							<name>nombres</name>
+							<description>Nombres del ciudadano</description>
+							<type>String</type>
+						</param>
+						<param id="4">
+							<name>apellido_paterno</name>
+							<description>Apellido Paterno del ciudadano</description>
+							<type>String</type>
+						</param>						
+						<param id="5">
+							<name>apellido_materno</name>
+							<description>Apellido Materno del ciudadano</description>
+							<type>String</type>
+						</param>												
+						<param id="6">
+							<name>edad</name>
+							<description>Edad del ciudadano</description>
+							<type>Numeric</type>
+						</param>						
+						<param id="7">
+							<name>peso</name>
+							<description>Peso del ciudadano</description>
+							<type>Numeric</type>
+						</param>									
+						<param id="8">
+							<name>talla</name>
+							<description>Estatura del ciudadano</description>
+							<type>String</type>
+						</param>									
+						<param id="9">
+							<name>centro_de_trasplante</name>
+							<description>Codigo del centro de transplante</description>
+							<type>String</type>
+						</param>						
+						<param id="10">
+							<name>codigo_receptor</name>
+							<description>Codigo del receptor</description>
+							<type>String</type>
+						</param>
+						<param id="11">
+							<name>corazon_pulmon</name>
+							<description>Indica si necesita corazon y pulmon, valores posibles SI, NO</description>
+							<type>String</type>
+						</param>	
+						<param id="12">
+							<name>identificador_lista_espera</name>
+							<description>Indentificador en la lista de espera</description>
+							<type>String</type>
+						</param>							
+						<param id="13">
+							<name>fecha_ingreso_reingreso</name>
+							<description>Fecha de ingreso en la lista</description>
+							<type>String</type>
+						</param>						
+						<param id="14">
+							<name>fecha_hora_valida</name>
+							<description>Fecha Valida de la lista</description>
+							<type>String</type>
+						</param>						
+						<param id="15">
+							<name>grupo_sanguineo_rh</name>
+							<description>Grupo sanguineo del ciudadano</description>
+							<type>String</type>
+						</param>						
+						<param id="16">
+							<name>nombre_prevision</name>
+							<description>Nombre de la prevision que tiene el ciudadano</description>
+							<type>String</type>
+						</param>
+						<param id="17">
+							<name>observaciones</name>
+							<description>Observaciones</description>
+							<type>String</type>
+						</param>						
+						<param id="18">
+							<name>prevision</name>
+							<description>Codigo del tipo de prevision</description>
+							<type>String</type>
+						</param>						
+						<param id="19">
+							<name>urgencia</name>
+							<description>Indica si el caso es urgente, valores posibles SI, NO</description>
+							<type>String</type>
+						</param>
+					</parameters>
+					<example>
+						{
+							"encabezado": {
+								"id_sobre": "161101000120140619000000100",
+								"emisor_sobre": "ISP",
+								"estado_sobre": "00",
+								"glosa_sobre": "RESPUESTA EXISTOSA",
+								"proveedor": "ISP",
+								"servicio": "LISTA DE ESPERA CORAZON",
+								"consumidor": "MINSAL",
+								"tramite": "LISTA DE ESPERA",
+								"fecha_hora": "2014-06-19T11:03:33.664125-04:00"								
+							},
+							"cuerpo": [
+								{
+									"rut": "111111",
+									"dv": "1",
+									"nombres": "JORGE",									
+									"apellido_paterno": "TALANDIANOS",
+									"apellido_materno": "MIRANDA",
+									"edad": "57",
+									"peso": "65",
+									"talla": "1.67",
+									"centro_de_trasplante": "11111",
+									"codigo_receptor": "11111",									
+									"corazon_pulmon": "NO",									
+									"identificador_lista_espera": "11111",									
+									"fecha_ingreso_reingreso": "2014-04-21",									
+									"fecha_hora_valida": "2014-06-16T18:31:29",
+									"grupo_sanguineo_rh": "0IV POSITIVO",
+									"nombre_prevision": "NA",
+									"observaciones": "Status IA",									
+									"prevision": "2",									
+									"urgencia": "SI"						
+								},
+								{
+									"rut": "111111",
+									"dv": "1",
+									"nombres": "EDMUNDO",
+									"apellido_paterno": "MUNOZ",
+									"apellido_materno": "YANEZ",
+									"edad": "59",
+									"peso": "75",
+									"talla": "1.67",									
+									"centro_de_trasplante": "11111",
+									"codigo_receptor": "26711",
+									"corazon_pulmon": "NO",
+									"identificador_lista_espera": "11111",									
+									"fecha_ingreso_reingreso": "2013-08-21",
+									"fecha_hora_valida": "2014-06-16T18:31:29",
+									"grupo_sanguineo_rh": "0IV NEGATIVO",
+									"nombre_prevision": "NA",
+									"observaciones": "Status IA",
+									"prevision": "2",
+									"urgencia": "SI"
+								}
+							]
+						}						
+					</example>
+				</response>
+			</api_method>
+		</api_methods>
+	</api_service>
+</api_services>

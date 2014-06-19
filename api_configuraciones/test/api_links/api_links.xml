@@ -1,0 +1,23 @@
+<api_links>
+
+	<!--api_link id="1">
+		<name>Estructura Respuesta PISEE</name>
+		<value>http://localhost:8080/rest-api/estructura_respuesta.html</value>
+	</api_link>
+	<api_link id="2">
+		<name>Errores PISEE</name>
+		<value>http://localhost:8080/rest-api/errores_pisee.html</value>
+	</api_link-->
+	
+	<api_link id="10">
+		<name>Referencia JSON</name>
+		<value>http://www.w3schools.com/json</value>
+	</api_link>
+
+	<api_link id="11">
+		<name>Refencia REST</name>
+		<value>http://es.wikipedia.org/wiki/Representational_State_Transfer</value>
+	</api_link>	
+	
+	
+</api_links>

@@ -1,0 +1,73 @@
+<api_services>
+	<api_service id="dgmn">		
+		<name>DGMN - Direcci&#243;n General de Movilizaci&#243;n Nacional</name>
+		<description>Listado de todos los servicios provistos por la Direcci&#243;n General de Movilizaci&#243;n Nacional</description>
+		<path>/dgmn</path>
+		<api_methods>
+			<api_method id="dgmn_situacion_militar">				
+				<name>Situaci&#243;n Militar</name>
+				<description>Permite conocer si un ciudadano ha realizado el servicio militar</description>
+				<request>
+					<version>1</version>
+					<path>consulta_situacion_militar</path>
+					<method>GET</method>
+					<example_uri>https://www.pisee.cl/rest-web/dgmn/v1/consultaSituacionMilitar?rut=4895102&amp;dv=3&amp;pisee_token=ABCDE12345</example_uri>					
+					<parameters>
+						<param id="1">
+							<name>rut</name>
+							<description>Corresponde al Rut del ciudadano a consultar</description>
+							<required>true</required>
+							<type>String</type>
+						</param>
+						<param id="2">							
+							<name>dv</name>
+							<description>Corresponde al digito verificador del ciudadano a consultar</description>
+							<required>true</required>
+							<type>String</type>
+						</param>
+						<param id="3">
+							<name>pisee_token</name>
+							<description>Corresponde al token entregado por la PISEE para consumir el servicio</description>
+							<required>true</required>
+							<type>String</type>
+						</param>
+					</parameters>
+				</request>
+				<response>
+					<produces>application/json</produces>
+					<parameters>
+						<param id="1">
+							<name>detalle</name>
+							<description>Descripcion de la situacion militar</description>
+							<type>String</type>
+						</param>
+						<param id="2">
+							<name>respuesta</name>
+							<description>Mensaje con la situacion militar del ciudadano consultado. Valores Posibles NO,SI</description>
+							<type>String</type>
+						</param>						
+					</parameters>
+					<example>
+						{
+							"encabezado": {
+								"id_sobre": "150501008220140613000000100",
+								"emisor_sobre": "DGMN",
+								"estado_sobre": "00",
+								"glosa_sobre": "TRANSACCION EXITOSA",
+								"proveedor": "DGMN",
+								"servicio": "SITUACION MILITAR",
+								"consumidor": "MINVU",
+								"tramite": "POSTULACION EN LINEA AL SUBSIDIO HABITACIONAL, DECRETO SUPREMO 1",
+								"fecha_hora": "2014-06-13T09:57:49.5205537-04:00"
+							},
+							"cuerpo": {
+								"respuesta": "NO",
+								"detalle": "No Cumplio Servicio Militar en modalidad Conscripcion Ordinaria y Valer Militar, a partir del agno 2004."								
+							}
+						}					
+					</example>
+				</response>
+			</api_method>
+		</api_methods>
+	</api_service>
+</api_services>

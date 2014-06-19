@@ -1,0 +1,193 @@
+<api_services>
+	<api_service id="mineduc">		
+		<name>MINEDUC - Ministerio de Educaci&#243;n</name>
+		<description>Listado de todos los servicios provistos por el Ministerio de Educaci&#243;n</description>
+		<path>/mineduc</path>
+		<api_methods>
+			<api_method id="mineduc_licencia_media">				
+				<name>Licencia Ensena&#241;za Media</name>
+				<description>Permite conocer si un ciudadano ha obtenido su licencia de ensena&#241;za media</description>
+				<request>
+					<version>1</version>
+					<path>consulta_licencia_ensenanza_media</path>
+					<method>GET</method>
+					<example_uri>http://www3.pisee.cl/rest-web/mineduc/v1/consulta_licencia_ensenanza_media?rut=12909801&amp;dv=5&amp;pisee_token=ABCDE12345</example_uri>
+					<parameters>
+						<param id="1">
+							<name>rut</name>
+							<description>Corresponde al Rut del ciudadano a consultar</description>
+							<required>true</required>
+							<type>String</type>
+						</param>
+						<param id="2">							
+							<name>dv</name>
+							<description>Corresponde al digito verificador del ciudadano a consultar</description>
+							<required>true</required>
+							<type>String</type>
+						</param>
+						<param id="3">
+							<name>pisee_token</name>
+							<description>Corresponde al token entregado por la PISEE para consumir el servicio</description>
+							<required>true</required>
+							<type>String</type>
+						</param>
+					</parameters>
+				</request>
+				<response>
+					<produces>application/json</produces>
+					<parameters>
+						<param id="1">
+							<name>tiene_licencia</name>
+							<description>Es el dato que indica si el ciudadano cuenta con la licencia de ense&#250;anza media</description>
+							<type>Boolean</type>
+						</param>
+					</parameters>
+					<example>
+						{
+						    "encabezado": {
+						        "id_sobre": "666666444420140303000000100",
+						        "emisor_sobre": "MINEDUC",
+						        "estado_sobre": "00",
+						        "glosa_sobre": "TRANSACCION EXITOSA",
+						        "proveedor": "MINEDUC",
+						        "servicio": "DISPONIBILIDAD LICENCIA ENSENANZA MEDIA",
+								"consumidor": "CORFO",
+						        "tramite": "SOLICITUD DE INFORMACION LICENCIA MEDIA",
+						        "fecha_hora": "2014-03-03T15:12:14.328Z"						        
+						    },
+						    "cuerpo": {
+						        "tiene_licencia": "true"
+						    }						    
+						}					
+					</example>
+				</response>
+			</api_method>
+									
+			<api_method id="mineduc_detalle_licencia_media">				
+				<name>Detalle Licencia Ense&#241;anza Media</name>
+				<description>Permite conocer el detalle de licencia de ense&#241;anza media de un ciudadano</description>
+				<request>
+					<version>1</version>
+					<path>detalle_licencia_ensenanza_media</path>
+					<method>POST</method>
+					<example_uri>http://www3.pisee.cl/rest-web/mineduc/v1/detalle_licencia_ensenanza_media?rut=17555893&amp;dv=4&amp;pisee_token=ABCDE12345</example_uri>
+					<parameters>
+						<param id="1">
+							<name>rut</name>
+							<description>Corresponde al Rut del ciudadano a consultar</description>
+							<required>true</required>
+							<type>String</type>
+						</param>
+						<param id="2">							
+							<name>dv</name>
+							<description>Corresponde al digito verificador del ciudadano a consultar</description>
+							<required>true</required>
+							<type>String</type>
+						</param>
+						<param id="3">
+							<name>pisee_token</name>
+							<description>Corresponde al token entregado por la PISEE para consumir el servicio</description>
+							<required>true</required>
+							<type>String</type>
+						</param>
+					</parameters>
+				</request>
+				<response>
+					<produces>application/json</produces>
+					<parameters>
+						<param id="1">
+							<name>folio</name>
+							<description>Es el n&#250;mero del folio de la licencia de ense&#241;anza media</description>
+							<type>Numeric</type>
+						</param>
+						<param id="2">
+							<name>tipo_licencia</name>
+							<description>Corresponde al tipo de educaci&#243;n que di&#243; origen a la licencia</description>
+							<type>String</type>
+						</param>
+						<param id="3">
+							<name>numero_registro</name>
+							<description>Identificador de la licencia</description>
+							<type>Numeric</type>
+						</param>	
+						<param id="4">
+							<name>agno_nominal</name>
+							<description>Es el a&#250;o donde se cumplieron los requisitos para cumplir con la licencia</description>
+							<type>Numeric</type>
+						</param>		
+						<param id="5">
+							<name>alumno_run</name>
+							<description>Run del ciudadano</description>
+							<type>Numeric</type>
+						</param>						
+						<param id="6">
+							<name>alumno_dv</name>
+							<description>Digito verificador del Run del ciudadano</description>
+							<type>String</type>
+						</param>
+						<param id="7">
+							<name>alumno_nombres</name>
+							<description>Nombres del ciudadano</description>
+							<type>String</type>
+						</param>						
+						<param id="8">
+							<name>alumno_apellido_paterno</name>
+							<description>Apellido Paterno del ciudadano</description>
+							<type>String</type>
+						</param>	
+						<param id="9">
+							<name>alumno_apellido_materno</name>
+							<description>Apellido Materno del ciudadano</description>
+							<type>String</type>
+						</param>						
+						<param id="10">
+							<name>establecimiento_rbd</name>
+							<description>Identificador del establecimiento</description>
+							<type>Numeric</type>
+						</param>						
+						<param id="10">
+							<name>establecimiento_nombre</name>
+							<description>Nombre del establecimiento</description>
+							<type>String</type>
+						</param>
+						<param id="10">
+							<name>establecimiento_comuna</name>
+							<description>Comuna del establecimiento</description>
+							<type>String</type>
+						</param>						
+					</parameters>
+					<example>
+						{
+						    "encabezado": {
+						        "id_sobre": "666666444420140303000000100",
+						        "emisor_sobre": "MINEDUC",
+						        "estado_sobre": "00",
+						        "glosa_sobre": "TRANSACCION EXITOSA",
+						        "proveedor": "MINEDUC",
+						        "servicio": "DISPONIBILIDAD LICENCIA ENSENANZA MEDIA",
+								"consumidor": "CORFO",
+						        "tramite": "SOLICITUD DE INFORMACION LICENCIA MEDIA",
+						        "fecha_hora": "2014-03-03T15:12:14.328Z"						        
+						    },
+						    "cuerpo": {
+						        "folio": "33559827",
+								"tipo_licencia": "TECNICO PROFESIONAL",
+								"numero_registro": "1",
+								"agno_nominal": "2009",
+								"alumno_run": "17555893",
+								"alumno_dv": "4",
+								"alumno_nombres": "CRISTIAN ANDRES",
+								"alumno_apellido_paterno": "AGUILERA",
+								"alumno_apellido_materno": "MARQUEZ",
+								"establecimiento_rbd": "1",
+								"establecimiento_nombre": "LICEO POLITECNICO ARICA",
+								"establecimiento_comuna": "ARICA"
+						    }						    
+						}					
+					</example>
+				</response>
+			</api_method>			
+
+		</api_methods>
+	</api_service>
+</api_services>
