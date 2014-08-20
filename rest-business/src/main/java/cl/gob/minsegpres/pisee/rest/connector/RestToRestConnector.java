@@ -51,9 +51,9 @@ public class RestToRestConnector {
 		
 		respuesta.getEncabezado().setIdSobre(sobreBusiness.generateSobreID(configuracionServicio));
 		respuesta.getEncabezado().setFechaHora(sobreBusiness.generateSobreFechaHora());
-		respuesta.getEncabezado().setFechaHoraReq(sobreBusiness.generateSobreFechaHora());
+//		respuesta.getEncabezado().setFechaHoraReq(sobreBusiness.generateSobreFechaHora());
 		respuesta.getEncabezado().setNombreProveedor(configuracionServicio.getServicioTramite().getServicio().getOrganismo().getSigla());
-		respuesta.getEncabezado().setNombreServicio(configuracionServicio.getServicioTramite().getServicio().getNombreCorto());
+		respuesta.getEncabezado().setNombreServicio(configuracionServicio.getServicioTramite().getServicio().getNombre());
 		respuesta.getEncabezado().setNombreConsumidor(configuracionServicio.getServicioTramite().getTramite().getOrganismo().getSigla());
 		respuesta.getEncabezado().setNombreTramite(configuracionServicio.getServicioTramite().getTramite().getNombre());
 			
@@ -100,7 +100,8 @@ public class RestToRestConnector {
 				response = webResource.path(configService.getExtendEndpoint()).queryParams(parameters).put(ClientResponse.class);
 			}else {
 				LOGGER.info("Metodo HTTP: " + configService.getMethod() + " no es soportado");
-				encabezado.setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+				//encabezado.setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+				encabezado.setEmisorSobre(AppConstants._EMISOR_PISEE);
 				encabezado.setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_TRAMITE_NO_EXISTE);
 				encabezado.setGlosaSobre(AppConstants._MSG_UNSUPPORT_HTTP_METHOD + configService.getMethod() );
 				respuesta.setEncabezado(encabezado);				

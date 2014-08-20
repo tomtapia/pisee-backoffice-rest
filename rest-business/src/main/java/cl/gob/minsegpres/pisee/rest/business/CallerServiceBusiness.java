@@ -56,7 +56,8 @@ public class CallerServiceBusiness {
 			}		
 			if (null != configuracionServicio) {
 				if (ConfiguracionServicio.BLOQUEADO.equals(configuracionServicio.getEstado())) {
-					respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+					//respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+					respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 					respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_AUTORIZACION);
 					respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_BLOCKED_SERVICE);
 					LOGGER.info("Servicio de token = " + tokenPisee + " bloqueado para consumo");
@@ -67,30 +68,12 @@ public class CallerServiceBusiness {
 						respuesta = restToRestConnector.callService(proveedorServiceName, inputParameter, configuracionServicio);
 					}
 				}
-				
-				//---------------------------------------------------------------------------------------------------------------------------
 				if (proveedorServiceName.startsWith(AppConstants.PREFIX_SERVICE_REST)){
-					//Dejar este codigo asincrono -> http://comunidad.fware.pro/dev/java/insercion-asincrona-de-datos-desde-java/
-					//El token se debe validar sin registrarlo dado el modelo de la BD
-					
-//					Long idSobreConsumidor = null, idSobreProveedor = null, idLogEsb = null;
-//					BigDecimal idLogTpoProveedor = null;
-//					TrazabilidadBusiness trazabilidadBusiness = new TrazabilidadBusiness();
-//					idSobreConsumidor = trazabilidadBusiness.insertSobreConsumidor(respuesta);
-//					if (null != configuracionServicio || AppConstants._EMISOR_CONSUMIDOR.equals(respuesta.getEncabezado().getEmisorSobre())) {
-//						idSobreProveedor = trazabilidadBusiness.insertSobreProveedor(respuesta);	
-//					}
-//					idLogEsb = trazabilidadBusiness.insertLogEsb(respuesta, idSobreConsumidor, idSobreProveedor, configuracionServicio);
-//					idLogTpoProveedor = trazabilidadBusiness.insertLogTiempoProveedor(respuesta, idLogEsb, configuracionServicio);
-//					trazabilidadBusiness.updateLogEsb(idLogEsb, idLogTpoProveedor);
-					
 					TrazabilidadQueue.getInstance().accept(new DataPiseeToQueue(configuracionServicio, respuesta));
-					
 				}
-				//---------------------------------------------------------------------------------------------------------------------------	
-				
 			} else {
-				respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+				//respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+				respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 				respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
 				respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INVALID_TOKEN);
 				LOGGER.info("Token = " + tokenPisee + " invalido para consumo");
@@ -125,25 +108,29 @@ public class CallerServiceBusiness {
 						if (null != configuracionServicio ){
 							respuesta = restConnector.callService(proveedorServiceName, inputParameter, configuracionServicio);
 						}else{
-							respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+							//respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+							respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 							respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
 							respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INVALID_TOKEN);
 							LOGGER.error("Error en PISEE, La configuracion del servicio es nula, para el tokenPisee = " + tokenPisee);
 						}						
 					}else{
-						respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+						//respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+						respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 						respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
 						respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INVALID_PARAMETERS);
 						LOGGER.error("Ocurrio un error al extraer los datos de OWNER y CLIENT en la respuesta del servicio OAUTH");
 					}
 				} else{
-					respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+					//respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+					respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 					respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
 					respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INVALID_TOKEN_OAUTH);
 					LOGGER.error("Error en OAUTH, la informacion entregada por el access_token = " + accessToken + " no es valida para el consumo del servicio REST");
 				}
 			} else {
-				respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+				//respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+				respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 				respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
 				respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INVALID_TOKEN_OAUTH);
 				LOGGER.error("Error en OAUTH, El access-token = " + accessToken + " no es valido, respuesta del servicio OAUTH = " + respuestaAutorizacion.getErrorMessage());

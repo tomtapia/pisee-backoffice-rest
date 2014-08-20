@@ -8,10 +8,15 @@ public class PiseeRespuesta implements Serializable{
 
 	//-- attrib
 	private static final long serialVersionUID = 855439714978536370L;
+	
 	private PiseeEncabezado encabezado;
+	
 	private List<Map<String,String>> metadata;
+	
 	private Map<String,String> cuerpo;
+	
 	private String responseRest = null;
+	
 	private PiseeTemporalData temporalData;
 	
 	//--constructor

@@ -54,6 +54,7 @@ public class TrazabilidadQueue extends Thread{
 		BigDecimal idLogTpoProveedor = null;
 		TrazabilidadBusiness trazabilidadBusiness = new TrazabilidadBusiness();
 		idSobreConsumidor = trazabilidadBusiness.insertSobreConsumidor(respuesta);
+		//FIXME: Revisar cuando se ingresa aca dado que ahora se elimino el emisor consumidor
 		if (null != configuracionServicio || AppConstants._EMISOR_CONSUMIDOR.equals(respuesta.getEncabezado().getEmisorSobre())) {
 			idSobreProveedor = trazabilidadBusiness.insertSobreProveedor(respuesta);	
 		}

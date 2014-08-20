@@ -9,14 +9,16 @@ import com.google.gson.GsonBuilder;
 public class JSONUtil {
 
 	public String toJSON(PiseeRespuesta respuesta) {
+	    Gson gson = new GsonBuilder().setExclusionStrategies(new PiseeRESTExclusionStrategy()).create();
+	    String json = gson.toJson(respuesta);
 		if (null != respuesta.getMetadata()){
 	    	if (respuesta.getMetadata().size() == 1){
 	    		respuesta.setCuerpo(respuesta.getMetadata().get(0));
 	    		respuesta.setMetadata(null);
+	    	}else{
+	    		json = json.replace(",\"metadata\":", ",\"cuerpo\":");
 	    	}			
 		}
-	    Gson gson = new GsonBuilder().setExclusionStrategies(new PiseeRESTExclusionStrategy()).create();
-	    String json = gson.toJson(respuesta);
 	    if (null != respuesta.getResponseRest()){
 		    int largo = json.length();
 		    String encabezado = json.substring(0 , largo -1);

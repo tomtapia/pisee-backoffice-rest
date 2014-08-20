@@ -2,20 +2,42 @@ package cl.gob.minsegpres.pisee.rest.entities.response;
 
 import java.io.Serializable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class PiseeEncabezado implements Serializable{
 
 	//-- attribs
 	private static final long serialVersionUID = -1023810672259549996L;
+	
+	@SerializedName("id_sobre")
 	private String idSobre;
+	
+	@SerializedName("emisor_sobre")
 	private String emisorSobre;
+	
+	@SerializedName("estado_sobre")
 	private String estadoSobre;
+	
+	@SerializedName("glosa_sobre")
 	private String glosaSobre;
+	
+	@SerializedName("proveedor")
 	private String nombreProveedor;
+	
+	@SerializedName("servicio")
 	private String nombreServicio;
+	
+	@SerializedName("consumidor")
 	private String nombreConsumidor;
+	
+	@SerializedName("tramite")
 	private String nombreTramite;
+	
+	@SerializedName("fecha_hora")
 	private String fechaHora;
-	private String fechaHoraReq;
+	
+	
+//	private String fechaHoraReq;
 	
 	//-- getters
 	public String getIdSobre() {
@@ -45,9 +67,9 @@ public class PiseeEncabezado implements Serializable{
 	public String getFechaHora() {
 		return fechaHora;
 	}
-	public String getFechaHoraReq() {
-		return fechaHoraReq;
-	}
+//	public String getFechaHoraReq() {
+//		return fechaHoraReq;
+//	}
 	
 	//-- setters
 	public void setIdSobre(String idSobre) {
@@ -77,8 +99,8 @@ public class PiseeEncabezado implements Serializable{
 	public void setFechaHora(String fechaHora) {
 		this.fechaHora = fechaHora;
 	}
-	public void setFechaHoraReq(String fechaHoraReq) {
-		this.fechaHoraReq = fechaHoraReq;
-	}
+//	public void setFechaHoraReq(String fechaHoraReq) {
+//		this.fechaHoraReq = fechaHoraReq;
+//	}
 	
 }

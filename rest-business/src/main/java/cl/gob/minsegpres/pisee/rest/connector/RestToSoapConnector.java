@@ -96,7 +96,8 @@ public class RestToSoapConnector {
 				}
 			}
 		} catch (AxisFault e) {
-			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+			//respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 			respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
 			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INTERNAL_ERROR);			
 			LOGGER.error("AxisFault Error en la llamada al servicio : " + " - " + e);
@@ -108,19 +109,22 @@ public class RestToSoapConnector {
 			LOGGER.error("MalformedURLException Error en la creacion de la llamada: " + " - " + e);
 			e.printStackTrace();
 		} catch (ServiceException e) {
-			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+			//respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 			respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
 			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INTERNAL_ERROR);			
 			LOGGER.error("ServiceException Error en la creacion de la llamada: " + " - " + e);
 			e.printStackTrace();
 		} catch (SAXException e) {
-			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+			//respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 			respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
 			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INTERNAL_ERROR);			
 			LOGGER.error("SAXException en el paseo del XML de entrada: " + " - " + e);
 			e.printStackTrace();
 		} catch (Exception e) {
-			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+			//respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
+			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 			respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
 			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INTERNAL_ERROR);			
 			LOGGER.error("Exception == " + e);
@@ -157,7 +161,7 @@ public class RestToSoapConnector {
 
 	private PiseeEncabezado fillEncabezado(Element eRoot) throws Exception {
 		PiseeEncabezado encabezado = new PiseeEncabezado();
-		Element eIdSobre, eFechaHora, eFechaHoraReq, eNombreProveedor, eNombreServicio, eNombreConsumidor, eNombreTramite;
+		Element eIdSobre, eFechaHora, eNombreProveedor, eNombreServicio, eNombreConsumidor, eNombreTramite;
 		Element eEmisorSobre, eEstadoSobre, eGlosaSobre;
 		eIdSobre = PiseeStringUtils.elementRecursive("Body/sobre/encabezado/idSobre", eRoot);
 		if (null != eIdSobre) {
@@ -167,10 +171,10 @@ public class RestToSoapConnector {
 		if (null != eFechaHora) {
 			encabezado.setFechaHora(eFechaHora.getTextTrim());
 		}
-		eFechaHoraReq = PiseeStringUtils.elementRecursive("Body/sobre/encabezado/fechaHoraReq", eRoot);
-		if (null != eFechaHoraReq) {
-			encabezado.setFechaHoraReq(eFechaHoraReq.getTextTrim());
-		}
+//		eFechaHoraReq = PiseeStringUtils.elementRecursive("Body/sobre/encabezado/fechaHoraReq", eRoot);
+//		if (null != eFechaHoraReq) {
+//			encabezado.setFechaHoraReq(eFechaHoraReq.getTextTrim());
+//		}
 		eNombreProveedor = PiseeStringUtils.elementRecursive("Body/sobre/encabezado/proveedor/nombre", eRoot);
 		if (null != eNombreProveedor) {
 			encabezado.setNombreProveedor(eNombreProveedor.getTextTrim());
@@ -185,7 +189,7 @@ public class RestToSoapConnector {
 		}
 		eNombreTramite = PiseeStringUtils.elementRecursive("Body/sobre/encabezado/consumidor/tramite", eRoot);
 		if (null != eNombreTramite) {
-			encabezado.setNombreConsumidor(eNombreTramite.getTextTrim());
+			encabezado.setNombreTramite(eNombreTramite.getTextTrim());
 		}
 		eEmisorSobre = PiseeStringUtils.elementRecursive("Body/sobre/encabezado/emisor", eRoot);
 		if (null != eEmisorSobre) {
