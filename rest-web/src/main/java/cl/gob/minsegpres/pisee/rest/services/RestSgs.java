@@ -1,6 +1,6 @@
 package cl.gob.minsegpres.pisee.rest.services;
 
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -26,10 +26,8 @@ public class RestSgs {
 	
 	private final static Log LOGGER = LogFactory.getLog(RestSgs.class);
 
-	//FIXME: El metodo GET es solo para pruebas, en produccion debe ser POST por la cantidad de parametros
-	@GET
-//	@POST
-	@Path("v1/enviaSolicitudSGS")
+	@POST
+	@Path("v1/envia_solicitud")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public String sendToPortalTransaparencia(@QueryParam("pisee_token") String piseeToken,
 											@QueryParam("p01") String p01,

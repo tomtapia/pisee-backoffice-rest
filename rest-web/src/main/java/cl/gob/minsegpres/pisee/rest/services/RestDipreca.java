@@ -26,7 +26,7 @@ public class RestDipreca {
 	private final static Log LOGGER = LogFactory.getLog(RestDipreca.class);
 	
 	@GET
-	@Path("v1/consultaImponentes")
+	@Path("v1/consulta_imponentes")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public String getConsultaImponentes(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
 		long startTime = System.currentTimeMillis();

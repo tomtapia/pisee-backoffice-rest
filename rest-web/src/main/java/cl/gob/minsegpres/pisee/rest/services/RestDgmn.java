@@ -26,7 +26,7 @@ public class RestDgmn {
 	private final static Log LOGGER = LogFactory.getLog(RestDgmn.class);
 
 	@GET
-	@Path("v1/consultaSituacionMilitar")
+	@Path("v1/consulta_situacion_militar")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public String getConsultaSituacionMilitar(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
 		long startTime = System.currentTimeMillis();

@@ -26,7 +26,7 @@ public class RestIsp {
 	private final static Log LOGGER = LogFactory.getLog(RestIsp.class);
 	
 	@GET
-	@Path("v1/listadoEsperaCorazon")
+	@Path("v1/listado_espera_corazon")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public String getListadoEsperaCorazon(@QueryParam("pisee_token") String piseeToken) {
 		long startTime = System.currentTimeMillis();

@@ -26,7 +26,7 @@ public class RestMineduc {
 	private final static Log LOGGER = LogFactory.getLog(RestMineduc.class);
 	
 	@GET
-	@Path("v1/consultaLicenciaEnsenanzaMedia")
+	@Path("v1/consulta_licencia_ensenanza_media")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public String getLicenciaEnsenanzaMedia(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
 		long startTime = System.currentTimeMillis();
@@ -49,8 +49,21 @@ public class RestMineduc {
 	    return value;		
     }
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@GET
-	@Path("v1/consultaLicenciaEnsenanzaMediaOAuth")
+	@Path("v1/consulta_licencia_ensenanza_media_oauth")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public String getLicenciaEnsenanzaMediaOauth(@QueryParam("access_token") String accessToken) {
 		long startTime = System.currentTimeMillis();
