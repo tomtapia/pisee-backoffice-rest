@@ -4,7 +4,7 @@
 	<groupId>cl.gob.minsegpres.pisee.rest</groupId>
 	<artifactId>rest-business</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.3</version>
+	<version>0.0.4</version>
 	<name>rest-business</name>
 	<url>http://www.pisee.cl</url>
 	<description>Artefacto con la logica para consumir servicios (SOAP)integrados en la pisee pero desplegados via REST</description>

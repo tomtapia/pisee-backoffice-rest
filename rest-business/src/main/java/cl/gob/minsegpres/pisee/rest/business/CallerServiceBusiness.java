@@ -60,6 +60,7 @@ public class CallerServiceBusiness {
 					respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 					respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_AUTORIZACION);
 					respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_BLOCKED_SERVICE);
+					//FIXME: Mejorar mensaje en el log asociando el servicio al cual fue solicitado 
 					LOGGER.info("Servicio de token = " + tokenPisee + " bloqueado para consumo");
 				} else {
 					if (proveedorServiceName.startsWith(AppConstants.PREFIX_SERVICE_SOAP)){
@@ -83,6 +84,8 @@ public class CallerServiceBusiness {
 		return respuesta;
 	}
 	
+	
+	//TODO: Cuando se integre ouath revisar su trazabilidad y logica del metodo
 	public PiseeRespuesta callServiceOAuth(String proveedorServiceName, InputParameter inputParameter) {
 		ConfiguracionServicio configuracionServicio = null;
 		ConfiguracionServicioService configuracionServicioBusiness = new ConfiguracionServicioService();
@@ -141,9 +144,6 @@ public class CallerServiceBusiness {
 			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_VALIDATE_CALL_OAUTH);
 			LOGGER.error("Ocurrio un error en la llamada al servicio OAUTH");
 		}
-		
-		//TODO: Cuando se integre ouath revisar su trazabilidad
-		
 		return respuesta;
 	}	
 	

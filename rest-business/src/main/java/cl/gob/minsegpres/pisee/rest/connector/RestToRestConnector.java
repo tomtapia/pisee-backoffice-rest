@@ -70,7 +70,7 @@ public class RestToRestConnector {
 			Client client = ClientHelper.createClient(configuracionServicio);
 			String queryString, endpoint, extendEndpoint = null, result = null;
 			WebResource webResource;
-			
+			MultivaluedMap<String, String> parameters;
 			if (AppConstants._HTTP_METHOD_GET.equals(configService.getMethod())){
 				if (!hasPathParameter(configService, inputParameter)){
 					queryString = createQueryString(configService, inputParameter);
@@ -88,25 +88,21 @@ public class RestToRestConnector {
 				}				
 			}else if (AppConstants._HTTP_METHOD_POST.equals(configService.getMethod())){
 				webResource = client.resource(configService.getBaseEndpoint());
-				MultivaluedMap<String, String> parameters;
 				parameters = createMultivaluedMap(configService, inputParameter);
 				LOGGER.info(transactionLogInput(inputParameter, configService.getMethod(), configService.getBaseEndpoint() + configService.getExtendEndpoint()));
 				response = webResource.path(configService.getExtendEndpoint()).queryParams(parameters).post(ClientResponse.class);
 			}else if (AppConstants._HTTP_METHOD_PUT.equals(configService.getMethod())){
 				webResource = client.resource(configService.getBaseEndpoint());
-				MultivaluedMap<String, String> parameters;
 				parameters = createMultivaluedMap(configService, inputParameter);
 				LOGGER.info(transactionLogInput(inputParameter, configService.getMethod(), configService.getBaseEndpoint() + configService.getExtendEndpoint()));
 				response = webResource.path(configService.getExtendEndpoint()).queryParams(parameters).put(ClientResponse.class);
 			}else {
 				LOGGER.info("Metodo HTTP: " + configService.getMethod() + " no es soportado");
-				//encabezado.setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
 				encabezado.setEmisorSobre(AppConstants._EMISOR_PISEE);
 				encabezado.setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_TRAMITE_NO_EXISTE);
 				encabezado.setGlosaSobre(AppConstants._MSG_UNSUPPORT_HTTP_METHOD + configService.getMethod() );
 				respuesta.setEncabezado(encabezado);				
 			}
-
 			if (null != response){
 				if (response.getStatus() == 200) {
 					result = response.getEntity(String.class);
@@ -118,7 +114,6 @@ public class RestToRestConnector {
 						encabezado.setEstadoSobre((String)mapEncabezado.get("estadoSobre"));					
 						encabezado.setGlosaSobre((String)mapEncabezado.get("glosaSobre"));						
 						respuesta.setEncabezado(encabezado);
-						
 						String jsonResponse = null;
 						ArrayList<String> mapCuerpo, mapMetadata;
 						mapCuerpo = (ArrayList<String>)mapResult.get("cuerpo");
@@ -131,7 +126,6 @@ public class RestToRestConnector {
 						    jsonResponse = gson.toJson(mapMetadata);								
 						}
 						respuesta.setResponseRest(jsonResponse);	
-						
 					}else{
 						//NO Es respuesta formato PISEE
 						//Se retorna todo como OK a la espera de un motor de validaciones segun el servicio
