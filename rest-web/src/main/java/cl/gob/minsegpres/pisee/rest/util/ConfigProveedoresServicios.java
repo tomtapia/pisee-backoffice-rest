@@ -16,6 +16,7 @@ public final class ConfigProveedoresServicios {
 
 	//Servicios DE SRCEI
 	public static final String SOAP_SRCEI__CERTIFICADO_NACIMIENTO_GENCHI = "SOAP_SRCEI_CertificadoNacimientoGENCHI";
+	public static final String SOAP_SRCEI__INFORMACION_PERSONAL_LOBBY = "SOAP_SRCEI_InformacionPersonalLOBBY";
 	
 	//Servicios DE SGS
 	public static final String SOAP_SGS__PORTAL_TRANSPARENCIA = "SOAP_SGS_PortalTransparencia";
@@ -33,15 +34,10 @@ public final class ConfigProveedoresServicios {
 
 	//----------------------------------------------------------------------------------------------------------
 	//INICIO Configuracion Servicios REST
-	
 	public static final String REST_MODERNIZACION__REGIONES = "REST_MODERNIZACION_Regiones";
-	
-	
 	public static final String REST_PISEE__TEST_POST	= "REST_PISEE_TestPost";	
 	public static final String REST_PISEE__TEST_PUT 	= "REST_PISEE_TestPut";
-	
 	public static final String REST_PISEE__ISP 	= "REST_PISEE_ISP";
-	
 	//FIN Configuracion Servicios REST
 	//----------------------------------------------------------------------------------------------------------	
 	

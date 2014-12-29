@@ -143,5 +143,61 @@ public class RestSrcei {
 		*/
 		
 		return result.toString();
-    }	
+    }
+	
+	
+	@GET
+	@Path("v1/consulta_informacion_personal_lobby")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public String getConsultaInformacionPersonalLobby(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
+		long startTime = System.currentTimeMillis();
+		
+		InputParameter inputParameter = new InputParameter();
+		JSONUtil jsonUtil = new JSONUtil();
+		CallerServiceBusiness restBusiness = new CallerServiceBusiness();
+		PiseeRespuesta respuesta;
+		
+		inputParameter.addBodyParameter(ParametersName.RUT, rut);
+		inputParameter.addBodyParameter(ParametersName.DV, dv);
+		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);		
+//		inputParameter.addBodyParameter(ParametersName.OAUTH_SCOPE, ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_NACIMIENTO_GENCHI);
+		
+		respuesta = restBusiness.callService(ConfigProveedoresServicios.SOAP_SRCEI__INFORMACION_PERSONAL_LOBBY, inputParameter, true);
+		
+		String value = jsonUtil.toJSON(respuesta);
+		long endTime = System.currentTimeMillis();		
+		LOGGER.info("getConsultaInformacionPersonalLobby - TIME == " + (endTime - startTime) + " MILISECONDS");
+		
+	    return value;	 
+		
+		
+		/*
+		LOGGER.info("getConsultaInformacionPersonalLobby - rut = " + rut + " , dv = " + dv + " , pisee_token = " + piseeToken);
+		StringBuffer result = new StringBuffer();
+		result.append("{");
+		result.append("\"encabezado\": {");
+		result.append("\"id_sobre\": \"150501008220140613000000100\",");
+		result.append("\"emisor_sobre\": \"SRCeI\",");
+		result.append("\"estado_sobre\": \"00\",");
+		result.append("\"glosa_sobre\": \"TRANSACCION EXITOSA\",");
+		result.append("\"proveedor\": \"SRCeI\",");
+		result.append("\"servicio\": \"INFORMACION PERSONAL\",");
+		result.append("\"consumidor\": \"LOBBY\",");
+		result.append("\"tramite\": \"SOLICITUD LEY LOBBY\",");
+		result.append("\"fecha_hora\": \"2014-08-19T12:27:49.5205537-04:00\"");
+		result.append("},");
+		result.append("\"cuerpo\": {");
+		result.append("\"run\": \"10546911\",");
+		result.append("\"dv\": \"K\",");
+		result.append("\"nombres\": \"VICTOR DAVID\",");
+		result.append("\"apellido_paterno\": \"RUMINOT\",");
+		result.append("\"apellido_materno\": \"BASCUR\"");
+		result.append("}");
+		result.append("}");
+		return result.toString();
+		*/
+		
+    }		
+	
+	
 }

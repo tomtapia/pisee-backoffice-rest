@@ -4,7 +4,7 @@
 	<groupId>cl.gob.minsegpres.pisee.rest</groupId>
 	<artifactId>rest-web</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.3</version>
+	<version>0.0.4</version>
 	<name>rest-web</name>
 	<url>http://www.pisee.cl</url>
 	<description>WAR con la logica para consumir servicios (SOAP)integrados en la pisee pero desplegados via REST</description>
@@ -160,6 +160,13 @@
             <version>1.0</version>  
             <scope>provided</scope>
         </dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		        
 		<!--  PISEE - CORE -->		
         <dependency>  
             <groupId>cl.gob.minsegpres.pisee.core</groupId>  
@@ -170,14 +177,7 @@
 		<dependency>
 			<groupId>cl.gob.minsegpres.pisee.rest</groupId>
 			<artifactId>rest-business</artifactId>
-			<version>0.0.3</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
+			<version>0.0.4</version>
 		</dependency>
 				
 	</dependencies>
