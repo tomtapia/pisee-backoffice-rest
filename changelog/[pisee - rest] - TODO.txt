@@ -1,1 +1,2 @@
 
+- Upgrade de versiones en la libreria Jersey, subir a 1.18. dio un error en AOp de spring
