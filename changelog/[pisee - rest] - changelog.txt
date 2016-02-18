@@ -1,7 +1,7 @@
 0.0.1 = Prueba Concepto - Local 		29/03/2014.
 - Primera version instalada en TEST la cual funciona como wrapper de servicios SOAP y los expone via REST
 
-0.0.2 = Cambios realizados 	04/01/2013
+0.0.2 = Cambios realizados 	04/01/2014
 * Funcionalidades
 	- Integracion servicios REST ya sean en formato PISEE o no
 	- Trazabilidad de servicios REST
@@ -15,3 +15,14 @@
 	SGS				Solicitud Transparencia				SOAP	PISEE – WRAPPER
 	CPLT			Solicitud Transparencia				SOAP	PISEE – WRAPPER
 	Modernización	División Político Administrativa	REST	PISEE - REST
+
+0.0.2 = Cambios realizados 	19/08/2014
+* Funcionalidades
+	- Modificacion de errores a causa de PISEE que ahora son parte del Consumidor
+	- Eliminacion del campo "fecha_hora_req"
+	- Correccion del nombre del Consumidor en la respuesta
+	- Correccion en la serializacion de la respuesta	
+	- Modificacion en los path de los servicios cumpliendo estandares PISEE
+* Servicios Integrados		
+	ORGANISMO		SERVICIO							TIPO	SOLUCION	
+	SRCEI			Informacion Personal				SOAP	PISEE - REST (*) Emulado para el Escritorio Ciudadano
