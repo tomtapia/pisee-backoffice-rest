@@ -8,26 +8,16 @@
 	
 	<context:component-scan base-package="cl.gob.minsegpres.pisee.rest.services" />
 
+	<!-- Servicios -->
 	<bean id="restMineduc" class="cl.gob.minsegpres.pisee.rest.services.RestMineduc" autowire="byName" />
-
 	<bean id="restDipreca" class="cl.gob.minsegpres.pisee.rest.services.RestDipreca" autowire="byName" />
-	
 	<bean id="restIsp" class="cl.gob.minsegpres.pisee.rest.services.RestIsp" autowire="byName" />
-	
 	<bean id="restSrcei" class="cl.gob.minsegpres.pisee.rest.services.RestSrcei" autowire="byName" />
-	
-	<bean id="restSgs" class="cl.gob.minsegpres.pisee.rest.services.RestSgs" autowire="byName" />
-	
-	<bean id="restCplt" class="cl.gob.minsegpres.pisee.rest.services.RestCplt" autowire="byName" />
-	
 	<bean id="restDgmn" class="cl.gob.minsegpres.pisee.rest.services.RestDgmn" autowire="byName" />
-	
-	<bean id="restModernizacion" class="cl.gob.minsegpres.pisee.rest.services.RestModernizacion" autowire="byName" />
-	
+	<bean id="restSii" class="cl.gob.minsegpres.pisee.rest.services.RestSii" autowire="byName" />
 	
 	<!-- Pruebas -->
-	
+	<bean id="restModernizacion" class="cl.gob.minsegpres.pisee.rest.services.RestModernizacion" autowire="byName" />
 	<bean id="restFile" class="cl.gob.minsegpres.pisee.rest.services.RestFile" autowire="byName" />
-	
 	
 </beans>

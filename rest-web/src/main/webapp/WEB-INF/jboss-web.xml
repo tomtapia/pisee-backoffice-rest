@@ -1,8 +1,4 @@
 <jboss-web>
 	<context-root>rest-web</context-root>
+	<security-domain>java:/jaas/piseeAuth</security-domain>
 </jboss-web>
-
-
-
-
-

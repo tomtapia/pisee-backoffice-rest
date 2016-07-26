@@ -4,7 +4,7 @@
 	<groupId>cl.gob.minsegpres.pisee.rest</groupId>
 	<artifactId>rest-web</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.4</version>
+	<version>0.0.5</version>
 	<name>rest-web</name>
 	<url>http://www.pisee.cl</url>
 	<description>WAR con la logica para consumir servicios (SOAP)integrados en la pisee pero desplegados via REST</description>
@@ -84,26 +84,42 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.6.4</version>
 		</dependency>
+		
+		
+		
+		
+		
+		
 		<dependency>
 			<groupId>com.sun.jersey.contribs</groupId>
 			<artifactId>jersey-spring</artifactId>
-			<version>1.1.5.1</version>
+<!-- 			<version>1.1.5.1</version> -->
+			<version>1.19</version>			
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-server</artifactId>
-			<version>1.17.1</version>
+<!-- 			<version>1.17.1</version> -->
+			<version>1.19</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-core</artifactId>
-			<version>1.17.1</version>
+<!-- 			<version>1.17.1</version> -->
+			<version>1.19</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-servlet</artifactId>
-			<version>1.17.1</version>
+<!-- 			<version>1.17.1</version> -->
+			<version>1.19</version>
 		</dependency>
+		
+		
+		
+		
+		
+		
 		<dependency>
 			<groupId>org.apache.axis</groupId>
 			<artifactId>axis</artifactId>
@@ -171,13 +187,13 @@
         <dependency>  
             <groupId>cl.gob.minsegpres.pisee.core</groupId>  
             <artifactId>pisee-core</artifactId>  
-            <version>0.0.2</version>
+            <version>0.0.4</version>
         </dependency>
         <!--  REST - BUSINESS -->
 		<dependency>
 			<groupId>cl.gob.minsegpres.pisee.rest</groupId>
 			<artifactId>rest-business</artifactId>
-			<version>0.0.4</version>
+			<version>0.0.5</version>
 		</dependency>
 				
 	</dependencies>
