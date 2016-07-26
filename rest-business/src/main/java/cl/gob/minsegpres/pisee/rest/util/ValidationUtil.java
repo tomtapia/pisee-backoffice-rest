@@ -24,7 +24,7 @@ public class ValidationUtil {
 		return false;
 	}
 
-	public PiseeRespuesta validateRutParameters(InputParameter inputParameter){
+	public static PiseeRespuesta validateRutParameters(InputParameter inputParameter){
 		PiseeRespuesta respuesta = null;
 		StringBuffer mensaje = new StringBuffer();
 		if (!ValidationUtil.validarRut((String)inputParameter.getBodyParameter(ParametersName.RUT), 

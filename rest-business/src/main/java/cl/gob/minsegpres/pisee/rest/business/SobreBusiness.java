@@ -24,7 +24,7 @@ public class SobreBusiness {
 		input.addHeaderParameter(ID_SOBRE, generateSobreID(config));
 		input.addHeaderParameter(FECHA_HORA, generateSobreFechaHora());
 		input.addHeaderParameter(NOMBRE_PROVEEDOR, config.getServicioTramite().getServicio().getOrganismo().getSigla());
-		input.addHeaderParameter(NOMBRE_SERVICIO, config.getServicioTramite().getServicio().getNombreCorto());
+		input.addHeaderParameter(NOMBRE_SERVICIO, config.getServicioTramite().getServicio().getNombre());
 		input.addHeaderParameter(NOMBRE_CONSUMIDOR, config.getServicioTramite().getTramite().getOrganismo().getSigla());
 		input.addHeaderParameter(NOMBRE_TRAMITE, config.getServicioTramite().getTramite().getNombre());
 		input.addHeaderParameter(FECHA_HORA_REQ, generateSobreFechaHora());

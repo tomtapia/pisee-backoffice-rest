@@ -37,7 +37,6 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class RestToRestConnector {
 
-	//private static final String _UTF_8 = "UTF-8";
 	private final static Log LOGGER = LogFactory.getLog(RestToRestConnector.class);
 
 	public PiseeRespuesta callService(String proveedorServiceName, InputParameter inputParameter, ConfiguracionServicio configuracionServicio) {
@@ -45,18 +44,16 @@ public class RestToRestConnector {
 		ConfigServiceREST configService = ReaderTemplateConfigREST.getInstance().findConfigService(proveedorServiceName);
 		SobreBusiness sobreBusiness = new SobreBusiness();
 		inputParameter = sobreBusiness.fillSobre(inputParameter, configuracionServicio);
-		respuesta = callService(configService, inputParameter, configuracionServicio);
 		
 		//TODO: Faltar validar que el TOKEN sea para el consumo del servicio en particular, actualmente sirve cualquier token para consumo de REST a REST
+		respuesta = callService(configService, inputParameter, configuracionServicio);
 		
 		respuesta.getEncabezado().setIdSobre(sobreBusiness.generateSobreID(configuracionServicio));
 		respuesta.getEncabezado().setFechaHora(sobreBusiness.generateSobreFechaHora());
-//		respuesta.getEncabezado().setFechaHoraReq(sobreBusiness.generateSobreFechaHora());
 		respuesta.getEncabezado().setNombreProveedor(configuracionServicio.getServicioTramite().getServicio().getOrganismo().getSigla());
 		respuesta.getEncabezado().setNombreServicio(configuracionServicio.getServicioTramite().getServicio().getNombre());
 		respuesta.getEncabezado().setNombreConsumidor(configuracionServicio.getServicioTramite().getTramite().getOrganismo().getSigla());
 		respuesta.getEncabezado().setNombreTramite(configuracionServicio.getServicioTramite().getTramite().getNombre());
-			
 		return respuesta;
 	}
 	
@@ -136,15 +133,15 @@ public class RestToRestConnector {
 						respuesta.setResponseRest(result);						
 					}
 				}else{
-					encabezado.setEmisorSobre(AppConstants._EMISOR_PROVEEDOR);
-					encabezado.setEstadoSobre(AppConstants._CODE_ERROR_PROVEEDOR_INTERNO);
+					encabezado.setEmisorSobre(AppConstants._EMISOR_PISEE);
+					encabezado.setEstadoSobre(AppConstants._CODE_ERROR_PROVEEDOR_INTERNO_01);
 					encabezado.setGlosaSobre(AppConstants._MSG_ERROR_HTTP + response.getStatus());
 					respuesta.setEncabezado(encabezado);				
 				}				
 			}
 		} catch (PiseeRESTException e) {
-			encabezado.setEmisorSobre(AppConstants._EMISOR_PROVEEDOR);
-			encabezado.setEstadoSobre(AppConstants._CODE_ERROR_PROVEEDOR_INTERNO);
+			encabezado.setEmisorSobre(AppConstants._EMISOR_PISEE);
+			encabezado.setEstadoSobre(AppConstants._CODE_ERROR_PROVEEDOR_INTERNO_01);
 			encabezado.setGlosaSobre(AppConstants._MSG_ERROR + e.getEstado() + " - " + e.getGlosa());
 			respuesta.setEncabezado(encabezado);
 			LOGGER.info("PiseeRESTException - result == " + encabezado.getGlosaSobre());

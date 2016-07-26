@@ -8,6 +8,21 @@ import com.google.gson.GsonBuilder;
 
 public class JSONUtil {
 
+	public String toJSONResponse(PiseeRespuesta respuesta) {
+	    Gson gson = new GsonBuilder().setExclusionStrategies(new PiseeRESTExclusionStrategy()).create();
+	    String json;
+	    if (null != respuesta.getMetadata()){
+	    	if (respuesta.getMetadata().size() == 1){
+	    		json = gson.toJson(respuesta.getMetadata().get(0));
+	    	}else{
+	    		json = gson.toJson(respuesta.getMetadata());
+	    	}	    	
+	    }else{
+	    	json = "{}";
+	    }
+		return json;
+	}
+	
 	public String toJSON(PiseeRespuesta respuesta) {
 	    Gson gson = new GsonBuilder().setExclusionStrategies(new PiseeRESTExclusionStrategy()).create();
 	    String json = gson.toJson(respuesta);

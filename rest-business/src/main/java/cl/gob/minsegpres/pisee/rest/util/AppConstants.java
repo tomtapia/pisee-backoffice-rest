@@ -21,6 +21,7 @@ public final class AppConstants {
 	public final static String CONFIG_DIR = "/deploy/base/piseeConf/";
 	public final static String CONFIG_SERVICES_DIR = "/deploy/base/piseeConf/rest_services/";
 	
+	public final static String PREFIX_SERVICE_SOAP_SII = "SOAP_SII_";
 	public final static String PREFIX_SERVICE_SOAP = "SOAP_";
 	public final static String PREFIX_SERVICE_REST = "REST_";	
 	public final static String PREFIX_CONFIG_SERVICES_CONFIG = "_config.xml";
@@ -33,15 +34,22 @@ public final class AppConstants {
 	
 	
 	public static final String _CODE_OK = "00";
+	public static final String _CODE_OK_PROVEEDOR_NO_DATA_FOUND = "05";
+	public static final String _CODE_OK_PROVEEDOR_NO_DATA_AVAILABLE = "07";
 	public static final String _CODE_ERROR_PROVEEDOR_TIMEOUT = "06";
-	public static final String _CODE_ERROR_PROVEEDOR_INTERNO = "-01";
+	public static final String _CODE_ERROR_PROVEEDOR_INTERNO_01 = "-01";
+	public static final String _CODE_ERROR_PROVEEDOR_INTERNO_02 = "-02";
+	public static final String _CODE_ERROR_PROVEEDOR_INTERNO_03 = "-03";
+	public static final String _CODE_ERROR_PROVEEDOR_INTERNO_04 = "-04";
+	public static final String _CODE_ERROR_CONSUMIDOR_AUTENTICACION = "01";
 	public static final String _CODE_ERROR_CONSUMIDOR_AUTORIZACION = "02";
 	public static final String _CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA = "03";
+	public static final String _CODE_ERROR_CONSUMIDOR_XML_ENTRADA = "04";
 	public static final String _CODE_ERROR_CONSUMIDOR_TRAMITE_NO_EXISTE = "08";
 	
 	public static final String _MSG_CODE_OK = "RESPUESTA EXISTOSA";
 	public static final String _MSG_INTERNAL_ERROR = "Error en el proceso de llamado al Proveedor";
-	public static final String _MSG_INVALID_TOKEN = "Token invalido pata consumo de servicio";
+	public static final String _MSG_INVALID_TOKEN = "Token invalido para consumo de servicio";
 	public static final String _MSG_BLOCKED_SERVICE = "El servicio se encuentra bloqueado para consumo via REST";	
 	public static final String _MSG_INVALID_NULL_PARAMETER = "El siguiente parametro es obligatorio y tiene valor en null: ";
 	public static final String _MSG_INVALID_RUT_PARAMETER = "Rut no valido";

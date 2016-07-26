@@ -6,9 +6,8 @@ public class KeyStoreParameterSOAP {
 	private String keystoreType;
 	private String keystoreFile;
 	private String keystorePass;
-	private String privateKeyAlias;
-	private String privateKeyPass;
 	
+	//---
 	public String getServiceName() {
 		return serviceName;
 	}
@@ -21,13 +20,8 @@ public class KeyStoreParameterSOAP {
 	public String getKeystorePass() {
 		return keystorePass;
 	}
-	public String getPrivateKeyAlias() {
-		return privateKeyAlias;
-	}
-	public String getPrivateKeyPass() {
-		return privateKeyPass;
-	}
 	
+	//---
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
 	}	
@@ -40,12 +34,5 @@ public class KeyStoreParameterSOAP {
 	public void setKeystorePass(String keystorePass) {
 		this.keystorePass = keystorePass;
 	}
-	public void setPrivateKeyAlias(String privateKeyAlias) {
-		this.privateKeyAlias = privateKeyAlias;
-	}
-	public void setPrivateKeyPass(String privateKeyPass) {
-		this.privateKeyPass = privateKeyPass;
-	}
-	
 	
 }

@@ -86,8 +86,6 @@ public class ReaderTemplateKeyStoreSOAP {
 			keyStoreParameter.setKeystoreType(eRoot.elementTextTrim("keystore_type"));
 			keyStoreParameter.setKeystoreFile(eRoot.elementTextTrim("keystore_file"));
 			keyStoreParameter.setKeystorePass(eRoot.elementTextTrim("keystore_pass"));
-			keyStoreParameter.setPrivateKeyAlias(eRoot.elementTextTrim("private_key_alias"));
-			keyStoreParameter.setPrivateKeyPass(eRoot.elementTextTrim("private_key_pass"));
 		} catch (DocumentException e) {
 			LOGGER.error("readKeyStoreFile - DocumentException - para servicio == " + fileName + " , " + e.fillInStackTrace());
 		}

@@ -6,6 +6,7 @@ public class ParametersName {
 	public final static String RUT = "rut";
 	public final static String DV = "dv";
 	public final static String PISEE_TOKEN = "pisee_token";
+	public final static String SII_TOKEN = "sii_token";
 	public final static String FECHA_CONSULTA_RECIBIDA = "pisee_fecha_consulta_recibida";
 
 	//OAUTH

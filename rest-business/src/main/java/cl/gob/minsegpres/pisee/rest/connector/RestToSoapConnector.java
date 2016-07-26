@@ -12,7 +12,6 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ServiceException;
 
-import org.apache.axis.AxisFault;
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 import org.apache.axis.message.SOAPEnvelope;
@@ -21,10 +20,8 @@ import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.xml.sax.SAXException;
 
 import cl.gob.minsegpres.pisee.core.model.ConfiguracionServicio;
-
 import cl.gob.minsegpres.pisee.rest.business.SobreBusiness;
 import cl.gob.minsegpres.pisee.rest.entities.InputParameter;
 import cl.gob.minsegpres.pisee.rest.entities.response.PiseeEncabezado;
@@ -52,6 +49,7 @@ public class RestToSoapConnector {
 		PiseeRespuesta respuesta = new PiseeRespuesta();
 		SobreBusiness sobreBusiness = new SobreBusiness();
 		try {
+			String result = null;
 			Call call;
 			ExpressionLanguageProcessor processor;
 			InputStream is;
@@ -69,20 +67,27 @@ public class RestToSoapConnector {
 				if (configuracionServicio.hasNeedFirmaDigital()){
 					long tFirmaIN = System.currentTimeMillis();
 					keyStoreParameter = ReaderTemplateKeyStoreSOAP.getInstance().findKeyStore(proveedorServiceName + AppConstants.PREFIX_CONFIG_SERVICES_KEYSTORE);
-					String result = srceiConnector.firmarEntrada(is, keyStoreParameter);
+					LOGGER.info(proveedorServiceName + " - INPUT SERVICE ANTES DE FIRMAR : " + PiseeStringUtils.prettyFormat(fileInputProcessed));
+					result = srceiConnector.firmarEntrada(is, keyStoreParameter);
 					is = new ByteArrayInputStream(result.getBytes(_UTF_8));
 					LOGGER.info(proveedorServiceName + " - Tiempo en firmar entrada == " + (System.currentTimeMillis() - tFirmaIN));
 				}
 				soapEnvelopeInput = new SOAPEnvelope(is);
-				LOGGER.info(proveedorServiceName + " - INPUT SERVICE : " + PiseeStringUtils.prettyFormat(soapEnvelopeInput.getAsString()));
+				
+				if (null != result){
+					LOGGER.info(proveedorServiceName + " - INPUT SERVICE : " + PiseeStringUtils.prettyFormat(result));	
+				}else{
+					LOGGER.info(proveedorServiceName + " - INPUT SERVICE : " + PiseeStringUtils.prettyFormat(soapEnvelopeInput.getAsString()));
+				}
+				
 				long tc1 = System.currentTimeMillis();
 				LOGGER.info(transactionLogInput(inputParameter, configuracionServicio));
 				soapEnvelopeOutput = call.invoke(soapEnvelopeInput);
-				LOGGER.info(transactionLogOutput(inputParameter, configuracionServicio));
+				LOGGER.info(proveedorServiceName + " - " + transactionLogOutput(inputParameter, configuracionServicio));
 				LOGGER.info(proveedorServiceName + " - Tiempo de respuesta del servicio == " + (System.currentTimeMillis() - tc1));
 				if (configuracionServicio.hasNeedFirmaDigital()){
 					long tFirmaOUT = System.currentTimeMillis();
-					String result = srceiConnector.descrifarRespuesta(soapEnvelopeOutput.getAsDocument(), keyStoreParameter);
+					result = srceiConnector.descrifarRespuesta(soapEnvelopeOutput.getAsDocument(), keyStoreParameter);
 					document = DocumentHelper.parseText(result);
 					LOGGER.info(proveedorServiceName + " - Tiempo en descrifrar respuesta == " + (System.currentTimeMillis() - tFirmaOUT));
 				}else{
@@ -95,50 +100,19 @@ public class RestToSoapConnector {
 					respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
 				}
 			}
-		} catch (AxisFault e) {
-			//respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
-			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
-			respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
-			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INTERNAL_ERROR);			
-			LOGGER.error("AxisFault Error en la llamada al servicio : " + " - " + e);
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PROVEEDOR);
-			respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_PROVEEDOR_INTERNO);
-			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INTERNAL_ERROR);			
-			LOGGER.error("MalformedURLException Error en la creacion de la llamada: " + " - " + e);
-			e.printStackTrace();
-		} catch (ServiceException e) {
-			//respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
-			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
-			respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
-			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INTERNAL_ERROR);			
-			LOGGER.error("ServiceException Error en la creacion de la llamada: " + " - " + e);
-			e.printStackTrace();
-		} catch (SAXException e) {
-			//respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
-			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
-			respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
-			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INTERNAL_ERROR);			
-			LOGGER.error("SAXException en el paseo del XML de entrada: " + " - " + e);
-			e.printStackTrace();
 		} catch (Exception e) {
-			//respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_CONSUMIDOR);
 			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
-			respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
+			respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_PROVEEDOR_INTERNO_01);
 			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INTERNAL_ERROR);			
-			LOGGER.error("Exception == " + e);
+			LOGGER.error(proveedorServiceName + " - Error consumiendo el servicio: " + e);
 			e.printStackTrace();
 		} 
-		
 		long endTime = System.currentTimeMillis();
-		LOGGER.info("TOTAL CONNECTOR TIME == " + (endTime - startTime) + " MILISECONDS");
-		
+		LOGGER.info(proveedorServiceName + " - TOTAL CONNECTOR TIME == " + (endTime - startTime) + " MILISECONDS");
 		respuesta.setTemporalData(new PiseeTemporalData());
 		respuesta.getTemporalData().setFechaConsultaRecibida((Calendar)inputParameter.getHeaderParameter(ParametersName.FECHA_CONSULTA_RECIBIDA));
 		respuesta.getTemporalData().setDuracionLlamadaServicio((endTime - startTime));
 		return respuesta;		
-		
 	}
 
 	private Call createCall(ConfiguracionServicio serviceConfig) throws MalformedURLException, ServiceException {
@@ -171,10 +145,6 @@ public class RestToSoapConnector {
 		if (null != eFechaHora) {
 			encabezado.setFechaHora(eFechaHora.getTextTrim());
 		}
-//		eFechaHoraReq = PiseeStringUtils.elementRecursive("Body/sobre/encabezado/fechaHoraReq", eRoot);
-//		if (null != eFechaHoraReq) {
-//			encabezado.setFechaHoraReq(eFechaHoraReq.getTextTrim());
-//		}
 		eNombreProveedor = PiseeStringUtils.elementRecursive("Body/sobre/encabezado/proveedor/nombre", eRoot);
 		if (null != eNombreProveedor) {
 			encabezado.setNombreProveedor(eNombreProveedor.getTextTrim());
