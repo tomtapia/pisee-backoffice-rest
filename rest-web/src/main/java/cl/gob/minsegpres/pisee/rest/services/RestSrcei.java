@@ -92,4 +92,24 @@ public class RestSrcei {
 		return MiscUtil.ConvertPiseeResponse(respuesta);	 
     }
 	
+	
+	@GET
+	@Path("certificado_nacimiento_segpres")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Response getCertificadoNacimientoSegpres(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
+		long startTime = System.currentTimeMillis();
+		InputParameter inputParameter = new InputParameter();		
+		CallerServiceBusiness restBusiness = new CallerServiceBusiness();
+		PiseeRespuesta respuesta;
+		
+		inputParameter.addBodyParameter(ParametersName.RUT, rut);
+		inputParameter.addBodyParameter(ParametersName.DV, dv);
+		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);		
+		respuesta = restBusiness.callService(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_NACIMIENTO_SEGPRES, inputParameter, true);
+		
+		long endTime = System.currentTimeMillis();		
+		LOGGER.info(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_NACIMIENTO_SEGPRES + " - TIME == " + (endTime - startTime) + " MILISECONDS");
+		return MiscUtil.ConvertPiseeResponse(respuesta);	 
+    }
+	
 }

@@ -15,6 +15,9 @@ public final class ConfigProveedoresServicios {
 	public static final String SOAP_SII_RUT_PROPIEDADES_COMUNA 				= "SOAP_SII_RutPropiedadesComuna";	
 	public static final String SOAP_SRCEI__CERTIFICADO_NACIMIENTO_GENCHI 	= "SOAP_SRCEI_CertificadoNacimientoGENCHI";
 	public static final String SOAP_SRCEI__INFORMACION_PERSONAL_LOBBY 		= "SOAP_SRCEI_InformacionPersonalLOBBY";
+	public static final String SOAP_SRCEI__CERTIFICADO_NACIMIENTO_SEGPRES   = "SOAP_SRCEI_CertificadoNacimientoSEGPRES";
+	public static final String SOAP_SRCEI__CERTIFICADO_MATRIMONIO_SEGPRES   = "SOAP_SRCEI_CertificadoMatrimonioSEGPRES";
+	public static final String SOAP_SRCEI__CERTIFICADO_DEFUNCION_SEGPRES    = "SOAP_SRCEI_CertificadoDefuncionSEGPRES";
 	//----------------------------------------------------------------------------------------------------------
 	//FIN Configuracion Servicios SOAP	
 
