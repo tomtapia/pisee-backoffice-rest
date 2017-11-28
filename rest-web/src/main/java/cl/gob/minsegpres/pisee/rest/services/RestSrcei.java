@@ -105,11 +105,51 @@ public class RestSrcei {
 		inputParameter.addBodyParameter(ParametersName.RUT, rut);
 		inputParameter.addBodyParameter(ParametersName.DV, dv);
 		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);		
-		respuesta = restBusiness.callService(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_NACIMIENTO_SEGPRES, inputParameter, true);
+		respuesta = restBusiness.callService(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_NACIMIENTO_SEGPRES, inputParameter, false);
 		
 		long endTime = System.currentTimeMillis();		
 		LOGGER.info(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_NACIMIENTO_SEGPRES + " - TIME == " + (endTime - startTime) + " MILISECONDS");
-		return MiscUtil.ConvertPiseeResponse(respuesta);	 
+		return MiscUtil.ConvertPiseeResponseNoSobre(respuesta);
     }
 	
+	
+	@GET
+	@Path("certificado_matrimonio_segpres")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Response getCertificadoMatrimonioSegpres(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
+		long startTime = System.currentTimeMillis();
+		InputParameter inputParameter = new InputParameter();		
+		CallerServiceBusiness restBusiness = new CallerServiceBusiness();
+		PiseeRespuesta respuesta;
+		
+		inputParameter.addBodyParameter(ParametersName.RUT, rut);
+		inputParameter.addBodyParameter(ParametersName.DV, dv);
+		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);		
+		respuesta = restBusiness.callService(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_MATRIMONIO_SEGPRES, inputParameter, false);
+		
+		long endTime = System.currentTimeMillis();		
+		LOGGER.info(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_MATRIMONIO_SEGPRES + " - TIME == " + (endTime - startTime) + " MILISECONDS");
+		return MiscUtil.ConvertPiseeResponseNoSobre(respuesta);
+    }
+	
+	
+	@GET
+	@Path("certificado_defuncion_segpres")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Response getCertificadoDefuncionSegpres(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
+		long startTime = System.currentTimeMillis();
+		InputParameter inputParameter = new InputParameter();		
+		CallerServiceBusiness restBusiness = new CallerServiceBusiness();
+		PiseeRespuesta respuesta;
+		
+		inputParameter.addBodyParameter(ParametersName.RUT, rut);
+		inputParameter.addBodyParameter(ParametersName.DV, dv);
+		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);		
+		respuesta = restBusiness.callService(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_DEFUNCION_SEGPRES, inputParameter, false);
+		
+		long endTime = System.currentTimeMillis();		
+		LOGGER.info(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_DEFUNCION_SEGPRES + " - TIME == " + (endTime - startTime) + " MILISECONDS");
+		return MiscUtil.ConvertPiseeResponseNoSobre(respuesta);
+    }
+
 }

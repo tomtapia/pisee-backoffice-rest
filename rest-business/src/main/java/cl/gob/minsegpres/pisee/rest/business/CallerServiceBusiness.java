@@ -32,10 +32,9 @@ public class CallerServiceBusiness {
 		SiiRestToSoapConnector siiRestToSoapConnector = new SiiRestToSoapConnector();  
 		String tokenPisee = (String)inputParameter.getBodyParameter(ParametersName.PISEE_TOKEN);
 		
-		//-------------------------------------------------------------------------------------------------------------------
-		if (validateRutParameters){			
+		if (validateRutParameters) {			
 			if (!ValidationUtil.validarRut((String)inputParameter.getBodyParameter(ParametersName.RUT), 
-					(String)inputParameter.getBodyParameter(ParametersName.DV))){ 
+					(String)inputParameter.getBodyParameter(ParametersName.DV))) { 
 				respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 				respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
 				respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INVALID_RUT_PARAMETER);
@@ -45,24 +44,24 @@ public class CallerServiceBusiness {
 			StringBuffer mensaje = new StringBuffer();
 			if (StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.RUT)) 
 					|| StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.DV)) 
-						|| StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.PISEE_TOKEN))){
-				if (StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.RUT))){
+						|| StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.PISEE_TOKEN))) {
+				if (StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.RUT))) {
 					mensaje.append(ParametersName.RUT);
 					mensaje.append(AppConstants.SPACE);
 				}
-				if (StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.DV))){
+				if (StringUtils.isEmpty((String)inputParameter.getBodyParameter(ParametersName.DV))) {
 					mensaje.append(ParametersName.DV);
 					mensaje.append(AppConstants.SPACE);
-				}		
+				}
 				respuesta = new PiseeRespuesta();
 				respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 				respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_PARAM_ENTRADA);
 				respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INVALID_NULL_PARAMETER + mensaje.toString());
 				return respuesta;
-			}			
+			}
 		}
 		
-		if (null == tokenPisee){
+		if (null == tokenPisee) {
 			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 			respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_AUTORIZACION);
 			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INVALID_NULL_PARAMETER + ParametersName.PISEE_TOKEN);	
@@ -77,30 +76,30 @@ public class CallerServiceBusiness {
 			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_INVALID_TOKEN);
 			LOGGER.error(proveedorServiceName + " - Token: " + tokenPisee + " invalido para consumir el servicio");
 			return respuesta;
-		}else if (ConfiguracionServicio.BLOQUEADO.equals(configuracionServicio.getEstado())) {
+		} else if (ConfiguracionServicio.BLOQUEADO.equals(configuracionServicio.getEstado())) {
 			respuesta.getEncabezado().setEmisorSobre(AppConstants._EMISOR_PISEE);
 			respuesta.getEncabezado().setEstadoSobre(AppConstants._CODE_ERROR_CONSUMIDOR_AUTORIZACION);
 			respuesta.getEncabezado().setGlosaSobre(AppConstants._MSG_BLOCKED_SERVICE);			
 			LOGGER.error(proveedorServiceName + " - Token: " + tokenPisee + " bloqueado para consumir el servicio");
 			return respuesta;
-		}		
-		//-------------------------------------------------------------------------------------------------------------------
+		}
 		
-		if (proveedorServiceName.startsWith(AppConstants.PREFIX_SERVICE_SOAP_SII)){
+		if (proveedorServiceName.startsWith(AppConstants.PREFIX_SERVICE_SOAP_SII)) {
 			respuesta = siiRestToSoapConnector.callService(proveedorServiceName, inputParameter, configuracionServicio);
-		}else if (proveedorServiceName.startsWith(AppConstants.PREFIX_SERVICE_SOAP)){
-				respuesta = restToSoapConnector.callService(proveedorServiceName, inputParameter, configuracionServicio);	
-			}else if (proveedorServiceName.startsWith(AppConstants.PREFIX_SERVICE_REST)){
-					respuesta = restToRestConnector.callService(proveedorServiceName, inputParameter, configuracionServicio);
-					TrazabilidadQueue.getInstance().accept(new DataPiseeToQueue(configuracionServicio, respuesta));
-			}
+		} else if (proveedorServiceName.startsWith(AppConstants.PREFIX_SERVICE_SOAP)) {
+			respuesta = restToSoapConnector.callService(proveedorServiceName, inputParameter, configuracionServicio);	
+		} else if (proveedorServiceName.startsWith(AppConstants.PREFIX_SERVICE_REST)) {
+			respuesta = restToRestConnector.callService(proveedorServiceName, inputParameter, configuracionServicio);
+			TrazabilidadQueue.getInstance().accept(new DataPiseeToQueue(configuracionServicio, respuesta));
+		}
+		
 		return respuesta;
 	}
 	
-	private ConfiguracionServicio findConfiguracionServicio(String tokenPisee){
+	private ConfiguracionServicio findConfiguracionServicio(String tokenPisee) {
 		ConfiguracionServicioService configuracionServicioBusiness = new ConfiguracionServicioService();
 		ConfiguracionServicio configuracionServicio;
-		if(ContingenciaBusiness.isContingencia()){
+		if (ContingenciaBusiness.isContingencia()) {
 			LOGGER.info("Configuracion de servicio obtenida en CONTINGENCIA");
 			configuracionServicio = ContingenciaBusiness.getInstance().getConfiguracionServicio(tokenPisee);
 		} else { 

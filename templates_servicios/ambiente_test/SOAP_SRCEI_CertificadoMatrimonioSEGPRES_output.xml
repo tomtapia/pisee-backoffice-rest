@@ -1,0 +1,14 @@
+<campos>
+	<campo>
+		<nombre>codigoresp</nombre>
+		<ruta>Body/getInfoResponse/codigoresp</ruta>
+    </campo>
+	<campo>
+		<nombre>glosa</nombre>
+		<ruta>Body/getInfoResponse/glosa</ruta>
+    </campo>
+	<campo>
+		<nombre>certificado</nombre>
+		<ruta>Body/getInfoResponse/certificado</ruta>
+    </campo>
+</campos>
