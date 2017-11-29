@@ -1,0 +1,22 @@
+<campos>	
+	<campo>
+		<nombre>rut</nombre>
+		<ruta>Body/sobre/cuerpo/documento/datosPersona/run/numero</ruta>
+	</campo>
+	<campo>
+		<nombre>dv</nombre>
+		<ruta>Body/sobre/cuerpo/documento/datosPersona/run/dv</ruta>
+	</campo>	
+	<campo>
+		<nombre>nombres</nombre>
+		<ruta>Body/sobre/cuerpo/documento/datosPersona/nombre/nombres</ruta>
+	</campo>	
+	<campo>
+		<nombre>apellidoPaterno</nombre>
+		<ruta>Body/sobre/cuerpo/documento/datosPersona/nombre/apellidoPaterno</ruta>
+	</campo>	
+	<campo>
+		<nombre>apellidoMaterno</nombre>
+		<ruta>Body/sobre/cuerpo/documento/datosPersona/nombre/apellidoMaterno</ruta>
+	</campo>
+</campos>

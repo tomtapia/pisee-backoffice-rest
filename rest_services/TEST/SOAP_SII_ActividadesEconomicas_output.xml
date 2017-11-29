@@ -1,0 +1,23 @@
+<campos>		
+	<ruta_arreglo>cuerpo/documento/actividadesInscritas/actividad</ruta_arreglo>
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>codigo_actividad</nombre>
+		<ruta>codigoActividad</ruta>
+	</campo>
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>categoria</nombre>
+		<ruta>categoria</ruta>
+	</campo>	
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>descripcion</nombre>
+		<ruta>descripcion</ruta>
+	</campo>	
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>fecha_inicio</nombre>
+		<ruta>fechaInicio/fechaTruncada</ruta>
+	</campo>	
+</campos>

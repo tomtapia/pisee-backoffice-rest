@@ -1,0 +1,18 @@
+<campos>		
+	<campo>
+		<nombre>nombres</nombre>		
+		<ruta>cuerpo/documento/razonSocial/nombre/nombres</ruta>
+	</campo>
+	<campo>
+		<nombre>apellido_paterno</nombre>		
+		<ruta>cuerpo/documento/razonSocial/nombre/apellidoPaterno</ruta>
+	</campo>	
+	<campo>
+		<nombre>apellido_materno</nombre>		
+		<ruta>cuerpo/documento/razonSocial/nombre/apellidoMaterno</ruta>
+	</campo>		
+	<campo>
+		<nombre>razon_social</nombre>		
+		<ruta>cuerpo/documento/razonSocial/razon</ruta>
+	</campo>		
+</campos>	

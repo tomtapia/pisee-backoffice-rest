@@ -1,0 +1,129 @@
+<!--
+Paciente/DetallePaciente/IdentificadorListaEspera
+Paciente/DetallePaciente/FechaActualizacionListaEspera/fechaHoraValida
+Paciente/DetallePaciente/CodigoReceptor
+Paciente/DetallePaciente/GrupoSanguineoRH
+Paciente/DetallePaciente/Urgencia
+Paciente/DetallePaciente/Nombre/Nombres
+Paciente/DetallePaciente/Nombre/ApellidoPaterno
+Paciente/DetallePaciente/Nombre/ApellidoMaterno
+Paciente/DetallePaciente/RUT/numero
+Paciente/DetallePaciente/RUT/dv
+Paciente/DetallePaciente/Edad
+Paciente/DetallePaciente/Peso
+Paciente/DetallePaciente/Talla
+Paciente/DetallePaciente/CentroDeTrasplante
+Paciente/DetallePaciente/FechaIngresoReingreso/fechaValida
+Paciente/DetallePaciente/Prevision
+Paciente/DetallePaciente/NombrePrevision
+Paciente/DetallePaciente/Observaciones
+Paciente/CorazonPulmon
+-->
+<campos>		
+	<ruta_arreglo>Body/sobre/cuerpo/documento/ListaDeEsperaTrasplanteHigado/Pacientes/Paciente</ruta_arreglo>
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>IdentificadorListaEspera</nombre>
+		<ruta>DetallePaciente/IdentificadorListaEspera</ruta>
+	</campo>
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>FechaHoraValida</nombre>
+		<ruta>DetallePaciente/FechaActualizacionListaEspera/fechaHoraValida</ruta>
+	</campo>
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>CodigoReceptor</nombre>
+		<ruta>DetallePaciente/CodigoReceptor</ruta>
+	</campo>
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>GrupoSanguineoRH</nombre>
+		<ruta>DetallePaciente/GrupoSanguineoRH</ruta>
+	</campo>
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>Urgencia</nombre>
+		<ruta>DetallePaciente/Urgencia</ruta>
+	</campo>	
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>Nombres</nombre>
+		<ruta>DetallePaciente/Nombre/Nombres</ruta>
+	</campo>			
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>ApellidoPaterno</nombre>
+		<ruta>DetallePaciente/Nombre/ApellidoPaterno</ruta>
+	</campo>	
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>ApellidoMaterno</nombre>
+		<ruta>DetallePaciente/Nombre/ApellidoMaterno</ruta>
+	</campo>	
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>RutNumero</nombre>
+		<ruta>DetallePaciente/RUT/numero</ruta>
+	</campo>
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>RutDV</nombre>
+		<ruta>DetallePaciente/RUT/dv</ruta>
+	</campo>	
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>Edad</nombre>
+		<ruta>DetallePaciente/Edad</ruta>
+	</campo>	
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>Peso</nombre>
+		<ruta>DetallePaciente/Peso</ruta>
+	</campo>	
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>Talla</nombre>
+		<ruta>DetallePaciente/Talla</ruta>
+	</campo>	
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>CentroDeTrasplante</nombre>
+		<ruta>DetallePaciente/CentroDeTrasplante</ruta>
+	</campo>	
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>FechaIngresoReingreso</nombre>
+		<ruta>DetallePaciente/FechaIngresoReingreso/fechaValida</ruta>
+	</campo>	
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>Prevision</nombre>
+		<ruta>DetallePaciente/Prevision</ruta>
+	</campo>	
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>NombrePrevision</nombre>
+		<ruta>DetallePaciente/NombrePrevision</ruta>
+	</campo>		
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>Observaciones</nombre>
+		<ruta>DetallePaciente/Observaciones</ruta>
+	</campo>
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>OrganoEnBloque</nombre>
+		<ruta>DetallePaciente/OrganoEnBloque</ruta>
+	</campo>
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>MeldOperacional</nombre>
+		<ruta>MeldOperacional</ruta>
+	</campo>
+	<campo>
+		<en_arreglo>1</en_arreglo>
+		<nombre>Diagnostico</nombre>
+		<ruta>Diagnostico</ruta>
+	</campo>	
+</campos>

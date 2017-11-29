@@ -1,0 +1,6 @@
+<campos>		
+	<campo>
+		<nombre>TieneLicencia</nombre>
+		<ruta>Body/sobre/cuerpo/documento/LicenciaEnsenanzaMedia/RegistraLicencia</ruta>
+	</campo>		
+</campos>
