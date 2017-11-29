@@ -7,6 +7,7 @@ public final class ConfigProveedoresServicios {
 	public static final String SOAP_DIPRECA__CONSULTA_IMPONENTES 			= "SOAP_DIPRECA_ConsultaImponentes";
 	public static final String SOAP_DGMN_SITUACION_MILITAR 					= "SOAP_DGMN_SituacionMilitar";
 	public static final String SOAP_ISP__LISTADO_ESPERA_CORAZON 			= "SOAP_ISP_ListadoEsperaCorazon";
+	public static final String SOAP_ISP_LISTADO_ESPERA_HIGADO				= "SOAP_ISP_ListadoEsperaHigado";
 	public static final String SOAP_MINEDUC__LICENCIA_ENSENANZA_MEDIA 		= "SOAP_MINEDUC_DispoLicenciaEnsenanzaMedia";
 	public static final String SOAP_SII_ACTIVIDADES_ECONOMICAS 				= "SOAP_SII_ActividadesEconomicas";
 	public static final String SOAP_SII_DATOS_CONTRIBUYENTE 				= "SOAP_SII_DatosContribuyente";
