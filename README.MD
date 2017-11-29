@@ -40,7 +40,7 @@ Este proyecto se creo con la finalidad de exponer los servicios de la PISEE (SOA
 
 1. Importar en JBoss Developer como `Maven Project`.
 
-1. Copiar los archivos de configuración de las integraciones REST desde el directorio `PiseeConf/rest_services` del proyecto `Pisee` en el directorio
+1. Copiar los archivos de configuración de las integraciones REST desde el directorio `/rest_services` en el directorio
 
 ```bash
 $JBOSS_HOME/server/<INSTANCIA>/deploy/base/piseeConf/
@@ -128,7 +128,7 @@ Estos archivos permiten hacer la relación entre los parámetros de entrada y sa
 
   ![configuración de archivos de parámetros](/images/config_file_name.png)
 
-- Una vez configuradas las constante, se deben generar los archivos necesarios para consumir el servicio, tomando como base el valor de la constante creada. Estos archivos se encuentra versionados en el Proyecto [Pisee](https://github.com/e-gob/pisee/tree/master/piseeConf/rest_services)/piseeConf y existe una versión distinta para producción y testing.
+- Una vez configuradas las constante, se deben generar los archivos necesarios para consumir el servicio, tomando como base el valor de la constante creada. Estos archivos se encuentran en la carpeta `rest_services` y existe una versión distinta para producción y testing.
 
   ![Archivos configuración xml](/images/map_parameter_IO.png)
 
@@ -136,8 +136,8 @@ Estos archivos permiten hacer la relación entre los parámetros de entrada y sa
 
   ejemplo:
 
-    SOAP_ISP_ListadoEsperaHigado_input.xml
-    SOAP_ISP_ListadoEsperaHigado_outpu.xml
+    [SOAP_ISP_ListadoEsperaCorazon_input.xml](/rest_services/TEST/SOAP_ISP_ListadoEsperaCorazon_input.xml)
+    [SOAP_ISP_ListadoEsperaHigado_output.xml](/rest_services/TEST/SOAP_ISP_ListadoEsperaHigado_output.xml)
 
 - los archivos de configuración de las integraciones REST deben copiarse al directorio de deploy:
 
