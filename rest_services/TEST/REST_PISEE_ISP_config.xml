@@ -1,0 +1,14 @@
+<rest_services>
+		
+	<rest_service id="PISEE_ISP_listadoEsperaCorazon">
+		<description>PISEE - REST: Servicio que entrega el listado de personas que se encuentra a la espera de un transplante de corazon</description>
+		<method>GET</method>			
+		<base_endpoint>https://www.pisee.cl/api/isp/v1/listadoEsperaCorazon</base_endpoint>
+		<path_parameters/>		
+		<query_parameters>
+			<parameter optional="false">pisee_token</parameter>
+		</query_parameters>		
+	</rest_service>
+
+</rest_services>
+

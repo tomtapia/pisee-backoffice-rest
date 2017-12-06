@@ -1,0 +1,25 @@
+<rest_services>
+		
+	<rest_service id="MODERNIZACION_Regiones">
+		<description>Permite conocer las regiones del pais</description>
+		<method>GET</method>			
+		<base_endpoint>https://apis.modernizacion.cl/dpa/regiones</base_endpoint>
+		<extend_endpoint>/{codigoRegion}/{provincias}/{codigoProvincia}</extend_endpoint>
+		<path_parameters>
+			<parameter optional="true">codigoRegion</parameter>
+			<parameter optional="true">provincias</parameter>
+			<parameter optional="true">codigoProvincia</parameter>
+		</path_parameters>		
+		<query_parameters>
+			<parameter optional="true">limit</parameter>
+			<parameter optional="true">offset</parameter>
+			<parameter optional="true">orderBy</parameter>
+			<parameter optional="true">orderDir</parameter>
+			<parameter optional="true">geolocation</parameter>
+		</query_parameters>		
+	</rest_service>
+
+</rest_services>
+
+
+

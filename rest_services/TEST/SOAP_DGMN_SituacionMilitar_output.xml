@@ -1,0 +1,10 @@
+<campos>		
+	<campo>
+		<nombre>respuesta</nombre>
+		<ruta>Body/sobre/cuerpo/documento/SituacionMilitar/respuesta</ruta>
+	</campo>
+	<campo>
+		<nombre>detalle</nombre>
+		<ruta>Body/sobre/cuerpo/documento/SituacionMilitar/detalle</ruta>
+	</campo>	
+</campos>	

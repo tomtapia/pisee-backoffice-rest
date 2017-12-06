@@ -1,0 +1,10 @@
+<campos>		
+	<campo>		
+		<nombre>habitacional</nombre>
+		<ruta>cuerpo/documento/unidadHabitacionalComuna/habitacional</ruta>
+	</campo>
+	<campo>		
+		<nombre>comuna</nombre>
+		<ruta>cuerpo/documento/unidadHabitacionalComuna/comuna</ruta>
+	</campo>	
+</campos>

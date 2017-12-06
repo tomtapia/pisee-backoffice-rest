@@ -4,7 +4,7 @@
 	<groupId>cl.gob.minsegpres.pisee.rest</groupId>
 	<artifactId>rest-web</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.5</version>
+	<version>0.0.6</version>
 	<name>rest-web</name>
 	<url>http://www.pisee.cl</url>
 	<description>WAR con la logica para consumir servicios (SOAP)integrados en la pisee pero desplegados via REST</description>
