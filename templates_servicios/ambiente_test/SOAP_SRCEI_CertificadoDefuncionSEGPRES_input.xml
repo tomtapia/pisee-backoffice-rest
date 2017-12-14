@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns="urn:CertificadoDocto">
+    <SOAP-ENV:Header />
+    <SOAP-ENV:Body>
+        <ns:getInfo>
+            <consumidor>ELPISEE.inputParameter.headerParameters['nombre_consumidor']</consumidor>
+            <tramite>ELPISEE.inputParameter.headerParameters['nombre_tramite']</tramite>
+            <servicio>ELPISEE.inputParameter.headerParameters['nombre_servicio']</servicio>
+            <datainput>
+                <numero>ELPISEE.inputParameter.bodyParameters['rut']</numero>
+                <dv>ELPISEE.inputParameter.bodyParameters['dv']</dv>
+            </datainput>
+        </ns:getInfo>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
