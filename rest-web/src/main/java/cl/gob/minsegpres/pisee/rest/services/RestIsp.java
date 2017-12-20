@@ -43,4 +43,21 @@ public class RestIsp {
 	    return MiscUtil.ConvertPiseeResponse(respuesta);
     }
 	
+	@GET
+	@Path("v1/listado_espera_higado")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Response getListadoEsperaHigado(@QueryParam("pisee_token") String piseeToken) {
+		long startTime = System.currentTimeMillis();
+		InputParameter inputParameter = new InputParameter();
+		CallerServiceBusiness restBusiness = new CallerServiceBusiness();
+		PiseeRespuesta respuesta;
+		
+		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);
+		respuesta = restBusiness.callService(ConfigProveedoresServicios.SOAP_ISP_LISTADO_ESPERA_HIGADO, inputParameter);
+		
+		long endTime = System.currentTimeMillis();		
+		LOGGER.info(ConfigProveedoresServicios.SOAP_ISP_LISTADO_ESPERA_HIGADO + " - TIME == " + (endTime - startTime) + " MILISECONDS");
+	    return MiscUtil.ConvertPiseeResponse(respuesta);
+    }
+	
 }

@@ -194,6 +194,7 @@ public class RestSrcei {
     }
 	
 	
+	// todo: refactorizar métodos de totem y llamar a éste método...
 	private Response getCertificadoParaTotem(String rut, String dv, String piseeToken, String tramite) {
 		long startTime = System.currentTimeMillis();
 		InputParameter inputParameter = new InputParameter();		
@@ -209,7 +210,5 @@ public class RestSrcei {
 		LOGGER.info(tramite + " - TIME == " + (endTime - startTime) + " MILISECONDS");
 		return MiscUtil.ConvertPiseeResponseNoSobre(respuesta);
 	}
-	
-	
 	
 }

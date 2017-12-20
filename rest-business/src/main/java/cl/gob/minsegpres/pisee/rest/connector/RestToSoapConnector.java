@@ -93,6 +93,10 @@ public class RestToSoapConnector {
 						document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument());
 					} else if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoDefuncionSEGPRES")) {
 						document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument());
+					} else if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoMatriculaSEGPRES")) {
+						document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument()); 
+					} else if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoCeseConvivenciaSEGPRES")) {
+						document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument());
 					} else {
 						long tFirmaOUT = System.currentTimeMillis();
 						result = srceiConnector.descrifarRespuesta(soapEnvelopeOutput.getAsDocument(), keyStoreParameter);
@@ -116,6 +120,12 @@ public class RestToSoapConnector {
 					respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
 				}
 				if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoDefuncionSEGPRES")) {
+					respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
+				}
+				if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoMatriculaSEGPRES")) {
+					respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
+				}
+				if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoCeseConvivenciaSEGPRES")) {
 					respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
 				}
 			}
