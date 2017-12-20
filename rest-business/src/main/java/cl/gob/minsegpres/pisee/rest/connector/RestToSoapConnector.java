@@ -64,7 +64,7 @@ public class RestToSoapConnector {
 			if (null != fileInputStr) {
 				fileInputProcessed = processor.processInput(fileInputStr, inputParameter);
 				is = new ByteArrayInputStream(fileInputProcessed.getBytes(_UTF_8));
-				if (configuracionServicio.hasNeedFirmaDigital()){
+				if (configuracionServicio.hasNeedFirmaDigital()) {
 					long tFirmaIN = System.currentTimeMillis();
 					keyStoreParameter = ReaderTemplateKeyStoreSOAP.getInstance().findKeyStore(proveedorServiceName + AppConstants.PREFIX_CONFIG_SERVICES_KEYSTORE);
 					LOGGER.info(proveedorServiceName + " - INPUT SERVICE ANTES DE FIRMAR : " + PiseeStringUtils.prettyFormat(fileInputProcessed));
@@ -74,9 +74,9 @@ public class RestToSoapConnector {
 				}
 				soapEnvelopeInput = new SOAPEnvelope(is);
 				
-				if (null != result){
+				if (null != result) {
 					LOGGER.info(proveedorServiceName + " - INPUT SERVICE : " + PiseeStringUtils.prettyFormat(result));	
-				}else{
+				} else {
 					LOGGER.info(proveedorServiceName + " - INPUT SERVICE : " + PiseeStringUtils.prettyFormat(soapEnvelopeInput.getAsString()));
 				}
 				
@@ -86,17 +86,46 @@ public class RestToSoapConnector {
 				LOGGER.info(proveedorServiceName + " - " + transactionLogOutput(inputParameter, configuracionServicio));
 				LOGGER.info(proveedorServiceName + " - Tiempo de respuesta del servicio == " + (System.currentTimeMillis() - tc1));
 				if (configuracionServicio.hasNeedFirmaDigital()){
-					long tFirmaOUT = System.currentTimeMillis();
-					result = srceiConnector.descrifarRespuesta(soapEnvelopeOutput.getAsDocument(), keyStoreParameter);
-					document = DocumentHelper.parseText(result);
-					LOGGER.info(proveedorServiceName + " - Tiempo en descrifrar respuesta == " + (System.currentTimeMillis() - tFirmaOUT));
-				}else{
+					// Si son los servicios para el totem segpres, no hay que desencriptar...
+					if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoNacimientoSEGPRES")) {
+						document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument());
+					} else if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoMatrimonioSEGPRES")) {
+						document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument());
+					} else if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoDefuncionSEGPRES")) {
+						document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument());
+					} else if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoMatriculaSEGPRES")) {
+						document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument()); 
+					} else if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoCeseConvivenciaSEGPRES")) {
+						document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument());
+					} else {
+						long tFirmaOUT = System.currentTimeMillis();
+						result = srceiConnector.descrifarRespuesta(soapEnvelopeOutput.getAsDocument(), keyStoreParameter);
+						document = DocumentHelper.parseText(result);
+						LOGGER.info(proveedorServiceName + " - Tiempo en descrifrar respuesta == " + (System.currentTimeMillis() - tFirmaOUT));
+					}
+				} else {
 					document = PiseeStringUtils.getDom4jDocument(soapEnvelopeOutput.getAsDocument());	
 				}
 				LOGGER.info(proveedorServiceName + " - OUTPUT SERVICE : " + PiseeStringUtils.prettyFormat(document.asXML()));
 				Element eRoot = document.getRootElement();
 				respuesta.setEncabezado(fillEncabezado(eRoot));
 				if (AppConstants._CODE_OK.equals(respuesta.getEncabezado().getEstadoSobre())) {
+					respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
+				}
+				// Para los servicios del totem segpres no existe la glosa o estado _CODE_OK...
+				if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoNacimientoSEGPRES")) {
+					respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
+				}
+				if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoMatrimonioSEGPRES")) {
+					respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
+				}
+				if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoDefuncionSEGPRES")) {
+					respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
+				}
+				if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoMatriculaSEGPRES")) {
+					respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
+				}
+				if (proveedorServiceName.equals("SOAP_SRCEI_CertificadoCeseConvivenciaSEGPRES")) {
 					respuesta.setMetadata(fillMetaData(proveedorServiceName, eRoot));
 				}
 			}
@@ -112,6 +141,7 @@ public class RestToSoapConnector {
 		respuesta.setTemporalData(new PiseeTemporalData());
 		respuesta.getTemporalData().setFechaConsultaRecibida((Calendar)inputParameter.getHeaderParameter(ParametersName.FECHA_CONSULTA_RECIBIDA));
 		respuesta.getTemporalData().setDuracionLlamadaServicio((endTime - startTime));
+		
 		return respuesta;		
 	}
 

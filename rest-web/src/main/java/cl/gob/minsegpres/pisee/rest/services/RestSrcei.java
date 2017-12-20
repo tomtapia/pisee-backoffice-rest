@@ -92,4 +92,123 @@ public class RestSrcei {
 		return MiscUtil.ConvertPiseeResponse(respuesta);	 
     }
 	
+	
+	@GET
+	@Path("certificado_nacimiento_segpres")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Response getCertificadoNacimientoSegpres(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
+		
+		long startTime = System.currentTimeMillis();
+		InputParameter inputParameter = new InputParameter();		
+		CallerServiceBusiness restBusiness = new CallerServiceBusiness();
+		PiseeRespuesta respuesta;
+		
+		inputParameter.addBodyParameter(ParametersName.RUT, rut);
+		inputParameter.addBodyParameter(ParametersName.DV, dv);
+		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);		
+		respuesta = restBusiness.callService(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_NACIMIENTO_SEGPRES, inputParameter, false);
+		
+		long endTime = System.currentTimeMillis();		
+		LOGGER.info(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_NACIMIENTO_SEGPRES + " - TIME == " + (endTime - startTime) + " MILISECONDS");
+		return MiscUtil.ConvertPiseeResponseNoSobre(respuesta);
+    }
+	
+	
+	@GET
+	@Path("certificado_matrimonio_segpres")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Response getCertificadoMatrimonioSegpres(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
+		long startTime = System.currentTimeMillis();
+		InputParameter inputParameter = new InputParameter();		
+		CallerServiceBusiness restBusiness = new CallerServiceBusiness();
+		PiseeRespuesta respuesta;
+		
+		inputParameter.addBodyParameter(ParametersName.RUT, rut);
+		inputParameter.addBodyParameter(ParametersName.DV, dv);
+		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);		
+		respuesta = restBusiness.callService(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_MATRIMONIO_SEGPRES, inputParameter, false);
+		
+		long endTime = System.currentTimeMillis();		
+		LOGGER.info(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_MATRIMONIO_SEGPRES + " - TIME == " + (endTime - startTime) + " MILISECONDS");
+		return MiscUtil.ConvertPiseeResponseNoSobre(respuesta);
+    }
+	
+	
+	@GET
+	@Path("certificado_defuncion_segpres")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Response getCertificadoDefuncionSegpres(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
+		long startTime = System.currentTimeMillis();
+		InputParameter inputParameter = new InputParameter();		
+		CallerServiceBusiness restBusiness = new CallerServiceBusiness();
+		PiseeRespuesta respuesta;
+		
+		inputParameter.addBodyParameter(ParametersName.RUT, rut);
+		inputParameter.addBodyParameter(ParametersName.DV, dv);
+		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);		
+		respuesta = restBusiness.callService(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_DEFUNCION_SEGPRES, inputParameter, false);
+		
+		long endTime = System.currentTimeMillis();		
+		LOGGER.info(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_DEFUNCION_SEGPRES + " - TIME == " + (endTime - startTime) + " MILISECONDS");
+		return MiscUtil.ConvertPiseeResponseNoSobre(respuesta);
+    }
+	
+	
+	@GET
+	@Path("certificado_matricula_segpres")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Response getCertificadoMatriculaSegpres(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
+		long startTime = System.currentTimeMillis();
+		InputParameter inputParameter = new InputParameter();		
+		CallerServiceBusiness restBusiness = new CallerServiceBusiness();
+		PiseeRespuesta respuesta;
+		
+		inputParameter.addBodyParameter(ParametersName.RUT, rut);
+		inputParameter.addBodyParameter(ParametersName.DV, dv);
+		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);		
+		respuesta = restBusiness.callService(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_MATRICULA_SEGPRES, inputParameter, false);
+		
+		long endTime = System.currentTimeMillis();		
+		LOGGER.info(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_MATRICULA_SEGPRES + " - TIME == " + (endTime - startTime) + " MILISECONDS");
+		return MiscUtil.ConvertPiseeResponseNoSobre(respuesta);
+    }
+	
+	
+	@GET
+	@Path("certificado_cese_convivencia_segpres")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Response getCertificadoCeseConvivenciaSegpres(@QueryParam("rut") String rut, @QueryParam("dv") String dv, @QueryParam("pisee_token") String piseeToken) {
+		long startTime = System.currentTimeMillis();
+		InputParameter inputParameter = new InputParameter();		
+		CallerServiceBusiness restBusiness = new CallerServiceBusiness();
+		PiseeRespuesta respuesta;
+		
+		inputParameter.addBodyParameter(ParametersName.RUT, rut);
+		inputParameter.addBodyParameter(ParametersName.DV, dv);
+		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);		
+		respuesta = restBusiness.callService(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_CESE_CONVIVENCIA_SEGPRES, inputParameter, false);
+		
+		long endTime = System.currentTimeMillis();		
+		LOGGER.info(ConfigProveedoresServicios.SOAP_SRCEI__CERTIFICADO_CESE_CONVIVENCIA_SEGPRES + " - TIME == " + (endTime - startTime) + " MILISECONDS");
+		return MiscUtil.ConvertPiseeResponseNoSobre(respuesta);
+    }
+	
+	
+	// todo: refactorizar métodos de totem y llamar a éste método...
+	private Response getCertificadoParaTotem(String rut, String dv, String piseeToken, String tramite) {
+		long startTime = System.currentTimeMillis();
+		InputParameter inputParameter = new InputParameter();		
+		CallerServiceBusiness restBusiness = new CallerServiceBusiness();
+		PiseeRespuesta respuesta;
+		
+		inputParameter.addBodyParameter(ParametersName.RUT, rut);
+		inputParameter.addBodyParameter(ParametersName.DV, dv);
+		inputParameter.addBodyParameter(ParametersName.PISEE_TOKEN, piseeToken);		
+		respuesta = restBusiness.callService(tramite, inputParameter, false);
+		
+		long endTime = System.currentTimeMillis();		
+		LOGGER.info(tramite + " - TIME == " + (endTime - startTime) + " MILISECONDS");
+		return MiscUtil.ConvertPiseeResponseNoSobre(respuesta);
+	}
+	
 }
